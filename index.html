@@ -1340,16 +1340,26 @@
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆：封門客製吸音板 (90×210cm) + 封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m
+      // A1 後牆：封門客製吸音板 + 封窗客製吸音板 (淺霧藍灰區分，待現場實測尺寸) + 左側補 1 片常規板 (60×120×5cm)
+      const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const a1PanelX = ROOM.L - 0.02 - pT / 2;
-      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, panelMat, 0x94a3b8, 'A1');
-      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, customPanelMat, 0x64748b, 'A1');
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A1');
       addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A1');
 
-      // A2 前牆：封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m (右側維持外開鋁門)
+      // A2 前牆：封窗客製吸音板 + 左側補 1 片常規板 (60×120×5cm)
       const a2PanelX = 0.02 + pT / 2;
-      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A2');
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A2');
       addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A2');
+
+      if (STATE.showGrid) {
+        const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
+        addLbl('A1 封門客製吸音板 (暫估 90×210cm 待實測)', ROOM.L - 0.12, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 2.25);
+        addLbl('A1 封窗客製吸音板 (暫估 115×115cm 待實測)', ROOM.L - 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
+        addLbl('A1 左補常規吸音板 (60×120×5cm)', ROOM.L - 0.12, 0.75, 2.25);
+        addLbl('A2 封窗客製吸音板 (暫估 115×115cm 待實測)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
+        addLbl('A2 左補常規吸音板 (60×120×5cm)', 0.12, 0.75, 2.25);
+      }
 
       // 4. ★ 練團室 5 人全編制＋PA/混音設備 黃金聲學擺位 ★
       // (a) 爵士鼓組 (全室基準核心：鼓椅 x=4.45m, y=1.80m 中軸線，面向 A2)
@@ -1571,16 +1581,26 @@
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆：封門客製吸音板 (90×210cm) + 封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m
+      // A1 後牆：封門客製吸音板 + 封窗客製吸音板 (淺霧藍灰區分，待現場實測尺寸) + 左側補 1 片常規板 (60×120×5cm)
+      const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const a1PanelX = ROOM.L - 0.02 - pT / 2;
-      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, panelMat, 0x94a3b8, 'A1');
-      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, customPanelMat, 0x64748b, 'A1');
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A1');
       addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A1');
 
-      // A2 前牆：封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m (右側維持外開鋁門)
+      // A2 前牆：封窗客製吸音板 + 左側補 1 片常規板 (60×120×5cm)
       const a2PanelX = 0.02 + pT / 2;
-      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A2');
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A2');
       addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A2');
+
+      if (STATE.showGrid) {
+        const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
+        addLbl('A1 封門客製吸音板 (暫估 90×210cm 待實測)', ROOM.L - 0.12, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 2.25);
+        addLbl('A1 封窗客製吸音板 (暫估 115×115cm 待實測)', ROOM.L - 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
+        addLbl('A1 左補常規吸音板 (60×120×5cm)', ROOM.L - 0.12, 0.75, 2.25);
+        addLbl('A2 封窗客製吸音板 (暫估 115×115cm 待實測)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
+        addLbl('A2 左補常規吸音板 (60×120×5cm)', 0.12, 0.75, 2.25);
+      }
 
       // 5. ★ 單套原聲爵士鼓黃金擺位：鼓椅中心 (x=4.25m, y=1.80m 絕對中軸), 大鼓朝前 (-X 面向 A2)
       const kit = new THREE.Group();
@@ -1971,23 +1991,24 @@
       if (modelKey === 'v2') {
         b3.innerHTML = `
           <div><span class="tag" style="background:#059669;">V2 練團室版本</span><strong>爵士鼓 / Bass / 電吉他 / 鍵盤 / 主唱 / PA 監聽 / 混音機櫃</strong></div>
-          <div>配置：PA 監聽喇叭 (x=3.65m) 面向主唱 (x=1.40m)，Bass 與電吉他音箱 (x=2.75m) 斜向投射</div>`;
+          <div>配置：PA 監聽喇叭 (x=3.65m) 面向主唱 (x=1.40m)，A1/A2 封門窗以客製吸音板覆蓋 (尺寸待實測)</div>`;
         leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組 (1.45×1.65m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱 (0.58×0.46m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>電吉他音箱 (0.62×0.36m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f43f5e;"></span>主唱麥克風 (x=1.45m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽喇叭與混音機櫃</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#7d8590;"></span>常規吸音板 (60×120×5cm)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#6b8299;"></span>封門窗客製吸音板 (尺寸待實測)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組</div>
+          <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>電吉他音箱</div>
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽與混音區</div>`;
       } else if (modelKey === 'v1') {
         b3.innerHTML = `
           <div><span class="tag" style="background:#ea580c;">V1 爵士鼓教學版本</span><strong>爵士鼓組 / 教材雜物櫃 / 剪輯工作桌 / 雙人沙發</strong></div>
-          <div>座標：鼓椅 (x=4.25m, y=1.80m)，A1 雜物櫃 (2.40×0.45m)，B1 剪輯桌 (1.50×0.70m)，B2 沙發 (1.60×0.85m)</div>`;
+          <div>配置：鼓椅 (x=4.25m, y=1.80m)，A1/A2 封門窗以客製吸音板覆蓋 (尺寸待實測)</div>`;
         leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組 (1.50×1.70m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>58Hz 中央駐波帶 (x=2.95m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽低頻陷阱 (x=4.9~5.9m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>前方 45° COB 射燈</div>
-          <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後短軌背光射燈</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#7d8590;"></span>常規吸音板 (60×120×5cm)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#6b8299;"></span>封門窗客製吸音板 (尺寸待實測)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>58Hz 駐波帶 (x=2.95m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#9ca3af;"></span>梁後凹槽低頻陷阱</div>`;
       } else if (modelKey === 'v0') {
         b3.innerHTML = `
           <div><span class="tag" style="background:#9333ea;">V0 純理論研究模型</span><strong>5.90m × 3.60m × 2.90m 理想矩形空間（無門窗橫梁）</strong></div>
