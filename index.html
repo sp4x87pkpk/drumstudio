@@ -805,6 +805,13 @@
         <div id="struct-sliders" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
           <div class="control-row">
             <div class="control-label">
+              <span>吸音板與陷阱不透明度</span>
+              <span class="control-val" id="val-panel-opacity">65%</span>
+            </div>
+            <input type="range" id="rng-panel-opacity" min="15" max="100" step="5" value="65" />
+          </div>
+          <div class="control-row">
+            <div class="control-label">
               <span>距 A1 1.0m 水泥橫梁深度 (梁深)</span>
               <span class="control-val" id="val-beam-depth">45 cm (梁底 2.45m)</span>
             </div>
@@ -869,6 +876,7 @@
       model: 'v2', // 'v0' | 'v1' | 'v2' | 'shell'
       viewMode: '3d',
       isMobile: false,
+      panelOpacity: 0.65,
       beamDepth: 0.45,
       doorAngle: 45,
       autoHideWall: true,
@@ -980,17 +988,23 @@
       return cone;
     }
 
-    function addBoxWithEdge(w, h, d, rx, ry, rz, mat, edgeHex = 0x94a3b8) {
+    function addBoxWithEdge(w, h, d, rx, ry, rz, mat, edgeHex = 0x94a3b8, wallGroupKey = null) {
       const geo = new THREE.BoxGeometry(w, h, d);
-      const m = new THREE.Mesh(geo, mat);
+      // 若指定牆面群組或半透明材質，複製獨立材質實例避免互相干擾智慧剖面透明度
+      const useMat = wallGroupKey ? mat.clone() : mat;
+      const m = new THREE.Mesh(geo, useMat);
       m.position.copy(toWorld(rx, ry, rz));
-      // GIK 風格柔和細邊框，取代刺眼霓虹線框
+      m.userData.baseOpacity = useMat.opacity !== undefined ? useMat.opacity : 1.0;
       const e = new THREE.LineSegments(
         new THREE.EdgesGeometry(geo),
         new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.28 })
       );
       e.position.copy(m.position);
+      e.userData.baseOpacity = 0.28;
       rootGroup.add(m, e);
+      if (wallGroupKey && wallMeshes[wallGroupKey]) {
+        wallMeshes[wallGroupKey].push(m, e);
+      }
       return m;
     }
 
@@ -1148,36 +1162,37 @@
       ambientLight.intensity = Math.max(0.25, active);
       buildRoomShell(false); // 純理想矩形無門窗橫梁
 
-      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92 });
-      const cornerMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94 });
-      const mlvMat = new THREE.MeshStandardMaterial({ color: '#64748b', roughness: 0.85 });
-      const diffMat = new THREE.MeshStandardMaterial({ color: '#c49a6c', roughness: 0.62 }); // GIK 溫潤原木擴散板
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const cornerMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const mlvMat = new THREE.MeshStandardMaterial({ color: '#64748b', roughness: 0.85, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const diffMat = new THREE.MeshStandardMaterial({ color: '#c49a6c', roughness: 0.62, transparent: true, opacity: Math.min(1, STATE.panelOpacity + 0.15) });
 
       // 1. 四垂直角落 400mm 跨角低頻陷阱
       const cS = 0.40;
-      [
-        { x: cS / 2, y: cS / 2 }, { x: cS / 2, y: ROOM.W - cS / 2 },
-        { x: ROOM.L - cS / 2, y: cS / 2 }, { x: ROOM.L - cS / 2, y: ROOM.W - cS / 2 }
-      ].forEach((c) => addBoxWithEdge(cS, ROOM.H - 0.02, cS, c.x, c.y, (ROOM.H - 0.02) / 2, cornerMat, 0xf43f5e));
+      addBoxWithEdge(cS, ROOM.H - 0.02, cS, cS / 2, cS / 2, (ROOM.H - 0.02) / 2, cornerMat, 0x94a3b8, 'B1');
+      addBoxWithEdge(cS, ROOM.H - 0.02, cS, cS / 2, ROOM.W - cS / 2, (ROOM.H - 0.02) / 2, cornerMat, 0x94a3b8, 'B2');
+      addBoxWithEdge(cS, ROOM.H - 0.02, cS, ROOM.L - cS / 2, cS / 2, (ROOM.H - 0.02) / 2, cornerMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(cS, ROOM.H - 0.02, cS, ROOM.L - cS / 2, ROOM.W - cS / 2, (ROOM.H - 0.02) / 2, cornerMat, 0x94a3b8, 'A1');
 
       // 2. 前後牆頂角 59.2Hz MLV 薄膜共振陷阱 (深度 33cm)
-      addBoxWithEdge(0.33, 0.33, ROOM.W - 0.82, 0.165, ROOM.W / 2, ROOM.H - 0.165, mlvMat, 0xf472b6);
-      addBoxWithEdge(0.33, 0.33, ROOM.W - 0.82, ROOM.L - 0.165, ROOM.W / 2, ROOM.H - 0.165, mlvMat, 0xf472b6);
+      addBoxWithEdge(0.33, 0.33, ROOM.W - 0.82, 0.165, ROOM.W / 2, ROOM.H - 0.165, mlvMat, 0x94a3b8, 'A2');
+      addBoxWithEdge(0.33, 0.33, ROOM.W - 0.82, ROOM.L - 0.165, ROOM.W / 2, ROOM.H - 0.165, mlvMat, 0x94a3b8, 'A1');
 
       // 3. 前牆寬頻吸音板 + 中央白板
-      [0.75, 2.85].forEach((py) => addBoxWithEdge(0.10, 1.20, 0.60, 0.10, py, 1.40, panelMat));
-      const wb = new THREE.Mesh(new THREE.BoxGeometry(0.03, 1.10, 1.60), new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.25 }));
+      [0.75, 2.85].forEach((py) => addBoxWithEdge(0.10, 1.20, 0.60, 0.10, py, 1.40, panelMat, 0x94a3b8, 'A2'));
+      const wb = new THREE.Mesh(new THREE.BoxGeometry(0.03, 1.10, 1.60), new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.25, transparent: true }));
       wb.position.copy(toWorld(0.02, ROOM.W / 2, 1.45));
       rootGroup.add(wb);
+      wallMeshes.A2.push(wb);
 
       // 4. 側牆 RFZ 吸音板 (x=2.4~3.2m, z=0.8~1.6m) + 後段擴散板 (x=4.0~5.2m)
       [2.60, 3.00].forEach((px) => {
-        addBoxWithEdge(0.38, 0.85, 0.10, px, 0.10, 1.20, panelMat);
-        addBoxWithEdge(0.38, 0.85, 0.10, px, ROOM.W - 0.10, 1.20, panelMat);
+        addBoxWithEdge(0.38, 0.85, 0.10, px, 0.10, 1.20, panelMat, 0x94a3b8, 'B1');
+        addBoxWithEdge(0.38, 0.85, 0.10, px, ROOM.W - 0.10, 1.20, panelMat, 0x94a3b8, 'B2');
       });
       [4.30, 4.90].forEach((px) => {
-        addBoxWithEdge(0.55, 1.10, 0.12, px, 0.06, 1.35, diffMat, 0xfbbf24);
-        addBoxWithEdge(0.55, 1.10, 0.12, px, ROOM.W - 0.06, 1.35, diffMat, 0xfbbf24);
+        addBoxWithEdge(0.55, 1.10, 0.12, px, 0.06, 1.35, diffMat, 0x94a3b8, 'B1');
+        addBoxWithEdge(0.55, 1.10, 0.12, px, ROOM.W - 0.06, 1.35, diffMat, 0x94a3b8, 'B2');
       });
 
       // 5. 天花板 RFZ 吸音雲 (x=2.4~3.3m, 總寬 1.60m [y=1.00~2.60m] 精準嵌於 1.80m 雙主軌之間，零遮擋)
@@ -1286,53 +1301,48 @@
       ambientLight.intensity = Math.max(0.25, active);
       buildRoomShell(true);
 
-      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92 }); // GIK 經典暖灰吸音布面
-      const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94 });  // GIK 深炭灰低頻陷阱
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
       const beamBottomZ = ROOM.H - STATE.beamDepth;
 
-      // 1. 梁後 1.00m 凹槽巨型低頻陷阱 (GIK 淺灰透氣布面封平至梁底)
+      // 1. 梁後 1.00m 凹槽巨型低頻陷阱 (半透明顯示不擋視線)
       if (STATE.v03Superchunk) {
         const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
         const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
         addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
-          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: 0.9 }), 0x64748b);
-        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92 });
+          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: Math.min(0.65, STATE.panelOpacity), depthWrite: false }), 0x64748b);
+        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity });
         addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat);
         addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat);
       }
 
-      // 2. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 外開鋁門內側重磅吸音門簾
+      // 2. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 外開鋁門內側重磅吸音門簾 (連動牆面智慧透明)
       const tS = 0.35;
-      [
-        { x: tS / 2, y: tS / 2 },
-        { x: ROOM.L - tS / 2, y: tS / 2 },
-        { x: ROOM.L - tS / 2, y: ROOM.W - tS / 2 }
-      ].forEach((c) => addBoxWithEdge(tS, beamBottomZ - 0.02, tS, c.x, c.y, (beamBottomZ - 0.02) / 2, trapMat, 0xef4444));
-      addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0xef4444);
+      addBoxWithEdge(tS, beamBottomZ - 0.02, tS, tS / 2, tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'B1');
+      addBoxWithEdge(tS, beamBottomZ - 0.02, tS, ROOM.L - tS / 2, tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(tS, beamBottomZ - 0.02, tS, ROOM.L - tS / 2, ROOM.W - tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0x94a3b8, 'A2');
       addBoxWithEdge(0.04, 2.15, 0.96, 0.06, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 1.075,
-        new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: 0.75 }), 0xf472b6);
+        new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: STATE.panelOpacity * 0.85, depthWrite: false }), 0x94a3b8, 'A2');
 
-      // 3. 全室 24 片 60×120×5cm 吸音板 (離牆 7.5cm，嚴格壓制高音壓練團室 RT60 至 0.30~0.38s)
+      // 3. 全室 24 片 60×120×5cm 吸音板 (半透明＋連動智慧剖面，絕不擋視線)
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
-      // 鼓組與中央練團區正上方大型吸音雲 (6 片緊密拼裝總寬 1.60m [y=1.00~2.60m]，精準嵌於 y=0.85/2.75m 雙主軌內側，兩側各留 15cm 淨空)
       const cloudZ = ROOM.H - 0.18 - pT / 2;
       [3.45, 4.15].forEach((cx) => [1.27, 1.80, 2.33].forEach((cy) => {
-        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0x34d399);
+        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0x94a3b8);
         const pts = [
           toWorld(cx - 0.25, cy - 0.22, ROOM.H), toWorld(cx - 0.25, cy - 0.22, cloudZ + pT / 2),
           toWorld(cx + 0.25, cy + 0.22, ROOM.H), toWorld(cx + 0.25, cy + 0.22, cloudZ + pT / 2)
         ];
-        rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
+        rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.5 })));
       }));
-      // 左右長牆 B1 / B2 各 6 片 (均勻覆蓋鼓組、Bass、Guitar 與主唱區，徹底消除平行牆高頻尖銳回授)
       [1.15, 2.00, 2.85, 3.65, 4.45, 5.20].forEach((px) => {
-        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat);
-        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat);
+        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
+        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆 (3 片) & A2 前牆避門 (3 片，直接吸收主唱前方與 PA 反射波)
-      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, py, 1.45, panelMat));
-      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat));
+      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, py, 1.45, panelMat, 0x94a3b8, 'A1'));
+      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat, 0x94a3b8, 'A2'));
 
       // 4. ★ 練團室 5 人全編制＋PA/混音設備 黃金聲學擺位 ★
       // (a) 爵士鼓組 (全室基準核心：鼓椅 x=4.45m, y=1.80m 中軸線，面向 A2)
@@ -1505,8 +1515,8 @@
       ambientLight.intensity = Math.max(0.25, active);
       buildRoomShell(true);
 
-      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92 }); // GIK 經典暖灰吸音布面
-      const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94 });  // GIK 深炭灰低頻陷阱
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
       const beamBottomZ = ROOM.H - STATE.beamDepth;
 
@@ -1518,50 +1528,44 @@
         rootGroup.add(midBand);
       }
 
-      // 2. 梁後 1.00m 凹槽巨型低頻陷阱 (GIK 淺灰透氣布面封平至梁底)
+      // 2. 梁後 1.00m 凹槽巨型低頻陷阱 (半透明顯示不擋視線)
       if (STATE.v02Superchunk) {
         const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
         const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
         addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
-          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: 0.9 }), 0x64748b);
-        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92 });
+          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: Math.min(0.65, STATE.panelOpacity), depthWrite: false }), 0x64748b);
+        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity });
         addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat);
         addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat);
       }
 
-      // 3. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 鋁門內側重磅吸音門簾
+      // 3. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 鋁門內側重磅吸音門簾 (連動牆面智慧透明)
       const tS = 0.35;
-      [
-        { x: tS / 2, y: tS / 2 },
-        { x: ROOM.L - tS / 2, y: tS / 2 },
-        { x: ROOM.L - tS / 2, y: ROOM.W - tS / 2 }
-      ].forEach((c) => addBoxWithEdge(tS, beamBottomZ - 0.02, tS, c.x, c.y, (beamBottomZ - 0.02) / 2, trapMat, 0xef4444));
-      addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0xef4444);
+      addBoxWithEdge(tS, beamBottomZ - 0.02, tS, tS / 2, tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'B1');
+      addBoxWithEdge(tS, beamBottomZ - 0.02, tS, ROOM.L - tS / 2, tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(tS, beamBottomZ - 0.02, tS, ROOM.L - tS / 2, ROOM.W - tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0x94a3b8, 'A2');
       addBoxWithEdge(0.04, 2.15, 0.96, 0.06, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 1.075,
-        new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: 0.78 }), 0xf472b6);
+        new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: STATE.panelOpacity * 0.85, depthWrite: false }), 0x94a3b8, 'A2');
 
-      // 4. 24 片 60×120×5cm 吸音板 (離牆空腔 7.5cm) — 專為「鼓手聽覺清晰度」重新配重！
+      // 4. 24 片 60×120×5cm 吸音板 (半透明＋連動智慧剖面)
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
-      // (a) 鼓組正上方大型懸吊吸音雲 × 6 片 (總寬 1.60m [y=1.00~2.60m]，精準嵌於 y=0.85/2.75m 雙主軌內側，兩側各留 15cm 淨空)
       const cloudZ = ROOM.H - 0.18 - pT / 2;
       [3.45, 4.15].forEach((cx) => [1.27, 1.80, 2.33].forEach((cy) => {
-        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0xfbbf24);
+        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0x94a3b8);
         const pts = [
           toWorld(cx - 0.25, cy - 0.22, ROOM.H), toWorld(cx - 0.25, cy - 0.22, cloudZ + pT / 2),
           toWorld(cx + 0.25, cy + 0.22, ROOM.H), toWorld(cx + 0.25, cy + 0.22, cloudZ + pT / 2)
         ];
-        rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
+        rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.5 })));
       }));
-      // (b) 左右長牆 B1 / B2 各 6 片：4 片集中包夾鼓組左右兩側 (x=3.20~5.00m) + 2 片前中段防顫動回聲 (x=1.20~2.50m)
       const sideX = [1.25, 2.35, 3.25, 3.90, 4.55, 5.20];
       sideX.forEach((px) => {
-        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat);
-        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat);
+        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
+        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // (c) A1 後封閉牆 (3 片，掛於教材雜物矮櫃上方 z=1.75m 作為錄影高質感背牆並吸收鼓手後側反射)
-      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH * 0.85, pW, ROOM.L - gap - pT / 2, py, 1.72, panelMat));
-      // (d) A2 前入口牆 (3 片，避開右側鋁門吸收大鼓向前直達波)
-      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat));
+      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH * 0.85, pW, ROOM.L - gap - pT / 2, py, 1.72, panelMat, 0x94a3b8, 'A1'));
+      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat, 0x94a3b8, 'A2'));
 
       // 5. ★ 單套原聲爵士鼓黃金擺位：鼓椅中心 (x=4.25m, y=1.80m 絕對中軸), 大鼓朝前 (-X 面向 A2)
       const kit = new THREE.Group();
@@ -1900,16 +1904,19 @@
 
     function updateAutoWallOpacity() {
       if (!wallMeshes.A2) return;
+      const setOp = (k, isHidden) => (wallMeshes[k] || []).forEach((m) => {
+        const base = m.userData.baseOpacity !== undefined ? m.userData.baseOpacity : 1.0;
+        m.material.opacity = isHidden ? Math.min(base, 0.12) : base;
+      });
       if (!STATE.autoHideWall) {
-        Object.values(wallMeshes).flat().forEach((m) => { m.material.opacity = 1.0; });
+        ['A2', 'A1', 'B1', 'B2'].forEach((k) => setOp(k, false));
         return;
       }
       const p = camera.position;
-      const setOp = (k, op) => (wallMeshes[k] || []).forEach((m) => { m.material.opacity = op; });
-      setOp('A2', p.x < -1.2 ? 0.15 : 1.0);
-      setOp('A1', p.x > 1.2 ? 0.15 : 1.0);
-      setOp('B1', p.z < -0.9 ? 0.15 : 1.0);
-      setOp('B2', p.z > 0.9 ? 0.15 : 1.0);
+      setOp('A2', p.x < -1.2);
+      setOp('A1', p.x > 1.2);
+      setOp('B1', p.z < -0.9);
+      setOp('B2', p.z > 0.9);
     }
 
     function resizeViewports() {
@@ -2040,6 +2047,12 @@
     bindChk('chk-v0-c3', 'v0C3');
     bindChk('chk-v0-vis', 'v0Vis');
 
+    document.getElementById('rng-panel-opacity').addEventListener('input', (e) => {
+      const pct = parseInt(e.target.value, 10);
+      STATE.panelOpacity = pct / 100;
+      document.getElementById('val-panel-opacity').textContent = `${pct}%`;
+      rebuildScene();
+    });
     document.getElementById('rng-beam-depth').addEventListener('input', (e) => {
       const cm = parseInt(e.target.value, 10);
       STATE.beamDepth = cm / 100;
