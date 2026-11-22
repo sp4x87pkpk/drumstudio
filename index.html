@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🥁 爵士鼓工作室 3D / 2D 空間模型檢視器 (V0 / V0.1 / 純空間)</title>
+  <title>爵士鼓工作室 3D / 2D 空間模型檢視器 (V0 / V0.2 / V0.3 / 純空間)</title>
   <style>
     :root {
       --bg-dark: #0f172a;
@@ -292,17 +292,17 @@
 
   <header>
     <div class="brand">
-      <h1>🥁 爵士鼓工作室 3D / 2D 規劃模型</h1>
+      <h1>爵士鼓工作室 3D / 2D 空間模型</h1>
       <span class="badge">5.90m × 3.60m × 2.90m (6.42 坪)</span>
     </div>
 
     <div class="header-controls">
-      <!-- 四大核心模型切換器 (已移除 V0.1，新增 V0.3 練團室版本) -->
+      <!-- 四大核心模型切換器 -->
       <div class="model-switcher">
-        <button class="model-btn" data-model="v0" id="btn-m-v0">🔬 V0 理論模型</button>
-        <button class="model-btn" data-model="v02" id="btn-m-v02">🥁 V0.2 爵士鼓教學版本</button>
-        <button class="model-btn active" data-model="v03" id="btn-m-v03">🎸 V0.3 練團室版本</button>
-        <button class="model-btn" data-model="shell" id="btn-m-shell">📐 純空間樑柱門窗</button>
+        <button class="model-btn" data-model="v0" id="btn-m-v0">V0 理論模型</button>
+        <button class="model-btn" data-model="v02" id="btn-m-v02">V0.2 爵士鼓教學</button>
+        <button class="model-btn active" data-model="v03" id="btn-m-v03">V0.3 練團室</button>
+        <button class="model-btn" data-model="shell" id="btn-m-shell">純空間結構</button>
       </div>
 
       <div class="view-switcher">
@@ -316,140 +316,142 @@
   <div class="workspace">
     <aside class="sidebar">
 
-      <!-- [模型零] V0.2 爵士鼓教學、錄音與錄影專版 控制面板 -->
+      <!-- V0.2 爵士鼓教學控制面板 -->
       <div class="section-card" id="panel-v02" style="background: rgba(154, 52, 18, 0.25); border-color: rgba(245, 158, 11, 0.6);">
         <div class="section-title" style="color:#fbbf24;">
-          <span>🥁 V0.2 爵士鼓教學版本</span>
-          <span style="font-size:10.5px; color:#fdba74;">Drum-First Acoustic</span>
+          <span>V0.2 爵士鼓教學版本</span>
+          <span style="font-size:10.5px; color:#fdba74;">Drum Studio</span>
         </div>
 
         <div class="metrics-grid">
           <div class="metric-box">
-            <div class="metric-label">鼓手鼓椅黃金座標</div>
+            <div class="metric-label">鼓椅中心座標</div>
             <div class="metric-val" style="color:#fbbf24;">x=4.25m, y=1.80m</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">鼓組頭頂可用淨高</div>
-            <div class="metric-val" style="color:#34d399;">全 2.90m (梁前避壓迫)</div>
+            <div class="metric-label">鼓組上方淨高</div>
+            <div class="metric-val" style="color:#34d399;">2.90m (橫梁前)</div>
           </div>
           <div class="metric-box">
             <div class="metric-label">目標混響 RT60</div>
-            <div class="metric-val" style="color:#38bdf8;">0.35 ~ 0.42s (自然有力)</div>
+            <div class="metric-val" style="color:#38bdf8;">0.35 ~ 0.42s</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">正面錄影機位縱深</div>
-            <div class="metric-val" style="color:#c084fc;">2.5 ~ 3.5m (背景 A1)</div>
+            <div class="metric-label">正面攝影距離</div>
+            <div class="metric-val" style="color:#c084fc;">2.5 ~ 3.5m</div>
           </div>
         </div>
 
         <div class="spec-box">
-          <strong style="color:#fbbf24;">🎯 為什麼這裡是聲學唯一黃金位？</strong><br/>
-          1. <strong>橫向絕對中軸 (y=1.80m)</strong>：距左右牆各 1.8m，雙耳對稱無單側刺耳反射。<br/>
-          2. <strong>避開兩大低頻波腹</strong>：遠離中央 x=2.95m (58Hz 波腹) 與 A1 牆角 (椅背距 A1 1.65m)，大鼓緊實不轟鳴。<br/>
-          3. <strong>避開 x=4.90m 水泥橫梁</strong>：整套鼓組與 Overhead 麥克風全在橫梁前方，頭頂直吊 <strong>6 片大型吸音雲 (1.8×2.4m)</strong> 吸收銅鈸直衝高頻。<br/>
-          <strong style="color:#34d399;">📦 常見尺寸機能分區：</strong><br/>
-          • <strong>教材線材雜物櫃</strong>：A1 橫梁下 (寬 2.4m×深 0.45m×高 1.05m)<br/>
-          • <strong>剪輯工作桌</strong>：B1 左前區 (1.50m×0.70m)<br/>
-          • <strong>雙人布沙發＋茶几</strong>：B2 右中前區 (沙發 1.60m×0.85m)
+          <strong style="color:#fbbf24;">空間物件尺寸與座標：</strong><br/>
+          • 爵士鼓毯：1.50m × 1.70m (中心 x=4.00m, y=1.80m)<br/>
+          • 教材雜物櫃：2.40m × 0.45m × 1.05m (A1 牆前)<br/>
+          • 剪輯工作桌：1.50m × 0.70m × 0.75m (B1 左前)<br/>
+          • 雙人布沙發：1.60m × 0.85m (B2 右中前)<br/>
+          • 茶几：0.90m × 0.50m × 0.42m<br/>
+          • 天花板吸音雲：6 片 (60×120×5cm，垂降 18cm)<br/>
+          • 梁後凹槽低頻陷阱：x=5.075~5.90m (深 45cm 封平至梁底)
         </div>
 
         <div class="toggle-list">
           <label class="toggle-item">
-            <span style="color:#f87171;">🌊 顯示 58Hz 駐波紅區 (x=2.95m & A1角) 對照避讓</span>
+            <span style="color:#f87171;">顯示 58Hz 中央駐波帶 (x=2.95m)</span>
             <input type="checkbox" id="chk-v02-zones" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#34d399;">🧊 顯示「梁後 1.0m 凹槽巨型低頻陷阱」封平結構</span>
+            <span style="color:#34d399;">顯示梁後凹槽低頻陷阱 (x=4.9~5.9m)</span>
             <input type="checkbox" id="chk-v02-superchunk" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路一 (教學均勻光)：外推至 y=0.55/3.05m 線條燈</span>
+            <span>迴路一：主軌防眩線條燈 (y=0.55 / 3.05m)</span>
             <input type="checkbox" id="chk-v02-c1" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路二 (錄影主面光)：鼓組前 45° 交叉 COB×4</span>
+            <span>迴路二：鼓組前方 45° COB 射燈 × 4</span>
             <input type="checkbox" id="chk-v02-c2" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路三 (輪廓背光)：梁後凹槽 Rim Light×2 + 客廳暖光</span>
+            <span>迴路三：梁後短軌背光射燈 × 2</span>
             <input type="checkbox" id="chk-v02-c3" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#fde047;">✨ 顯示影棚三點打光光錐與錄影機位取景線</span>
+            <span style="color:#fde047;">顯示光束錐與攝影機取景線</span>
             <input type="checkbox" id="chk-v02-vis" checked />
           </label>
         </div>
       </div>
 
-      <!-- [模型一] V0.3 練團室版本 控制面板 -->
+      <!-- V0.3 練團室控制面板 -->
       <div class="section-card" id="panel-v03" style="background: rgba(6, 78, 59, 0.25); border-color: rgba(52, 211, 153, 0.55);">
         <div class="section-title" style="color:#34d399;">
-          <span>🎸 V0.3 練團室版本 (5人全編制)</span>
+          <span>V0.3 練團室版本 (解法 A)</span>
           <span style="font-size:10.5px; color:#38bdf8;">Band Rehearsal</span>
         </div>
 
         <div class="metrics-grid">
           <div class="metric-box">
-            <div class="metric-label">防回授＋主唱監聽解</div>
-            <div class="metric-val" style="color:#34d399;">PA 在鼓兩側直射主唱</div>
+            <div class="metric-label">PA 監聽喇叭座標</div>
+            <div class="metric-val" style="color:#34d399;">x=3.65m (y=0.48/3.12m)</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">麥克風 180° 零收音角</div>
-            <div class="metric-val" style="color:#38bdf8;">屁股正對 PA 零回授</div>
+            <div class="metric-label">主唱站位座標</div>
+            <div class="metric-val" style="color:#38bdf8;">x=1.40m, y=1.80m</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">低頻解耦合距離</div>
-            <div class="metric-val" style="color:#fbbf24;">Bass 音箱離牆角 ≥1.2m</div>
+            <div class="metric-label">音箱離牆角距離</div>
+            <div class="metric-val" style="color:#fbbf24;">≥ 1.20m (離駐波角)</div>
           </div>
           <div class="metric-box">
             <div class="metric-label">目標混響 RT60</div>
-            <div class="metric-val" style="color:#c084fc;">0.30 ~ 0.38s (控音壓)</div>
+            <div class="metric-val" style="color:#c084fc;">0.30 ~ 0.38s</div>
           </div>
         </div>
 
         <div class="spec-box">
-          <strong style="color:#34d399;">🎯 V0.3 解法 A 聲學黃金擺位（主唱聽最清楚＋零回授）：</strong><br/>
-          1. <strong>爵士鼓 (x=4.20m, y=1.80m 中軸面向 A2)</strong>：全室基準核心，頭頂直吊 6 片大吸音雲，背後梁後凹槽填滿 45cm 巨型低頻陷阱。<br/>
-          2. <strong>★ PA 主監聽喇叭一對（移至鼓組左右前緣 x=3.65m, y=0.48m & 3.12m）</strong>：高腳架升至耳高以上，<strong>斜前方 (-X) 直接投射主唱、貝斯、吉他與鍵盤手</strong>！主唱面向鼓手唱歌時，人聲直射雙耳聽最清楚，同時心型麥克風「180° 零收音屁股」正好對準 PA 喇叭，徹底防回授！<br/>
-          3. <strong>貝斯音箱 (B1 左中 x=2.75m) 與電吉他音箱 (B2 右中 x=2.75m)</strong>：斜角交叉投射對側樂手與鼓手，遠離牆角防 58Hz 轟鳴。<br/>
-          4. <strong>鍵盤手 (B2 右前中 x=1.75m)</strong>：訊號進 PA 混音器，與吉他同側互補。<br/>
-          5. <strong>主唱 (x=1.40m, y=1.80m，背對 A2 面向鼓手)</strong> ＋ <strong>混音器與設備機櫃區 (B1 左前 x=0.55m)</strong>：前入口區完全淨空好進出！
+          <strong style="color:#34d399;">空間物件尺寸與座標：</strong><br/>
+          • 爵士鼓組：1.45m × 1.65m (中心 x=4.20m, y=1.80m，面向 A2)<br/>
+          • PA 監聽喇叭 × 2：x=3.65m, y=0.48 / 3.12m，高 1.68m (斜射主唱與中前區)<br/>
+          • Bass 音箱：0.58m × 0.46m × 0.85m (x=2.75m, y=0.42m)<br/>
+          • 電吉他音箱：0.62m × 0.36m × 0.72m (x=2.75m, y=3.18m)<br/>
+          • 鍵盤與琴架：1.25m × 0.38m (x=1.75m, y=2.95m)<br/>
+          • 主唱麥克風：x=1.45m, y=1.80m (面向鼓與 PA，180° 背面防回授)<br/>
+          • 混音器與機櫃區：0.65m × 0.95m (x=0.52m, y=0.65m)
         </div>
 
         <div class="toggle-list">
           <label class="toggle-item">
-            <span style="color:#f43f5e;">🎙️ 顯示主唱心型指向「防回授」與音箱交叉投射聲線</span>
+            <span style="color:#f43f5e;">顯示 PA 與音箱指向投射標線</span>
             <input type="checkbox" id="chk-v03-rays" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#34d399;">🧊 顯示「梁後 1.0m 凹槽巨型低頻陷阱」封平結構</span>
+            <span style="color:#34d399;">顯示梁後凹槽低頻陷阱 (x=4.9~5.9m)</span>
             <input type="checkbox" id="chk-v03-superchunk" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路一 (全室練團均勻光)：外推主軌 4m 線條燈</span>
+            <span>迴路一：主軌防眩線條燈 (y=0.55 / 3.05m)</span>
             <input type="checkbox" id="chk-v03-c1" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路二 (樂手重點光)：COB 射燈照亮譜架與鼓組</span>
+            <span>迴路二：樂手與鼓組重點 COB 射燈 × 4</span>
             <input type="checkbox" id="chk-v03-c2" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路三 (氛圍/背光)：梁後凹槽短軌背光×2</span>
+            <span>迴路三：梁後短軌射燈 × 2</span>
             <input type="checkbox" id="chk-v03-c3" checked />
           </label>
         </div>
       </div>
 
-      <!-- [模型二] V0 純理論研究報告模型 控制面板 -->
+      <!-- V0 純理論研究報告控制面板 -->
       <div class="section-card" id="panel-v0" style="display:none; background: rgba(59, 7, 100, 0.35); border-color: rgba(192, 132, 252, 0.55);">
         <div class="section-title" style="color:#d8b4fe;">
-          <span>🔬 V0 純理論研究報告模型</span>
+          <span>V0 純理論研究報告模型</span>
           <span style="font-size:10.5px; color:#f472b6;">Ideal Box Theory</span>
         </div>
 
         <div class="metrics-grid">
           <div class="metric-box">
-            <div class="metric-label">ITU 目標 RT60 / 總吸音</div>
+            <div class="metric-label">目標 RT60 / 總吸音</div>
             <div class="metric-val" style="color:#e879f9;">0.213s / 46.62 Sabins</div>
           </div>
           <div class="metric-box">
@@ -457,68 +459,68 @@
             <div class="metric-val" style="color:#e879f9;">117.53 Hz (ᾱ=0.478)</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">前後頂角 MLV 薄膜陷阱</div>
-            <div class="metric-val" style="color:#f472b6;">f0 = 59.2 Hz (33cm深)</div>
+            <div class="metric-label">頂角 MLV 薄膜陷阱</div>
+            <div class="metric-val" style="color:#f472b6;">f0 = 59.2 Hz (深 33cm)</div>
           </div>
           <div class="metric-box">
             <div class="metric-label">後牆 1D QRD (N=7)</div>
-            <div class="metric-val" style="color:#f472b6;">f0=500Hz (井深19.6cm)</div>
+            <div class="metric-val" style="color:#f472b6;">f0=500Hz (井深 19.6cm)</div>
           </div>
         </div>
 
         <div class="spec-box">
-          <strong style="color:#f472b6;">📦 V0 理想矩形理論配置（無門窗橫梁）：</strong><br/>
-          • 四垂直角 400mm 跨角低頻陷阱 × 4 座<br/>
-          • 前後牆頂角 59.2Hz MLV 薄膜共振陷阱 × 2 條<br/>
-          • 前牆 100mm SBIR 寬頻吸音板 × 4 片 + 教學白板<br/>
-          • 側牆 RFZ 吸音板 × 4 片 (x=2.4~3.2m) + 後段擴散 × 4 座<br/>
-          • 天花板 RFZ 吸音雲 × 3 片 (x=2.4~3.3m, 降10cm)<br/>
-          • 後牆 N=7 QRD 擴散板 + 150mm 吸音邊框 × 2 片
+          <strong style="color:#f472b6;">理論面板數量與位置（無門窗橫梁）：</strong><br/>
+          • 四垂直角低頻陷阱 × 4 (寬 400mm)<br/>
+          • 前後頂角 MLV 薄膜陷阱 × 2 (深 330mm)<br/>
+          • 前牆吸音板 × 4 (厚 100mm + 空隙 50mm) + 白板 (1.6×1.1m)<br/>
+          • 側牆 RFZ 吸音板 × 4 (x=2.4~3.2m) + 後段擴散 × 4 (x=4.0~5.2m)<br/>
+          • 天花板吸音雲 × 3 (x=2.4~3.3m，垂降 10cm)<br/>
+          • 後牆 N=7 QRD 擴散板 + 150mm 吸音邊框 × 2
         </div>
 
         <div class="toggle-list">
           <label class="toggle-item">
-            <span>💡 迴路一 (60% | 128.5W)：雙主軌(距側牆0.9m) 4m 線條燈</span>
+            <span>迴路一 (128.5W)：雙主軌 (距側牆 0.9m) 線條燈 4m</span>
             <input type="checkbox" id="chk-v0-c1" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路二 (15% | 32.1W)：前端洗牆軌(0.5m) 30° 偏光洗牆×2</span>
+            <span>迴路二 (32.1W)：前端洗牆軌 (0.5m) 30° 洗牆燈 × 2</span>
             <input type="checkbox" id="chk-v0-c2" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路三 (25% | 53.5W)：主軌 36° COB 45° 交叉面光×4</span>
+            <span>迴路三 (53.5W)：主軌 36° COB 45° 射燈 × 4</span>
             <input type="checkbox" id="chk-v0-c3" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#fde047;">✨ 顯示 V0 光錐與方案 A 一次反射點 (2.62/3.04/2.88m)</span>
+            <span style="color:#fde047;">顯示光束錐與一次反射點標線 (2.62/3.04/2.88m)</span>
             <input type="checkbox" id="chk-v0-vis" checked />
           </label>
         </div>
       </div>
 
-      <!-- [模型三] 純空間尺寸樑柱門窗 說明面板 -->
+      <!-- 純空間結構說明面板 -->
       <div class="section-card" id="panel-shell" style="display:none; background: rgba(120, 53, 15, 0.25); border-color: rgba(245, 158, 11, 0.55);">
         <div class="section-title" style="color:#fbbf24;">
-          <span>📐 純空間尺寸、樑柱與門窗現況</span>
+          <span>純空間尺寸、樑柱與門窗</span>
           <span style="font-size:10.5px; color:#fde68a;">Empty Shell</span>
         </div>
         <div class="spec-box">
-          <strong style="color:#fbbf24;">🏗️ 現場核對建築基準：</strong><br/>
-          • <strong>室內淨尺寸</strong>：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br/>
-          • <strong>A2 前入口短牆 (x=0.0m)</strong>：右側 0.90×2.10m 銀灰鋁門（<strong>向外開 90°、鉸鏈在 B2 側</strong>，室內無開門迴轉干擾）；門旁 1.15×1.15m 原鋁窗已木板封平。<br/>
-          • <strong>A1 後封閉短牆 (x=5.9m)</strong>：對稱位置原鋁門與原鋁窗皆已木板封死齊平。<br/>
-          • <strong>B1 / B2 左右長牆</strong>：5.90m 完整實心水泥牆。<br/>
-          • <strong>天花板水泥橫梁</strong>：距 A1 正好 1.00m (x=4.90m)，跨度 3.60m。
+          <strong style="color:#fbbf24;">建築基準尺寸：</strong><br/>
+          • 室內淨尺寸：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br/>
+          • A2 前短牆 (x=0.0m)：右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2 側)；門旁 1.15×1.15m 木板封窗<br/>
+          • A1 後短牆 (x=5.9m)：對稱原鋁門與鋁窗皆木板封平<br/>
+          • B1 / B2 左右長牆：5.90m 實心水泥牆<br/>
+          • 水泥橫梁：距 A1 1.00m (x=4.90m)，跨度 3.60m，寬 35cm × 深 45cm
         </div>
       </div>
 
       <!-- 通用視角與結構微調 -->
       <div class="section-card">
-        <div class="section-title"><span>🎥 3D 鏡頭與結構檢視控制</span></div>
+        <div class="section-title"><span>3D 鏡頭與結構控制</span></div>
         <div class="cam-presets">
           <button class="cam-btn" id="cam-iso">全局等角透視</button>
-          <button class="cam-btn" id="cam-a2">🎥 錄影機位 / A2 入口視角</button>
-          <button class="cam-btn" id="cam-a1">🥁 鼓手第一人稱視角</button>
+          <button class="cam-btn" id="cam-a2">A2 入口 / 攝影機視角</button>
+          <button class="cam-btn" id="cam-a1">鼓手第一人稱視角</button>
           <button class="cam-btn" id="cam-top">正上方 3D 俯視</button>
         </div>
 
@@ -1177,16 +1179,16 @@
         });
       }
 
-      // 6. V0.3 精簡立體標籤 (解法 A)
+      // 6. V0.3 客觀立體標籤 (名稱 + 尺寸/座標，無 Emoji 與驚嘆號)
       if (STATE.showGrid) {
         const mk = (txt, pos, bg, fg, bd) => { const s = makeTextSprite(txt, bg, fg, 26, bd); s.position.copy(pos); rootGroup.add(s); };
-        mk('🥁 爵士鼓 (中軸基準位 x=4.2m)', toWorld(4.20, 1.80, 1.72), 'rgba(154,52,18,0.92)', '#fef3c7', '#f59e0b');
-        mk('🔊 PA 主監聽喇叭×2 (鼓組兩側直射主唱雙耳＋零回授)', toWorld(3.65, 3.12, 2.25), 'rgba(3,105,161,0.94)', '#e0f2fe', '#38bdf8');
-        mk('🎸 Bass 音箱 + 貝斯手 (離牆角防轟鳴)', toWorld(2.65, 0.65, 1.35), 'rgba(30,58,138,0.92)', '#bfdbfe', '#3b82f6');
-        mk('⚡ 電吉他音箱 + 吉他手 (交叉投射)', toWorld(2.65, 3.00, 1.35), 'rgba(153,27,27,0.92)', '#fecaca', '#ef4444');
-        mk('🎹 鍵盤手 (進 PA 混音器)', toWorld(1.75, 2.95, 1.35), 'rgba(15,23,42,0.92)', '#e2e8f0', '#94a3b8');
-        mk('🎙️ 主唱 (面向鼓與PA，麥克風背面死角正對喇叭！)', toWorld(1.40, 1.80, 1.82), 'rgba(159,18,57,0.92)', '#ffe4e6', '#f43f5e');
-        mk('🎛️ 混音器 & PA 設備機櫃區', toWorld(0.55, 0.65, 1.38), 'rgba(3,105,161,0.92)', '#e0f2fe', '#38bdf8');
+        mk('爵士鼓組 (1.45×1.65m | x=4.20m)', toWorld(4.20, 1.80, 1.72), 'rgba(154,52,18,0.92)', '#fef3c7', '#f59e0b');
+        mk('PA 監聽喇叭 × 2 (x=3.65m, 高 1.68m)', toWorld(3.65, 3.12, 2.25), 'rgba(3,105,161,0.94)', '#e0f2fe', '#38bdf8');
+        mk('Bass 音箱 (0.58×0.46m | x=2.75m)', toWorld(2.65, 0.65, 1.35), 'rgba(30,58,138,0.92)', '#bfdbfe', '#3b82f6');
+        mk('電吉他音箱 (0.62×0.36m | x=2.75m)', toWorld(2.65, 3.00, 1.35), 'rgba(153,27,27,0.92)', '#fecaca', '#ef4444');
+        mk('鍵盤 (1.25×0.38m | x=1.75m)', toWorld(1.75, 2.95, 1.35), 'rgba(15,23,42,0.92)', '#e2e8f0', '#94a3b8');
+        mk('主唱麥克風 (x=1.45m, y=1.80m)', toWorld(1.40, 1.80, 1.82), 'rgba(159,18,57,0.92)', '#ffe4e6', '#f43f5e');
+        mk('混音器與機櫃區 (0.65×0.95m)', toWorld(0.55, 0.65, 1.38), 'rgba(3,105,161,0.92)', '#e0f2fe', '#38bdf8');
       }
     }
 
@@ -1382,17 +1384,17 @@
         });
       }
 
-      // 8. 精簡縮放立體標註
+      // 8. V0.2 客觀立體標註 (名稱 + 尺寸/座標)
       if (STATE.showGrid) {
-        const lDrum = makeTextSprite('★ 鼓組聲學黃金位 (鼓椅 x=4.25m, y=1.80m 中軸 | 避開 58Hz 波腹與橫梁)', 'rgba(154,52,18,0.92)', '#fef3c7', 26, '#f59e0b');
+        const lDrum = makeTextSprite('爵士鼓組 (1.50×1.70m | 鼓椅 x=4.25m, y=1.80m)', 'rgba(154,52,18,0.92)', '#fef3c7', 26, '#f59e0b');
         lDrum.position.copy(toWorld(4.05, 1.80, 1.75));
-        const lShelf = makeTextSprite('教材線材雜物收納櫃 (A1 橫梁下 | 兼具擴散與錄影背景)', 'rgba(120,53,15,0.9)', '#fde68a', 26, '#d97706');
+        const lShelf = makeTextSprite('教材雜物櫃 (2.40×0.45×1.05m | A1 牆前)', 'rgba(120,53,15,0.9)', '#fde68a', 26, '#d97706');
         lShelf.position.copy(toWorld(5.60, 1.80, 1.35));
-        const lDesk = makeTextSprite('剪輯工作桌 (1.5×0.7m | B1 左前區)', 'rgba(3,105,161,0.9)', '#e0f2fe', 26, '#38bdf8');
+        const lDesk = makeTextSprite('剪輯工作桌 (1.50×0.70m | B1 左前)', 'rgba(3,105,161,0.9)', '#e0f2fe', 26, '#38bdf8');
         lDesk.position.copy(toWorld(1.20, 0.45, 1.45));
-        const lSofa = makeTextSprite('雙人布沙發＋茶几 (1.6×0.85m | 自然吸音兼旁聽區)', 'rgba(51,65,85,0.92)', '#f8fafc', 26, '#94a3b8');
+        const lSofa = makeTextSprite('雙人沙發 (1.60×0.85m) + 茶几 (0.90×0.50m)', 'rgba(51,65,85,0.92)', '#f8fafc', 26, '#94a3b8');
         lSofa.position.copy(toWorld(2.00, 3.05, 1.15));
-        const lMid = makeTextSprite('x=2.95m (58Hz 駐波紅區 — 鼓組已避開)', 'rgba(153,27,27,0.9)', '#fecaca', 24, '#ef4444');
+        const lMid = makeTextSprite('58Hz 中央駐波帶 (x=2.95m)', 'rgba(153,27,27,0.9)', '#fecaca', 24, '#ef4444');
         lMid.position.copy(toWorld(2.95, 1.80, 0.35));
         rootGroup.add(lDrum, lShelf, lDesk, lSofa, lMid);
       }
@@ -1468,53 +1470,52 @@
         }
       }
 
-      // V0.3 練團室版本 2D 精確平面圖配置
+      // V0.3 練團室版本 2D 精確平面圖配置 (客觀標註)
       if (STATE.model === 'v03') {
-        // 1. 爵士鼓組 (中軸基準 x=4.20m, y=1.80m)
+        // 1. 爵士鼓組
         ctx2d.fillStyle = 'rgba(245, 158, 11, 0.2)'; ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2;
         ctx2d.fillRect(toX(3.48), toY(0.98), 1.45 * scale, 1.65 * scale);
         ctx2d.strokeRect(toX(3.48), toY(0.98), 1.45 * scale, 1.65 * scale);
         ctx2d.fillStyle = '#fde68a'; ctx2d.font = 'bold 11px sans-serif';
-        ctx2d.fillText('🥁 爵士鼓 (中軸基準)', toX(3.65), toY(1.80));
+        ctx2d.fillText('爵士鼓組 (1.45×1.65m)', toX(3.60), toY(1.80));
 
-        // 2. Bass 音箱 (B1 左中) & 電吉他音箱 (B2 右中)
+        // 2. Bass 音箱 & 電吉他音箱
         ctx2d.fillStyle = 'rgba(59, 130, 246, 0.3)'; ctx2d.strokeStyle = '#3b82f6';
         ctx2d.fillRect(toX(2.46), toY(0.18), 0.58 * scale, 0.46 * scale);
         ctx2d.strokeRect(toX(2.46), toY(0.18), 0.58 * scale, 0.46 * scale);
-        ctx2d.fillStyle = '#bfdbfe'; ctx2d.fillText('🎸 Bass 音箱/站位', toX(2.05), toY(0.95));
+        ctx2d.fillStyle = '#bfdbfe'; ctx2d.fillText('Bass 音箱 (0.58×0.46m)', toX(2.05), toY(0.95));
 
         ctx2d.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx2d.strokeStyle = '#ef4444';
         ctx2d.fillRect(toX(2.46), toY(2.96), 0.62 * scale, 0.36 * scale);
         ctx2d.strokeRect(toX(2.46), toY(2.96), 0.62 * scale, 0.36 * scale);
-        ctx2d.fillStyle = '#fecaca'; ctx2d.fillText('⚡ 電吉他音箱/站位', toX(2.25), toY(2.65));
+        ctx2d.fillStyle = '#fecaca'; ctx2d.fillText('電吉他音箱 (0.62×0.36m)', toX(2.15), toY(2.65));
 
-        // 3. 鍵盤手 (B2 右前中)
+        // 3. 鍵盤
         ctx2d.fillStyle = 'rgba(148, 163, 184, 0.3)'; ctx2d.strokeStyle = '#94a3b8';
         ctx2d.fillRect(toX(1.12), toY(2.75), 1.25 * scale, 0.38 * scale);
         ctx2d.strokeRect(toX(1.12), toY(2.75), 1.25 * scale, 0.38 * scale);
-        ctx2d.fillStyle = '#f8fafc'; ctx2d.fillText('🎹 鍵盤手', toX(1.45), toY(3.00));
+        ctx2d.fillStyle = '#f8fafc'; ctx2d.fillText('鍵盤 (1.25×0.38m)', toX(1.30), toY(3.00));
 
-        // 4. 主唱麥克風 (面向鼓手與前方兩側 PA 喇叭，麥克風背面 180° 對準 PA 零回授！)
+        // 4. 主唱麥克風
         ctx2d.fillStyle = '#f43f5e';
         ctx2d.beginPath(); ctx2d.arc(toX(1.40), toY(1.80), 8, 0, Math.PI * 2); ctx2d.fill();
-        ctx2d.fillStyle = '#ffe4e6'; ctx2d.fillText('🎙️ 主唱 (面朝PA聽最清楚)', toX(0.95), toY(1.55));
+        ctx2d.fillStyle = '#ffe4e6'; ctx2d.fillText('主唱麥克風 (x=1.40m)', toX(0.95), toY(1.55));
 
-        // 5. 混音器與設備機櫃區 (B1 左前) + ★ 解法 A 雙 PA 主監聽喇叭 (移至鼓組左右前緣 x=3.65m 直射主唱)
+        // 5. 混音器與機櫃區 + PA 監聽喇叭 × 2
         ctx2d.fillStyle = 'rgba(56, 189, 248, 0.28)'; ctx2d.strokeStyle = '#38bdf8';
         ctx2d.fillRect(toX(0.20), toY(0.18), 0.65 * scale, 0.95 * scale);
         ctx2d.strokeRect(toX(0.20), toY(0.18), 0.65 * scale, 0.95 * scale);
-        ctx2d.fillStyle = '#e0f2fe'; ctx2d.fillText('🎛️ 混音機櫃', toX(0.22), toY(0.68));
+        ctx2d.fillStyle = '#e0f2fe'; ctx2d.fillText('混音機櫃 (0.65×0.95m)', toX(0.20), toY(0.68));
         [0.48, 3.12].forEach((py) => {
           ctx2d.fillStyle = '#0284c7';
           ctx2d.fillRect(toX(3.65) - 8, toY(py) - 8, 16, 16);
-          // 畫出藍色直射聲線指向主唱
           ctx2d.strokeStyle = 'rgba(56, 189, 248, 0.65)'; ctx2d.lineWidth = 1.5; ctx2d.setLineDash([4, 3]);
           ctx2d.beginPath(); ctx2d.moveTo(toX(3.65), toY(py)); ctx2d.lineTo(toX(1.40), toY(1.80)); ctx2d.stroke();
           ctx2d.setLineDash([]);
         });
-        ctx2d.fillStyle = '#7dd3fc'; ctx2d.fillText('🔊 PA主監聽(直射主唱)', toX(3.30), toY(0.32));
+        ctx2d.fillStyle = '#7dd3fc'; ctx2d.fillText('PA 監聽喇叭 (x=3.65m)', toX(3.25), toY(0.32));
 
-        // 6. 外推避雲軌道燈
+        // 6. 軌道燈
         ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
         [0.55, 3.05].forEach((ty) => {
           ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
@@ -1522,19 +1523,17 @@
         ctx2d.strokeStyle = '#c084fc';
         ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
       } else if (STATE.model === 'v02') {
-        // 58Hz 中央駐波紅帶 (x=2.95m)
         if (STATE.v02Zones) {
           ctx2d.fillStyle = 'rgba(239, 68, 68, 0.16)';
           ctx2d.fillRect(toX(2.73), oy, 0.45 * scale, ROOM.W * scale);
           ctx2d.fillStyle = '#fca5a5'; ctx2d.font = '10px sans-serif';
-          ctx2d.fillText('58Hz波腹紅區(x=2.95m)', toX(2.75), oy + 14);
+          ctx2d.fillText('58Hz 駐波帶 (x=2.95m)', toX(2.75), oy + 14);
         }
-        // 1. 爵士鼓組黃金位 (鼓毯中心 x=4.00m, y=1.80m)
         ctx2d.fillStyle = 'rgba(245, 158, 11, 0.2)'; ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2;
         ctx2d.fillRect(toX(3.25), toY(0.95), 1.50 * scale, 1.70 * scale);
         ctx2d.strokeRect(toX(3.25), toY(0.95), 1.50 * scale, 1.70 * scale);
         ctx2d.fillStyle = '#fde68a'; ctx2d.font = 'bold 11px sans-serif';
-        ctx2d.fillText('★ 單套爵士鼓黃金位', toX(3.45), toY(1.70));
+        ctx2d.fillText('爵士鼓組 (1.50×1.70m)', toX(3.40), toY(1.70));
         ctx2d.fillText('(鼓椅 x=4.25m, y=1.80m)', toX(3.38), toY(1.92));
 
         // 2. 教材線材雜物櫃 (A1 橫梁下)
@@ -1646,42 +1645,42 @@
 
       if (modelKey === 'v03') {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#059669;">V0.3 練團室版本 (解法 A)</span><strong>鼓 / Bass / 電吉他 / 鍵盤 / 主唱 ＋ 鼓組兩側 PA 直射監聽</strong></div>
-          <div>聲學核心：<strong>PA 主喇叭置於鼓組左右前緣 (x=3.65m) 直射主唱與全團</strong> ＋ <strong>麥克風 180° 背面死角正對 PA 零回授</strong></div>`;
+          <div><span class="tag" style="background:#059669;">V0.3 練團室版本</span><strong>爵士鼓 / Bass / 電吉他 / 鍵盤 / 主唱 / PA 監聽 / 混音機櫃</strong></div>
+          <div>配置：PA 監聽喇叭 (x=3.65m) 面向主唱 (x=1.40m)，Bass 與電吉他音箱 (x=2.75m) 斜向投射</div>`;
         leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓 (中軸基準位)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱 (左中交叉投射)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>電吉他音箱 (右中交叉投射)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f43f5e;"></span>主唱 (背對 PA 防回授)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽喇叭 & 混音機櫃區</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組 (1.45×1.65m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱 (0.58×0.46m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>電吉他音箱 (0.62×0.36m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f43f5e;"></span>主唱麥克風 (x=1.45m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽喇叭與混音機櫃</div>`;
       } else if (modelKey === 'v02') {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#ea580c;">V0.2 爵士鼓教學版本</span><strong>以鼓手聽覺清晰度為核心的聲學黃金擺位 + 錄影三點打光</strong></div>
-          <div>黃金位：<strong>鼓椅 x=4.25m, y=1.80m 中軸（面向 A2，避開 58Hz 中央紅區與橫梁壓迫）</strong> ＋ <strong>A1 教材櫃 / B1 剪輯桌 / B2 沙發區</strong></div>`;
+          <div><span class="tag" style="background:#ea580c;">V0.2 爵士鼓教學版本</span><strong>爵士鼓組 / 教材雜物櫃 / 剪輯工作桌 / 雙人沙發</strong></div>
+          <div>座標：鼓椅 (x=4.25m, y=1.80m)，A1 雜物櫃 (2.40×0.45m)，B1 剪輯桌 (1.50×0.70m)，B2 沙發 (1.60×0.85m)</div>`;
         leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>單套爵士鼓黃金位 (y=1.8m中軸)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>x=2.95m 58Hz駐波避讓紅區</div>
-          <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽巨型低頻陷阱</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>錄影45°交叉主面光(Key/Fill)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後凹槽鼓手輪廓背光(Rim)</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組 (1.50×1.70m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>58Hz 中央駐波帶 (x=2.95m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽低頻陷阱 (x=4.9~5.9m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>前方 45° COB 射燈</div>
+          <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後短軌背光射燈</div>`;
       } else if (modelKey === 'v0') {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#9333ea;">V0 純理論研究模型</span><strong>理想 5.9m × 3.6m × 2.9m 矩形空間（無門窗橫梁）</strong></div>
-          <div>依據研究報告：<strong>4角400mm陷阱 + 2條59.2Hz MLV頂角箱 + 後牆N=7 QRD</strong> ｜ <strong>214W 雙主軌(距牆0.9m)+前端30°洗牆軌</strong></div>`;
+          <div><span class="tag" style="background:#9333ea;">V0 純理論研究模型</span><strong>5.90m × 3.60m × 2.90m 理想矩形空間（無門窗橫梁）</strong></div>
+          <div>配置：四角 400mm 陷阱、前後頂角 59.2Hz MLV 陷阱、後牆 N=7 QRD 擴散板、214W 雙主軌與前端洗牆軌</div>`;
         leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#f472b6;"></span>前後頂角 59.2Hz MLV 薄膜陷阱</div>
-          <div class="legend-item"><span class="legend-box" style="background:#b45309;"></span>後牆 N=7 QRD & 側牆後段擴散</div>
-          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>雙主軌 4m 防眩線條燈(60%)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#e879f9;"></span>前端 30° 偏光白板洗牆(15%)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>主軌 45° 交叉 COB 面光(25%)</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#f472b6;"></span>頂角 59.2Hz MLV 薄膜陷阱</div>
+          <div class="legend-item"><span class="legend-box" style="background:#b45309;"></span>N=7 QRD 擴散板與側牆擴散</div>
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>雙主軌線條燈 4m (60%)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#e879f9;"></span>前端 30° 偏光洗牆燈 (15%)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>主軌 45° COB 射燈 (25%)</div>`;
       } else {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#d97706;">純空間尺寸樑柱門窗</span><strong>5.90m × 3.60m × 2.90m 原始拆除空屋建築結構</strong></div>
-          <div>核對基準：<strong>A2 右側外開 90° 銀灰鋁門 (鉸鏈在 B2)</strong> ＋ <strong>A1/A2 木板封門窗</strong> ＋ <strong>距 A1 1.00m 水泥橫梁</strong></div>`;
+          <div><span class="tag" style="background:#475569;">純空間結構</span><strong>5.90m × 3.60m × 2.90m 建築現況尺寸</strong></div>
+          <div>結構：A2 右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2)、A1/A2 木板封門窗、距 A1 1.00m 水泥橫梁</div>`;
         leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#94a3b8;"></span>A2 外開銀灰鋁門 (上段壓花玻璃)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#d4b483;"></span>A1 / A2 木板封平之原鋁門窗</div>
-          <div class="legend-item"><span class="legend-box" style="background:#64748b; border:1px solid #38bdf8;"></span>距 A1 1.00m 天花板水泥結構橫梁</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#94a3b8;"></span>A2 外開鋁門 (0.90×2.10m)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#d4b483;"></span>A1 / A2 木板封平門窗</div>
+          <div class="legend-item"><span class="legend-box" style="background:#64748b; border:1px solid #38bdf8;"></span>距 A1 1.00m 水泥橫梁 (35×45cm)</div>`;
       }
       rebuildScene();
     }
