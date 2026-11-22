@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>爵士鼓工作室 3D / 2D 空間模型 (V0 / V1 / V2 / 純空間)</title>
   <style>
     :root {
@@ -16,7 +18,13 @@
       --purple: #c084fc;
       --green: #34d399;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
       background-color: var(--bg-dark);
@@ -41,16 +49,19 @@
       flex-shrink: 0;
       gap: 12px;
     }
+
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     .brand h1 {
       font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.3px;
     }
+
     .badge {
       background: rgba(245, 158, 11, 0.15);
       color: var(--accent);
@@ -60,6 +71,7 @@
       border-radius: 999px;
       font-weight: 600;
     }
+
     .header-controls {
       display: flex;
       align-items: center;
@@ -75,6 +87,7 @@
       border-radius: 9px;
       border: 1px solid rgba(148, 163, 184, 0.3);
     }
+
     .model-btn {
       background: transparent;
       color: #cbd5e1;
@@ -86,22 +99,29 @@
       cursor: pointer;
       transition: all 0.16s ease;
     }
-    .model-btn:hover { color: #fff; }
+
+    .model-btn:hover {
+      color: #fff;
+    }
+
     .model-btn.active[data-model="v0"] {
       background: linear-gradient(135deg, #7c3aed, #db2777);
       color: #fff;
       box-shadow: 0 0 10px rgba(192, 132, 252, 0.45);
     }
+
     .model-btn.active[data-model="v1"] {
       background: linear-gradient(135deg, #ea580c, #d97706);
       color: #fff;
       box-shadow: 0 0 12px rgba(245, 158, 11, 0.55);
     }
+
     .model-btn.active[data-model="v2"] {
       background: linear-gradient(135deg, #059669, #0284c7);
       color: #fff;
       box-shadow: 0 0 12px rgba(52, 211, 153, 0.55);
     }
+
     .model-btn.active[data-model="shell"] {
       background: #475569;
       color: #f8fafc;
@@ -115,6 +135,7 @@
       border-radius: 8px;
       border: 1px solid var(--panel-border);
     }
+
     .view-btn {
       background: transparent;
       color: var(--text-muted);
@@ -125,6 +146,7 @@
       font-weight: 600;
       cursor: pointer;
     }
+
     .view-btn.active {
       background: rgba(248, 250, 252, 0.16);
       color: #fff;
@@ -136,6 +158,7 @@
       display: flex;
       overflow: hidden;
     }
+
     .sidebar {
       width: 350px;
       background: var(--panel-bg);
@@ -147,6 +170,7 @@
       gap: 12px;
       flex-shrink: 0;
     }
+
     .section-card {
       background: rgba(30, 41, 59, 0.55);
       border: 1px solid var(--panel-border);
@@ -156,6 +180,7 @@
       flex-direction: column;
       gap: 9px;
     }
+
     .section-title {
       font-size: 12.5px;
       font-weight: 700;
@@ -166,6 +191,7 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .spec-box {
       font-size: 11.5px;
       color: #cbd5e1;
@@ -175,21 +201,38 @@
       line-height: 1.6;
       border: 1px solid rgba(148, 163, 184, 0.18);
     }
+
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
     }
+
     .metric-box {
       background: rgba(15, 23, 42, 0.78);
       border: 1px solid rgba(148, 163, 184, 0.22);
       border-radius: 6px;
       padding: 6px 8px;
     }
-    .metric-label { font-size: 10.5px; color: #94a3b8; }
-    .metric-val { font-size: 12px; font-weight: 700; color: #38bdf8; margin-top: 2px; }
 
-    .toggle-list { display: flex; flex-direction: column; gap: 6px; }
+    .metric-label {
+      font-size: 10.5px;
+      color: #94a3b8;
+    }
+
+    .metric-val {
+      font-size: 12px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-top: 2px;
+    }
+
+    .toggle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
     .toggle-item {
       display: flex;
       align-items: center;
@@ -199,6 +242,7 @@
       cursor: pointer;
       gap: 8px;
     }
+
     .toggle-item input[type="checkbox"] {
       accent-color: var(--blue);
       width: 15px;
@@ -207,12 +251,38 @@
       flex-shrink: 0;
     }
 
-    .control-row { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
-    .control-label { display: flex; justify-content: space-between; color: #cbd5e1; }
-    .control-val { color: var(--blue); font-family: monospace; font-weight: 600; }
-    input[type="range"] { width: 100%; height: 6px; accent-color: var(--accent); cursor: pointer; }
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+    }
 
-    .cam-presets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      color: #cbd5e1;
+    }
+
+    .control-val {
+      color: var(--blue);
+      font-family: monospace;
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .cam-presets {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
     .cam-btn {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(148, 163, 184, 0.28);
@@ -222,11 +292,28 @@
       font-size: 12px;
       cursor: pointer;
     }
-    .cam-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+    .cam-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
 
     /* Viewport */
-    .viewport-container { flex: 1; display: flex; position: relative; background: #070b14; }
-    .pane-3d, .pane-2d { position: relative; height: 100%; flex: 1; overflow: hidden; }
+    .viewport-container {
+      flex: 1;
+      display: flex;
+      position: relative;
+      background: #070b14;
+    }
+
+    .pane-3d,
+    .pane-2d {
+      position: relative;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+    }
+
     .pane-2d {
       background: #0b1120;
       border-left: 1px solid var(--panel-border);
@@ -234,7 +321,13 @@
       align-items: center;
       justify-content: center;
     }
-    #canvas3d, #canvas2d { display: block; width: 100%; height: 100%; }
+
+    #canvas3d,
+    #canvas2d {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
     .overlay-badge {
       position: absolute;
@@ -250,6 +343,7 @@
       backdrop-filter: blur(6px);
       z-index: 10;
     }
+
     .tag {
       display: inline-block;
       color: #fff;
@@ -259,6 +353,7 @@
       margin-right: 6px;
       font-size: 11px;
     }
+
     .legend-bar {
       position: absolute;
       bottom: 14px;
@@ -276,8 +371,18 @@
       pointer-events: none;
       z-index: 10;
     }
-    .legend-item { display: flex; align-items: center; gap: 6px; }
-    .legend-box { width: 12px; height: 12px; border-radius: 3px; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
 
     /* 手機版底部抽屜控制列 (電腦版預設隱藏) */
     .mobile-sheet-toggle {
@@ -291,6 +396,7 @@
       body {
         height: 100dvh;
       }
+
       header {
         height: auto;
         padding: 8px 10px;
@@ -299,57 +405,69 @@
         align-items: stretch;
         gap: 6px;
       }
+
       .brand {
         justify-content: space-between;
       }
+
       .brand h1 {
         font-size: 13.5px;
       }
+
       .badge {
         font-size: 10px;
         padding: 2px 6px;
       }
+
       .header-controls {
         flex-direction: column;
         align-items: stretch;
         gap: 6px;
       }
+
       .model-switcher {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         padding: 3px;
         gap: 3px;
       }
+
       .model-btn {
         padding: 7px 4px;
         font-size: 11.5px;
         text-align: center;
         white-space: nowrap;
       }
+
       .view-switcher {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         padding: 3px;
         gap: 3px;
       }
+
       .view-btn {
         padding: 5px 4px;
         font-size: 11.5px;
         text-align: center;
       }
+
       .workspace {
         position: relative;
         flex-direction: column;
       }
+
       .viewport-container {
         width: 100%;
         height: 100%;
         flex-direction: column;
       }
+
       .pane-2d {
         border-left: none;
         border-top: 1px solid var(--panel-border);
       }
+
       /* 底部抽屜式側邊欄 (iPhone 13 單手操作友善) */
       .sidebar {
         position: fixed;
@@ -368,10 +486,12 @@
         box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.65);
         overflow-y: hidden;
       }
+
       .sidebar.mobile-open {
         transform: translateY(0);
         overflow-y: auto;
       }
+
       .mobile-sheet-toggle {
         display: flex;
         align-items: center;
@@ -386,6 +506,7 @@
         cursor: pointer;
         flex-shrink: 0;
       }
+
       .sheet-handle {
         width: 36px;
         height: 4px;
@@ -393,6 +514,7 @@
         border-radius: 999px;
         margin: 0 auto 6px;
       }
+
       .overlay-badge {
         top: 8px;
         left: 8px;
@@ -401,6 +523,7 @@
         font-size: 10.5px;
         line-height: 1.4;
       }
+
       .legend-bar {
         bottom: calc(54px + env(safe-area-inset-bottom));
         left: 8px;
@@ -409,6 +532,7 @@
         gap: 7px;
         font-size: 10px;
       }
+
       .legend-box {
         width: 9px;
         height: 9px;
@@ -424,6 +548,7 @@
     }
   </script>
 </head>
+
 <body>
 
   <header>
@@ -462,7 +587,8 @@
       </button>
 
       <!-- V1 爵士鼓教學控制面板 -->
-      <div class="section-card" id="panel-v1" style="background: rgba(154, 52, 18, 0.25); border-color: rgba(245, 158, 11, 0.6);">
+      <div class="section-card" id="panel-v1"
+        style="background: rgba(154, 52, 18, 0.25); border-color: rgba(245, 158, 11, 0.6);">
         <div class="section-title" style="color:#fbbf24;">
           <span>V1 爵士鼓教學版本</span>
           <span style="font-size:10.5px; color:#fdba74;">Drum Studio</span>
@@ -488,13 +614,13 @@
         </div>
 
         <div class="spec-box">
-          <strong style="color:#fbbf24;">空間物件尺寸與座標：</strong><br/>
-          • 爵士鼓毯：1.50m × 1.70m (中心 x=4.00m, y=1.80m)<br/>
-          • 教材雜物櫃：2.40m × 0.45m × 1.05m (A1 牆前)<br/>
-          • 剪輯工作桌：1.50m × 0.70m × 0.75m (B1 左前)<br/>
-          • 雙人布沙發：1.60m × 0.85m (B2 右中前)<br/>
-          • 茶几：0.90m × 0.50m × 0.42m<br/>
-          • 天花板吸音雲：6 片 (60×120×5cm，垂降 18cm)<br/>
+          <strong style="color:#fbbf24;">空間物件尺寸與座標：</strong><br />
+          • 爵士鼓毯：1.50m × 1.70m (中心 x=4.00m, y=1.80m)<br />
+          • 教材雜物櫃：2.40m × 0.45m × 1.05m (A1 牆前)<br />
+          • 剪輯工作桌：1.50m × 0.70m × 0.75m (B1 左前)<br />
+          • 雙人布沙發：1.60m × 0.85m (B2 右中前)<br />
+          • 茶几：0.90m × 0.50m × 0.42m<br />
+          • 天花板吸音雲：6 片 (60×120×5cm，垂降 18cm)<br />
           • 梁後凹槽低頻陷阱：x=5.075~5.90m (深 45cm 封平至梁底)
         </div>
 
@@ -527,7 +653,8 @@
       </div>
 
       <!-- V2 練團室控制面板 -->
-      <div class="section-card" id="panel-v2" style="background: rgba(6, 78, 59, 0.25); border-color: rgba(52, 211, 153, 0.55);">
+      <div class="section-card" id="panel-v2"
+        style="background: rgba(6, 78, 59, 0.25); border-color: rgba(52, 211, 153, 0.55);">
         <div class="section-title" style="color:#34d399;">
           <span>V2 練團室版本</span>
           <span style="font-size:10.5px; color:#38bdf8;">Band Rehearsal</span>
@@ -553,13 +680,13 @@
         </div>
 
         <div class="spec-box">
-          <strong style="color:#34d399;">空間物件尺寸與座標：</strong><br/>
-          • 爵士鼓組：1.45m × 1.65m (中心 x=4.20m, y=1.80m，面向 A2)<br/>
-          • PA 監聽喇叭 × 2：x=3.65m, y=0.48 / 3.12m，高 1.68m (斜射主唱與中前區)<br/>
-          • Bass 音箱：0.58m × 0.46m × 0.85m (x=2.75m, y=0.42m)<br/>
-          • 電吉他音箱：0.62m × 0.36m × 0.72m (x=2.75m, y=3.18m)<br/>
-          • 鍵盤與琴架：1.25m × 0.38m (x=1.75m, y=2.95m)<br/>
-          • 主唱麥克風：x=1.45m, y=1.80m (面向鼓與 PA，180° 背面防回授)<br/>
+          <strong style="color:#34d399;">空間物件尺寸與座標：</strong><br />
+          • 爵士鼓組：1.45m × 1.65m (中心 x=4.20m, y=1.80m，面向 A2)<br />
+          • PA 監聽喇叭 × 2：x=3.65m, y=0.48 / 3.12m，高 1.68m (斜射主唱與中前區)<br />
+          • Bass 音箱：0.58m × 0.46m × 0.85m (x=2.75m, y=0.42m)<br />
+          • 電吉他音箱：0.62m × 0.36m × 0.72m (x=2.75m, y=3.18m)<br />
+          • 鍵盤與琴架：1.25m × 0.38m (x=1.75m, y=2.95m)<br />
+          • 主唱麥克風：x=1.45m, y=1.80m (面向鼓與 PA，180° 背面防回授)<br />
           • 混音器與機櫃區：0.65m × 0.95m (x=0.52m, y=0.65m)
         </div>
 
@@ -588,7 +715,8 @@
       </div>
 
       <!-- V0 純理論研究報告控制面板 -->
-      <div class="section-card" id="panel-v0" style="display:none; background: rgba(59, 7, 100, 0.35); border-color: rgba(192, 132, 252, 0.55);">
+      <div class="section-card" id="panel-v0"
+        style="display:none; background: rgba(59, 7, 100, 0.35); border-color: rgba(192, 132, 252, 0.55);">
         <div class="section-title" style="color:#d8b4fe;">
           <span>V0 純理論研究報告模型</span>
           <span style="font-size:10.5px; color:#f472b6;">Ideal Box Theory</span>
@@ -614,12 +742,12 @@
         </div>
 
         <div class="spec-box">
-          <strong style="color:#f472b6;">理論面板數量與位置（無門窗橫梁）：</strong><br/>
-          • 四垂直角低頻陷阱 × 4 (寬 400mm)<br/>
-          • 前後頂角 MLV 薄膜陷阱 × 2 (深 330mm)<br/>
-          • 前牆吸音板 × 4 (厚 100mm + 空隙 50mm) + 白板 (1.6×1.1m)<br/>
-          • 側牆 RFZ 吸音板 × 4 (x=2.4~3.2m) + 後段擴散 × 4 (x=4.0~5.2m)<br/>
-          • 天花板吸音雲 × 3 (x=2.4~3.3m，垂降 10cm)<br/>
+          <strong style="color:#f472b6;">理論面板數量與位置（無門窗橫梁）：</strong><br />
+          • 四垂直角低頻陷阱 × 4 (寬 400mm)<br />
+          • 前後頂角 MLV 薄膜陷阱 × 2 (深 330mm)<br />
+          • 前牆吸音板 × 4 (厚 100mm + 空隙 50mm) + 白板 (1.6×1.1m)<br />
+          • 側牆 RFZ 吸音板 × 4 (x=2.4~3.2m) + 後段擴散 × 4 (x=4.0~5.2m)<br />
+          • 天花板吸音雲 × 3 (x=2.4~3.3m，垂降 10cm)<br />
           • 後牆 N=7 QRD 擴散板 + 150mm 吸音邊框 × 2
         </div>
 
@@ -644,17 +772,18 @@
       </div>
 
       <!-- 純空間結構說明面板 -->
-      <div class="section-card" id="panel-shell" style="display:none; background: rgba(120, 53, 15, 0.25); border-color: rgba(245, 158, 11, 0.55);">
+      <div class="section-card" id="panel-shell"
+        style="display:none; background: rgba(120, 53, 15, 0.25); border-color: rgba(245, 158, 11, 0.55);">
         <div class="section-title" style="color:#fbbf24;">
           <span>純空間尺寸、樑柱與門窗</span>
           <span style="font-size:10.5px; color:#fde68a;">Empty Shell</span>
         </div>
         <div class="spec-box">
-          <strong style="color:#fbbf24;">建築基準尺寸：</strong><br/>
-          • 室內淨尺寸：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br/>
-          • A2 前短牆 (x=0.0m)：右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2 側)；門旁 1.15×1.15m 木板封窗<br/>
-          • A1 後短牆 (x=5.9m)：對稱原鋁門與鋁窗皆木板封平<br/>
-          • B1 / B2 左右長牆：5.90m 實心水泥牆<br/>
+          <strong style="color:#fbbf24;">建築基準尺寸：</strong><br />
+          • 室內淨尺寸：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br />
+          • A2 前短牆 (x=0.0m)：右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2 側)；門旁 1.15×1.15m 木板封窗<br />
+          • A1 後短牆 (x=5.9m)：對稱原鋁門與鋁窗皆木板封平<br />
+          • B1 / B2 左右長牆：5.90m 實心水泥牆<br />
           • 水泥橫梁：距 A1 1.00m (x=4.90m)，跨度 3.60m，寬 35cm × 深 45cm
         </div>
       </div>
@@ -1526,7 +1655,7 @@
           const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), rimMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.34, 0xc084fc, 0.18));
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0., 0, 0.18));
         });
       }
 
@@ -1919,4 +2048,5 @@
     animate();
   </script>
 </body>
+
 </html>
