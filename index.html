@@ -92,15 +92,15 @@
       color: #fff;
       box-shadow: 0 0 10px rgba(192, 132, 252, 0.45);
     }
-    .model-btn.active[data-model="v01"] {
-      background: linear-gradient(135deg, #0284c7, #059669);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
-    }
     .model-btn.active[data-model="v02"] {
       background: linear-gradient(135deg, #ea580c, #d97706);
       color: #fff;
       box-shadow: 0 0 12px rgba(245, 158, 11, 0.55);
+    }
+    .model-btn.active[data-model="v03"] {
+      background: linear-gradient(135deg, #059669, #0284c7);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.55);
     }
     .model-btn.active[data-model="shell"] {
       background: #475569;
@@ -297,11 +297,11 @@
     </div>
 
     <div class="header-controls">
-      <!-- 四大核心模型切換器 -->
+      <!-- 四大核心模型切換器 (已移除 V0.1，新增 V0.3 練團室版本) -->
       <div class="model-switcher">
         <button class="model-btn" data-model="v0" id="btn-m-v0">🔬 V0 理論模型</button>
-        <button class="model-btn" data-model="v01" id="btn-m-v01">🏆 V0.1 門窗橫梁落地解</button>
-        <button class="model-btn active" data-model="v02" id="btn-m-v02">🥁 V0.2 爵士鼓教學版本</button>
+        <button class="model-btn" data-model="v02" id="btn-m-v02">🥁 V0.2 爵士鼓教學版本</button>
+        <button class="model-btn active" data-model="v03" id="btn-m-v03">🎸 V0.3 練團室版本</button>
         <button class="model-btn" data-model="shell" id="btn-m-shell">📐 純空間樑柱門窗</button>
       </div>
 
@@ -381,64 +381,61 @@
         </div>
       </div>
 
-      <!-- [模型一] V0.1 門窗橫梁最佳落地解 控制面板 -->
-      <div class="section-card" id="panel-v01" style="background: rgba(6, 78, 59, 0.25); border-color: rgba(56, 189, 248, 0.55);">
-        <div class="section-title" style="color:#38bdf8;">
-          <span>🏆 V0.1 門窗橫梁最佳落地解</span>
-          <span style="font-size:10.5px; color:#34d399;">Optimal Hybrid</span>
+      <!-- [模型一] V0.3 練團室版本 控制面板 -->
+      <div class="section-card" id="panel-v03" style="background: rgba(6, 78, 59, 0.25); border-color: rgba(52, 211, 153, 0.55);">
+        <div class="section-title" style="color:#34d399;">
+          <span>🎸 V0.3 練團室版本 (5人全編制)</span>
+          <span style="font-size:10.5px; color:#38bdf8;">Band Rehearsal</span>
         </div>
 
         <div class="metrics-grid">
           <div class="metric-box">
-            <div class="metric-label">58-60Hz 駐波對策</div>
-            <div class="metric-val" style="color:#34d399;">梁後凹槽巨型陷阱</div>
+            <div class="metric-label">防回授核心配置</div>
+            <div class="metric-val" style="color:#34d399;">主唱背對 PA / 面向鼓</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">A2 入口鋁門</div>
-            <div class="metric-val" style="color:#38bdf8;">外開 90° + 吸音門簾</div>
+            <div class="metric-label">低頻解耦合距離</div>
+            <div class="metric-val" style="color:#38bdf8;">Bass 音箱離牆角 ≥1.2m</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">軌道避雲外推</div>
-            <div class="metric-val" style="color:#fbbf24;">距側牆 0.72m 避雲</div>
+            <div class="metric-label">目標混響 RT60</div>
+            <div class="metric-val" style="color:#fbbf24;">0.30 ~ 0.38s (控音壓)</div>
           </div>
           <div class="metric-box">
-            <div class="metric-label">目標 RT60 / 照度</div>
-            <div class="metric-val">0.25~0.35s / ≥500lx</div>
+            <div class="metric-label">編制與動線</div>
+            <div class="metric-val" style="color:#c084fc;">鼓/貝/吉/鍵/主唱+PA</div>
           </div>
         </div>
 
         <div class="spec-box">
-          <strong style="color:#34d399;">🔊 V0.1 聲學最佳落地配置：</strong><br/>
-          • <strong>梁後 1.0m 凹槽巨型低頻陷阱 (Superchunk)</strong>：x=4.9~5.9m 頂部填滿 45cm 低流阻棉封平至梁底，取代昂貴 MLV 箱體，一舉解決 58-60Hz 駐波與凹槽顫動！<br/>
-          • <strong>橫梁正面與底面</strong>：貼附 50mm 吸音板阻斷近場反射。<br/>
-          • <strong>三實角 350mm 落地陷阱 + A2 鋁門內側密封條與吸音簾</strong>。<br/>
-          • <strong>24 片 50mm 吸音板 (離牆架空 7.5~10cm)</strong>：精準覆蓋側牆 RFZ (x=2.4~3.2m) 與鼓組區，搭配 B1 中央 1D QRD 擴散板與避梁天花吸音雲 (x=2.3~3.5m, 垂降 15cm)。
+          <strong style="color:#34d399;">🎯 練團室聲學黃金擺位邏輯（防回授＋不互蓋）：</strong><br/>
+          1. <strong>爵士鼓 (x=4.35m, y=1.80m 中軸面向 A2)</strong>：鎖定全室最大聲源在橫梁前方中軸，頭頂直吊 6 片大吸音雲，背後梁後凹槽填滿 45cm 巨型低頻陷阱。<br/>
+          2. <strong>貝斯音箱 (B1 左中 x=3.15m) 與電吉他音箱 (B2 右中 x=3.15m)</strong>：置於左右兩側**斜角對向鼓手與對側樂手（交叉投射）**，避免直射自己膝蓋造成音量越轉越大聲，同時遠離牆角防 58Hz 轟鳴！<br/>
+          3. <strong>鍵盤手 (B2 右前中 x=2.05m)</strong>：聲音進 PA 混音器，與吉他同側互補頻段。<br/>
+          4. <strong>主唱麥克風 (x=1.45m, y=1.80m，背對 A2 面向鼓手)</strong>：PA 主喇叭架於前兩側 (x=0.85m, y=0.65/2.95m) 斜向中央，心型指向麥克風「零收音背面」正好朝向 PA 與兩側音箱，<strong>徹底根除主唱麥克風回授 (Feedback)</strong>！<br/>
+          5. <strong>混音器與 PA 設備機櫃區 (B1 左前 x=0.60m, y=0.55m)</strong>：緊鄰 A2 門左實牆，避開右側外開鋁門動線，方便集中走線與調整總音場。
         </div>
 
         <div class="toggle-list">
           <label class="toggle-item">
+            <span style="color:#f43f5e;">🎙️ 顯示主唱心型指向「防回授」與音箱交叉投射聲線</span>
+            <input type="checkbox" id="chk-v03-rays" checked />
+          </label>
+          <label class="toggle-item">
             <span style="color:#34d399;">🧊 顯示「梁後 1.0m 凹槽巨型低頻陷阱」封平結構</span>
-            <input type="checkbox" id="chk-v01-superchunk" checked />
+            <input type="checkbox" id="chk-v03-superchunk" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#f472b6;">🚪 顯示 A2 外開鋁門內側「重磅吸音門簾」</span>
-            <input type="checkbox" id="chk-v01-curtain" checked />
+            <span>💡 迴路一 (全室練團均勻光)：外推主軌 4m 線條燈</span>
+            <input type="checkbox" id="chk-v03-c1" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路一 (60% | 128.5W)：外推避雲主軌 4m 線條燈</span>
-            <input type="checkbox" id="chk-v01-c1" checked />
+            <span>💡 迴路二 (樂手重點光)：COB 射燈照亮譜架與鼓組</span>
+            <input type="checkbox" id="chk-v03-c2" checked />
           </label>
           <label class="toggle-item">
-            <span>💡 迴路二 (25% | 53.5W)：梁前 45° 交叉 COB 鼓組面光×4</span>
-            <input type="checkbox" id="chk-v01-c2" checked />
-          </label>
-          <label class="toggle-item">
-            <span>💡 迴路三 (15% | 32.1W)：梁後凹槽短軌背光×2 + 避梁燈帶</span>
-            <input type="checkbox" id="chk-v01-c3" checked />
-          </label>
-          <label class="toggle-item">
-            <span style="color:#fde047;">✨ 顯示 3D 光束角光錐與一次反射聲線</span>
-            <input type="checkbox" id="chk-v01-vis" checked />
+            <span>💡 迴路三 (氛圍/背光)：梁後凹槽短軌背光×2</span>
+            <input type="checkbox" id="chk-v03-c3" checked />
           </label>
         </div>
       </div>
@@ -604,13 +601,19 @@
     };
 
     const STATE = {
-      model: 'v02', // 'v0' | 'v01' | 'v02' | 'shell'
+      model: 'v03', // 'v0' | 'v02' | 'v03' | 'shell'
       viewMode: '3d',
       beamDepth: 0.45,
       doorAngle: 45,
       autoHideWall: true,
       showCeiling: false,
       showGrid: true,
+      // V0.3 練團室版本開關
+      v03Rays: true,
+      v03Superchunk: true,
+      v03C1: true,
+      v03C2: true,
+      v03C3: true,
       // V0.2 爵士鼓教學專版開關
       v02Zones: true,
       v02Superchunk: true,
@@ -618,13 +621,6 @@
       v02C2: true,
       v02C3: true,
       v02Vis: true,
-      // V0.1 專屬開關
-      v01Superchunk: true,
-      v01Curtain: true,
-      v01C1: true,
-      v01C2: true,
-      v01C3: true,
-      v01Vis: true,
       // V0 專屬開關
       v0C1: true,
       v0C2: true,
@@ -978,186 +974,223 @@
     }
 
     // ==========================================
-    // 🏆 V0.1「門窗橫梁最佳落地解」專屬 3D 模型
+    // 🎸 V0.3「練團室版本 (5人全編制：鼓/貝/吉/鍵/主唱 + PA 監聽與混音機櫃)」
+    // 聲學核心：環形對視＋音箱交叉投射＋主唱背對 PA 徹底防回授 (Feedback Rejection)
     // ==========================================
-    function buildV01OptimalModel() {
-      const active = (STATE.v01C1 ? 0.45 : 0) + (STATE.v01C2 ? 0.25 : 0) + (STATE.v01C3 ? 0.18 : 0);
+    function buildV03BandRehearsalModel() {
+      const active = (STATE.v03C1 ? 0.45 : 0) + (STATE.v03C2 ? 0.25 : 0) + (STATE.v03C3 ? 0.18 : 0);
       ambientLight.intensity = Math.max(0.25, active);
-      buildRoomShell(true); // 包含真實外開 A2 鋁門、A1/A2 木板封門窗與 x=4.90m 水泥橫梁
+      buildRoomShell(true);
 
       const panelMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.9 });
       const trapMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.95 });
-      const diffMat = new THREE.MeshStandardMaterial({ color: '#b45309', roughness: 0.55 });
       const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
-      const beamBottomZ = ROOM.H - STATE.beamDepth; // 預設 2.45m
+      const beamBottomZ = ROOM.H - STATE.beamDepth;
 
-      // 1. ★ 核心亮點：「梁後 1.00m 凹槽巨型低頻陷阱 (Superchunk Ceiling Bass Trap)」
-      // 將 x = 5.075m ~ 5.90m, z = beamBottomZ ~ 2.90m 整塊填滿低流阻玻璃棉並封平至梁底！
-      if (STATE.v01Superchunk) {
-        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2); // 約 0.825m 實淨寬
+      // 1. 梁後 1.00m 凹槽巨型低頻陷阱 (吸收爵士鼓大鼓 + Bass 音箱雙重低頻 58-60Hz 重疊駐波)
+      if (STATE.v03Superchunk) {
+        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
         const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
-        const scMat = new THREE.MeshStandardMaterial({ color: '#065f46', roughness: 0.92, transparent: true, opacity: 0.88 });
-        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, scMat, 0x34d399);
-
-        // 橫梁正面 (朝房間中央 -X) 與底面 50mm 吸音包覆
+        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
+          new THREE.MeshStandardMaterial({ color: '#065f46', roughness: 0.92, transparent: true, opacity: 0.88 }), 0x34d399);
         const wrapMat = new THREE.MeshStandardMaterial({ color: '#134e4a', roughness: 0.9 });
         addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat, 0x2dd4bf);
         addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat, 0x2dd4bf);
       }
 
-      // 2. A2 外開鋁門內側「可移動重磅吸音門簾」+ 門左開關面板標示
-      if (STATE.v01Curtain) {
-        const curtMat = new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: 0.82 });
-        addBoxWithEdge(0.04, 2.15, 0.96, 0.06, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 1.075, curtMat, 0xf472b6);
-      }
-      // 三迴路開關面板 (設於進門左手邊 y=2.45m 處)
-      addBoxWithEdge(0.02, 0.14, 0.10, 0.02, 2.42, 1.25, new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#38bdf8', emissiveIntensity: 0.6 }), 0x38bdf8);
-
-      // 3. 三實角 350mm 落地低頻陷阱 (A2-B1, A1-B1, A1-B2) + A2-B2 頂角斜置陷阱 (不擋門動線)
+      // 2. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 外開鋁門內側重磅吸音門簾
       const tS = 0.35;
       [
         { x: tS / 2, y: tS / 2 },
         { x: ROOM.L - tS / 2, y: tS / 2 },
         { x: ROOM.L - tS / 2, y: ROOM.W - tS / 2 }
       ].forEach((c) => addBoxWithEdge(tS, beamBottomZ - 0.02, tS, c.x, c.y, (beamBottomZ - 0.02) / 2, trapMat, 0xef4444));
-      // A2-B2 門上方頂角低頻陷阱 (z = 2.25 ~ 2.88m，不干涉進出)
       addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0xef4444);
+      addBoxWithEdge(0.04, 2.15, 0.96, 0.06, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 1.075,
+        new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: 0.75 }), 0xf472b6);
 
-      // 4. 24 片標準 60×120×5cm 吸音板 (離牆空腔 7.5cm) + B1 中央 1D QRD 擴散板
+      // 3. 全室 24 片 60×120×5cm 吸音板 (離牆 7.5cm，嚴格壓制高音壓練團室 RT60 至 0.30~0.38s)
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
-      // B1 左長牆 (6片: 前中 RFZ + 後段鼓組) + 中央木質 1D QRD (x=3.35m)
-      [1.10, 1.75, 2.45, 4.35, 4.98, 5.55].forEach((px) => addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat));
-      const qrdW = 1.10, qrdWells = [0.03, 0.08, 0.14, 0.06, 0.11, 0.14, 0.08, 0.03, 0.12, 0.05];
-      qrdWells.forEach((d, idx) => {
-        const w = qrdW / qrdWells.length;
-        const bar = new THREE.Mesh(new THREE.BoxGeometry(w * 0.88, 1.20, d), diffMat);
-        bar.position.copy(toWorld(3.40 - qrdW / 2 + idx * w + w / 2, d / 2 + 0.01, 1.45));
-        rootGroup.add(bar);
-      });
-      // B2 右長牆 (6片)
-      [1.40, 2.10, 2.75, 3.65, 4.35, 5.05].forEach((px) => addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat));
-      // A1 後封閉牆 (3片，鎖固於木板封板骨架)
-      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, py, 1.40, panelMat));
-      // A2 前入口牆 (3片，集中於左側實牆與封窗區避開右側鋁門)
-      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat));
-      // 天花板避梁雙吸音雲 (6片: x=2.55m & x=3.95m, 寬 1.80m, 鋼索垂降 15cm，完美避開 x=4.90m 橫梁)
-      const cloudZ = ROOM.H - 0.15 - pT / 2;
-      [2.55, 3.95].forEach((cx) => [1.15, 1.80, 2.45].forEach((cy) => {
-        addBoxWithEdge(pH, pT, pW, cx, cy, cloudZ, panelMat);
+      // 鼓組與中央練團區正上方大型吸音雲 (6 片，x=3.10~4.65m，壓制銅鈸與全團高頻互蓋)
+      const cloudZ = ROOM.H - 0.18 - pT / 2;
+      [3.45, 4.15].forEach((cx) => [1.05, 1.80, 2.55].forEach((cy) => {
+        addBoxWithEdge(pW, pT, pH * 0.58, cx, cy, cloudZ, panelMat, 0x34d399);
         const pts = [
-          toWorld(cx - 0.45, cy - 0.2, ROOM.H), toWorld(cx - 0.45, cy - 0.2, cloudZ + pT / 2),
-          toWorld(cx + 0.45, cy + 0.2, ROOM.H), toWorld(cx + 0.45, cy + 0.2, cloudZ + pT / 2)
+          toWorld(cx - 0.25, cy - 0.28, ROOM.H), toWorld(cx - 0.25, cy - 0.28, cloudZ + pT / 2),
+          toWorld(cx + 0.25, cy + 0.28, ROOM.H), toWorld(cx + 0.25, cy + 0.28, cloudZ + pT / 2)
         ];
         rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
       }));
+      // 左右長牆 B1 / B2 各 6 片 (均勻覆蓋鼓組、Bass、Guitar 與主唱區，徹底消除平行牆高頻尖銳回授)
+      [1.15, 2.00, 2.85, 3.65, 4.45, 5.20].forEach((px) => {
+        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat);
+        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat);
+      });
+      // A1 後牆 (3 片) & A2 前牆避門 (3 片，直接吸收主唱前方與 PA 反射波)
+      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, py, 1.45, panelMat));
+      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat));
 
-      // 5. 核心設備：5件式爵士鼓 (x=4.50m, y=1.15m) + 混音控台 (x=3.66m) + 監聽喇叭 (x=2.10m, 推離 A2 消除不對稱門窗干涉)
-      // 鼓組
+      // 4. ★ 練團室 5 人全編制＋PA/混音設備 黃金聲學擺位 ★
+      // (a) 爵士鼓組 (全室基準核心：鼓椅 x=4.45m, y=1.80m 中軸線，面向 A2)
       const kit = new THREE.Group();
-      kit.position.copy(toWorld(4.50, 1.15, 0));
-      const rug = new THREE.Mesh(new THREE.BoxGeometry(1.40, 0.015, 1.60), new THREE.MeshStandardMaterial({ color: '#18181b' }));
+      kit.position.copy(toWorld(4.20, 1.80, 0));
+      const rug = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.015, 1.65), new THREE.MeshStandardMaterial({ color: '#18181b' }));
       rug.position.set(0, 0.008, 0);
-      const dMat = new THREE.MeshStandardMaterial({ color: '#d97706', roughness: 0.3 });
+      const dMat = new THREE.MeshStandardMaterial({ color: '#ea580c', roughness: 0.28 });
       const kick = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.45, 24), dMat);
-      kick.rotation.z = Math.PI / 2; kick.position.set(-0.15, 0.29, 0);
+      kick.rotation.z = Math.PI / 2; kick.position.set(-0.20, 0.29, 0);
+      const throne = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.08, 20), new THREE.MeshStandardMaterial({ color: '#0f172a' }));
+      throne.position.set(0.32, 0.54, 0);
       const snare = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.14, 20), new THREE.MeshStandardMaterial({ color: '#f8fafc' }));
-      snare.position.set(0.15, 0.62, 0.26);
+      snare.position.set(0.05, 0.64, 0.28);
       const fTom = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.40, 20), dMat);
-      fTom.position.set(0.14, 0.42, -0.42);
+      fTom.position.set(0.08, 0.42, -0.44);
       const cymMat = new THREE.MeshStandardMaterial({ color: '#fbbf24', metalness: 0.85, roughness: 0.2 });
-      const c1 = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.01, 20), cymMat); c1.position.set(-0.22, 1.08, 0.45);
-      const c2 = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.01, 20), cymMat); c2.position.set(-0.20, 1.05, -0.45);
-      kit.add(rug, kick, snare, fTom, c1, c2);
+      const c1 = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.012, 20), cymMat); c1.position.set(-0.26, 1.12, 0.46);
+      const c2 = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.012, 20), cymMat); c2.position.set(-0.24, 1.08, -0.48);
+      kit.add(rug, kick, throne, snare, fTom, c1, c2);
       rootGroup.add(kit);
 
-      // 控台 & 監聽喇叭
-      const desk = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 1.50), new THREE.MeshStandardMaterial({ color: '#334155' }));
-      desk.position.copy(toWorld(3.35, 1.80, 0.375));
-      rootGroup.add(desk);
-      [0.90, 2.70].forEach((sy) => {
-        const spk = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.24), new THREE.MeshStandardMaterial({ color: '#0f172a' }));
-        spk.position.copy(toWorld(2.10, sy, 1.15));
-        rootGroup.add(spk);
-      });
+      // (b) 貝斯音箱 Bass Amp (靠 B1 左中段 x=3.10m, y=0.42m，遠離牆角防 58Hz 轟鳴，墊高並斜向中央鼓手/吉他手)
+      const bassAmp = new THREE.Mesh(
+        new THREE.BoxGeometry(0.58, 0.85, 0.46),
+        new THREE.MeshStandardMaterial({ color: '#1e3a8a', roughness: 0.6 })
+      );
+      bassAmp.position.copy(toWorld(3.10, 0.42, 0.425));
+      bassAmp.rotation.y = THREE.MathUtils.degToRad(-28); // 斜射向房間中央與對側
+      rootGroup.add(bassAmp);
+      // 貝斯手站位圓環 (站在音箱斜前方 x=2.65m, y=1.10m，清楚聽見大鼓與自己音箱)
+      const bassSpot = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.28, 24), new THREE.MeshBasicMaterial({ color: 0x3b82f6, side: THREE.DoubleSide }));
+      bassSpot.rotation.x = -Math.PI / 2; bassSpot.position.copy(toWorld(2.55, 1.05, 0.015));
+      rootGroup.add(bassSpot);
 
-      // 6. ★ V0.1 燈光最佳配置：主軌道外推至 y=0.72m & y=2.88m 避開吸音雲 + 遇橫梁止步 (x=0.50~4.55m) + 梁後平齊梁底獨立短軌
+      // (c) 電吉他音箱 Guitar Amp (靠 B2 右中段 x=3.10m, y=3.18m，斜角朝向中央與對側貝斯手，避免直射吉他手膝蓋)
+      const gtrAmp = new THREE.Mesh(
+        new THREE.BoxGeometry(0.62, 0.72, 0.36),
+        new THREE.MeshStandardMaterial({ color: '#991b1b', roughness: 0.6 })
+      );
+      gtrAmp.position.copy(toWorld(3.10, 3.18, 0.36));
+      gtrAmp.rotation.y = THREE.MathUtils.degToRad(28);
+      rootGroup.add(gtrAmp);
+      // 電吉他手站位圓環 (x=2.75m, y=2.55m)
+      const gtrSpot = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.28, 24), new THREE.MeshBasicMaterial({ color: 0xef4444, side: THREE.DoubleSide }));
+      gtrSpot.rotation.x = -Math.PI / 2; gtrSpot.position.copy(toWorld(2.85, 2.55, 0.015));
+      rootGroup.add(gtrSpot);
+
+      // (d) 鍵盤手 Keyboard + X型架 (靠 B2 右前中段 x=1.95m, y=2.95m，面向房間中央與鼓手，聲音進 PA 混音器)
+      const kbGroup = new THREE.Group();
+      kbGroup.position.copy(toWorld(1.90, 2.95, 0));
+      kbGroup.rotation.y = THREE.MathUtils.degToRad(15);
+      const kbBody = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.10, 0.38), new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.35 }));
+      kbBody.position.set(0, 0.82, 0);
+      const kbKeys = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.03, 0.14), new THREE.MeshStandardMaterial({ color: '#f8fafc' }));
+      kbKeys.position.set(0, 0.87, -0.09);
+      const kbStand = new THREE.Mesh(new THREE.BoxGeometry(0.80, 0.80, 0.30), new THREE.MeshStandardMaterial({ color: '#475569' }));
+      kbStand.position.set(0, 0.40, 0);
+      kbGroup.add(kbBody, kbKeys, kbStand);
+      rootGroup.add(kbGroup);
+
+      // (e) 主唱位置與心型指向麥克風架 (x=1.45m, y=1.80m，★ 背對 A2 與 PA 喇叭、面向鼓手與團員，徹底防回授！)
+      const micStand = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.14, 1.45, 12), new THREE.MeshStandardMaterial({ color: '#94a3b8' }));
+      micStand.position.copy(toWorld(1.55, 1.80, 0.725));
+      const micHead = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12), new THREE.MeshStandardMaterial({ color: '#f43f5e', emissive: '#f43f5e', emissiveIntensity: 0.6 }));
+      micHead.position.copy(toWorld(1.50, 1.80, 1.48));
+      const vocalSpot = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.28, 24), new THREE.MeshBasicMaterial({ color: 0xf43f5e, side: THREE.DoubleSide }));
+      vocalSpot.rotation.x = -Math.PI / 2; vocalSpot.position.copy(toWorld(1.25, 1.80, 0.015));
+      rootGroup.add(micStand, micHead, vocalSpot);
+
+      // (f) 主 PA / 監聽喇叭一對 (架設於前兩側高腳架 x=0.85m, y=0.68m & y=2.92m，斜向房間中後區投射主唱與鍵盤)
+      // + 地面舞台監聽楔型喇叭 (Floor Monitor Wedge) 位於主唱前下方 (x=1.85m, y=1.80m 朝向主唱耳朵)
+      [0.68, 2.92].forEach((py, i) => {
+        const paStand = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.22, 1.35, 12), new THREE.MeshStandardMaterial({ color: '#334155' }));
+        paStand.position.copy(toWorld(0.95, py, 0.675));
+        const paCab = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.58, 0.34), new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.5 }));
+        paCab.position.copy(toWorld(0.95, py, 1.62));
+        paCab.rotation.y = THREE.MathUtils.degToRad(i === 0 ? -25 : 25);
+        rootGroup.add(paStand, paCab);
+      });
+      // 地面監聽喇叭 Wedge (讓鼓手與主唱聽清楚人聲，且正對主唱心型麥克風背面 180° 零收音角)
+      const wedge = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.28, 0.48), new THREE.MeshStandardMaterial({ color: '#1e293b' }));
+      wedge.position.copy(toWorld(2.00, 1.80, 0.14));
+      rootGroup.add(wedge);
+
+      // (g) 混音器與 PA 設備機櫃區 (B1 左前區 x=0.55m, y=0.55m，緊貼實牆完全避開右側外開鋁門)
+      const rackMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.45 });
+      addBoxWithEdge(0.65, 0.88, 0.95, 0.52, 0.65, 0.44, rackMat, 0x38bdf8);
+      // 混音器斜面控制台
+      addBoxWithEdge(0.45, 0.12, 0.65, 0.52, 0.65, 0.94, new THREE.MeshStandardMaterial({ color: '#020617', metalness: 0.7 }), 0x38bdf8);
+
+      // (h) 音箱交叉投射與主唱防回授聲線視覺化
+      if (STATE.v03Rays) {
+        const addDashLine = (p1, p2, hex) => {
+          const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([p1, p2]), new THREE.LineDashedMaterial({ color: hex, dashSize: 0.10, gapSize: 0.05 }));
+          l.computeLineDistances(); rootGroup.add(l);
+        };
+        // PA 喇叭投射向鼓手與全團 (避開主唱麥克風正面收音角)
+        addDashLine(toWorld(0.95, 0.68, 1.62), toWorld(4.10, 1.80, 1.25), 0x38bdf8);
+        addDashLine(toWorld(0.95, 2.92, 1.62), toWorld(4.10, 1.80, 1.25), 0x38bdf8);
+        // Bass 音箱交叉投射向鼓手與吉他手
+        addDashLine(toWorld(3.10, 0.42, 0.55), toWorld(4.10, 1.80, 1.10), 0x3b82f6);
+        addDashLine(toWorld(3.10, 0.42, 0.55), toWorld(2.85, 2.55, 1.25), 0x3b82f6);
+        // Guitar 音箱交叉投射向鼓手與貝斯手
+        addDashLine(toWorld(3.10, 3.18, 0.55), toWorld(4.10, 1.80, 1.10), 0xef4444);
+        addDashLine(toWorld(3.10, 3.18, 0.55), toWorld(2.55, 1.05, 1.25), 0xef4444);
+      }
+
+      // 5. V0.3 練團室避雲外推軌道照明
       const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.85 });
       const trkZ = ROOM.H - 0.04;
-      [0.72, 2.88].forEach((ty) => {
+      [0.55, 3.05].forEach((ty) => {
         const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
       });
-      // 梁後凹槽短軌：若啟用巨型低頻陷阱封平，軌道直接鎖在封平框底面 (平齊梁底 beamBottomZ - 0.02m)
-      const backTrkZ = STATE.v01Superchunk ? (beamBottomZ - 0.03) : trkZ;
-      const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.20), trkMat);
+      const backTrkZ = STATE.v03Superchunk ? (beamBottomZ - 0.03) : trkZ;
+      const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
       backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
       rootGroup.add(backTrk);
 
-      if (STATE.v01C1) {
+      if (STATE.v03C1) {
         const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
-        [1.50, 3.35].forEach((lx) => [0.72, 2.88].forEach((ly) => {
-          const bar = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
-          bar.position.copy(toWorld(lx, ly, trkZ - 0.03));
-          rootGroup.add(bar);
-          if (STATE.v01Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.95, 0x38bdf8, 0.08));
+        [1.45, 3.30].forEach((lx) => [0.55, 3.05].forEach((ly) => {
+          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
+          b.position.copy(toWorld(lx, ly, trkZ - 0.03));
+          rootGroup.add(b);
         }));
       }
-      if (STATE.v01C2) {
+      if (STATE.v03C2) {
         const cobMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
         [
-          { x: 4.05, y: 0.72, tx: 4.50, ty: 1.15, tz: 0.85 },
-          { x: 4.50, y: 0.72, tx: 4.65, ty: 1.35, tz: 1.05 },
-          { x: 4.05, y: 2.88, tx: 4.50, ty: 1.20, tz: 0.85 },
-          { x: 2.40, y: 0.72, tx: 3.55, ty: 1.80, tz: 0.75 }
+          { x: 2.50, y: 0.55, tx: 2.55, ty: 1.05, tz: 1.15 },
+          { x: 2.50, y: 3.05, tx: 2.50, ty: 2.75, tz: 1.00 },
+          { x: 3.70, y: 0.55, tx: 4.10, ty: 1.80, tz: 0.90 },
+          { x: 3.70, y: 3.05, tx: 4.10, ty: 1.80, tz: 0.90 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cobMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v01Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.325, 0xf59e0b, 0.18));
+          if (STATE.v03Rays) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.30, 0xf59e0b, 0.12));
         });
       }
-      if (STATE.v01C3) {
+      if (STATE.v03C3) {
         const rimMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#c084fc', emissiveIntensity: 1.2 });
-        [
-          { x: 5.45, y: 1.15, tx: 4.60, ty: 1.15, tz: 1.10 },
-          { x: 5.45, y: 2.35, tx: 5.85, ty: 1.80, tz: 1.35 }
-        ].forEach((sp) => {
-          const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+        [1.10, 2.50].forEach((ry) => {
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), rimMat);
-          c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v01Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.36, 0xc084fc, 0.18));
-        });
-        // 牆頂分段避梁暖白燈槽
-        const coveMat = new THREE.MeshBasicMaterial({ color: 0xfde68a });
-        [0.04, ROOM.W - 0.04].forEach((cy) => {
-          const s1 = new THREE.Mesh(new THREE.BoxGeometry(4.45, 0.025, 0.025), coveMat);
-          s1.position.copy(toWorld(2.425, cy, ROOM.H - 0.05));
-          rootGroup.add(s1);
+          c.position.copy(toWorld(5.45, ry, backTrkZ - 0.08));
+          rootGroup.add(c);
         });
       }
 
-      if (STATE.v01Vis) {
-        const rMat = new THREE.LineDashedMaterial({ color: 0x34d399, dashSize: 0.10, gapSize: 0.05 });
-        const ear = toWorld(3.66, 1.80, 1.18);
-        [
-          [toWorld(2.10, 0.90, 1.15), toWorld(2.62, 0.12, 1.18), ear],
-          [toWorld(2.10, 2.70, 1.15), toWorld(2.62, ROOM.W - 0.12, 1.18), ear],
-          [toWorld(2.10, 0.90, 1.15), toWorld(2.88, 1.35, cloudZ - 0.03), ear]
-        ].forEach((pts) => {
-          const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), rMat);
-          l.computeLineDistances(); rootGroup.add(l);
-        });
-      }
-
+      // 6. V0.3 精簡立體標籤
       if (STATE.showGrid) {
-        const lSC = makeTextSprite('★ 梁後 1.0m 凹槽巨型低頻陷阱 (填滿 45cm 低流阻棉封平至梁底，狙擊 58-60Hz)', 'rgba(6,78,59,0.92)', '#a7f3d0', 26, '#34d399');
-        lSC.position.copy(toWorld(5.45, ROOM.W / 2, ROOM.H + 0.25));
-        const lDoor = makeTextSprite('A2 外開銀灰鋁門 + 內側重磅吸音門簾 + 門左三迴路開關', 'rgba(131,24,67,0.9)', '#fbcfe8', 26, '#f472b6');
-        lDoor.position.copy(toWorld(0, ROOM.W / 2, ROOM.H + 0.25));
-        const lTrack = makeTextSprite('主軌外推至距牆 0.72m (錯開中央吸音雲) + 遇橫梁止步', 'rgba(3,105,161,0.9)', '#e0f2fe', 26, '#38bdf8');
-        lTrack.position.copy(toWorld(2.50, 0, ROOM.H + 0.25));
-        rootGroup.add(lSC, lDoor, lTrack);
+        const mk = (txt, pos, bg, fg, bd) => { const s = makeTextSprite(txt, bg, fg, 26, bd); s.position.copy(pos); rootGroup.add(s); };
+        mk('🥁 爵士鼓 (中軸基準位 x=4.2m)', toWorld(4.20, 1.80, 1.72), 'rgba(154,52,18,0.92)', '#fef3c7', '#f59e0b');
+        mk('🎸 Bass 音箱 + 貝斯手 (離牆角防轟鳴)', toWorld(3.00, 0.65, 1.35), 'rgba(30,58,138,0.92)', '#bfdbfe', '#3b82f6');
+        mk('⚡ 電吉他音箱 + 吉他手 (交叉投射)', toWorld(3.00, 3.00, 1.35), 'rgba(153,27,27,0.92)', '#fecaca', '#ef4444');
+        mk('🎹 鍵盤手 (進 PA 混音器)', toWorld(1.90, 2.95, 1.35), 'rgba(15,23,42,0.92)', '#e2e8f0', '#94a3b8');
+        mk('🎙️ 主唱 (背對 PA 面向鼓手防回授)', toWorld(1.40, 1.80, 1.82), 'rgba(159,18,57,0.92)', '#ffe4e6', '#f43f5e');
+        mk('🎛️ 混音器 & PA 設備機櫃區', toWorld(0.55, 0.65, 1.38), 'rgba(3,105,161,0.92)', '#e0f2fe', '#38bdf8');
+        mk('🔊 PA 主監聽喇叭 (左右斜射)', toWorld(0.95, 2.92, 2.15), 'rgba(15,23,42,0.92)', '#7dd3fc', '#38bdf8');
       }
     }
 
@@ -1375,8 +1408,8 @@
 
       if (STATE.model === 'shell') buildShellOnlyModel();
       else if (STATE.model === 'v0') buildV0TheoryModel();
-      else if (STATE.model === 'v01') buildV01OptimalModel();
-      else buildV02DrumStudioModel();
+      else if (STATE.model === 'v02') buildV02DrumStudioModel();
+      else buildV03BandRehearsalModel();
 
       draw2DFloorPlan();
     }
@@ -1431,7 +1464,7 @@
         ctx2d.strokeRect(bx, oy, ROOM.BEAM_WIDTH * scale, ROOM.W * scale);
         ctx2d.setLineDash([]);
 
-        if ((STATE.model === 'v01' && STATE.v01Superchunk) || (STATE.model === 'v02' && STATE.v02Superchunk)) {
+        if ((STATE.model === 'v02' && STATE.v02Superchunk) || (STATE.model === 'v03' && STATE.v03Superchunk)) {
           ctx2d.fillStyle = 'rgba(52, 211, 153, 0.22)';
           ctx2d.fillRect(toX(5.075), oy, (5.90 - 5.075) * scale, ROOM.W * scale);
           ctx2d.fillStyle = '#34d399'; ctx2d.font = 'bold 11px sans-serif';
@@ -1439,8 +1472,56 @@
         }
       }
 
-      // V0.2 爵士鼓教學版 2D 精確平面圖配置
-      if (STATE.model === 'v02') {
+      // V0.3 練團室版本 2D 精確平面圖配置
+      if (STATE.model === 'v03') {
+        // 1. 爵士鼓組 (中軸基準 x=4.20m, y=1.80m)
+        ctx2d.fillStyle = 'rgba(245, 158, 11, 0.2)'; ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2;
+        ctx2d.fillRect(toX(3.48), toY(0.98), 1.45 * scale, 1.65 * scale);
+        ctx2d.strokeRect(toX(3.48), toY(0.98), 1.45 * scale, 1.65 * scale);
+        ctx2d.fillStyle = '#fde68a'; ctx2d.font = 'bold 11px sans-serif';
+        ctx2d.fillText('🥁 爵士鼓 (中軸基準)', toX(3.65), toY(1.80));
+
+        // 2. Bass 音箱 (B1 左中) & 電吉他音箱 (B2 右中)
+        ctx2d.fillStyle = 'rgba(59, 130, 246, 0.3)'; ctx2d.strokeStyle = '#3b82f6';
+        ctx2d.fillRect(toX(2.80), toY(0.18), 0.58 * scale, 0.46 * scale);
+        ctx2d.strokeRect(toX(2.80), toY(0.18), 0.58 * scale, 0.46 * scale);
+        ctx2d.fillStyle = '#bfdbfe'; ctx2d.fillText('🎸 Bass 音箱/站位', toX(2.35), toY(0.95));
+
+        ctx2d.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx2d.strokeStyle = '#ef4444';
+        ctx2d.fillRect(toX(2.80), toY(2.96), 0.62 * scale, 0.36 * scale);
+        ctx2d.strokeRect(toX(2.80), toY(2.96), 0.62 * scale, 0.36 * scale);
+        ctx2d.fillStyle = '#fecaca'; ctx2d.fillText('⚡ 電吉他音箱/站位', toX(2.55), toY(2.65));
+
+        // 3. 鍵盤手 (B2 右前中)
+        ctx2d.fillStyle = 'rgba(148, 163, 184, 0.3)'; ctx2d.strokeStyle = '#94a3b8';
+        ctx2d.fillRect(toX(1.30), toY(2.75), 1.25 * scale, 0.38 * scale);
+        ctx2d.strokeRect(toX(1.30), toY(2.75), 1.25 * scale, 0.38 * scale);
+        ctx2d.fillStyle = '#f8fafc'; ctx2d.fillText('🎹 鍵盤手', toX(1.60), toY(3.00));
+
+        // 4. 主唱麥克風 (背對 PA 面向鼓手) + 地面監聽 Wedge
+        ctx2d.fillStyle = '#f43f5e';
+        ctx2d.beginPath(); ctx2d.arc(toX(1.45), toY(1.80), 8, 0, Math.PI * 2); ctx2d.fill();
+        ctx2d.fillStyle = '#ffe4e6'; ctx2d.fillText('🎙️ 主唱 (背對PA防回授)', toX(1.05), toY(1.55));
+        ctx2d.fillStyle = '#334155'; ctx2d.fillRect(toX(1.82), toY(1.56), 0.36 * scale, 0.48 * scale);
+
+        // 5. 混音器與 PA 設備機櫃區 (B1 左前) + 雙 PA 主監聽喇叭
+        ctx2d.fillStyle = 'rgba(56, 189, 248, 0.28)'; ctx2d.strokeStyle = '#38bdf8';
+        ctx2d.fillRect(toX(0.20), toY(0.18), 0.65 * scale, 0.95 * scale);
+        ctx2d.strokeRect(toX(0.20), toY(0.18), 0.65 * scale, 0.95 * scale);
+        ctx2d.fillStyle = '#e0f2fe'; ctx2d.fillText('🎛️ 混音機櫃', toX(0.22), toY(0.68));
+        [0.68, 2.92].forEach((py) => {
+          ctx2d.fillStyle = '#38bdf8';
+          ctx2d.fillRect(toX(0.95) - 7, toY(py) - 7, 14, 14);
+        });
+
+        // 6. 外推避雲軌道燈
+        ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
+        [0.55, 3.05].forEach((ty) => {
+          ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
+        });
+        ctx2d.strokeStyle = '#c084fc';
+        ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
+      } else if (STATE.model === 'v02') {
         // 58Hz 中央駐波紅帶 (x=2.95m)
         if (STATE.v02Zones) {
           ctx2d.fillStyle = 'rgba(239, 68, 68, 0.16)';
@@ -1482,13 +1563,6 @@
         });
         ctx2d.strokeStyle = '#c084fc';
         ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
-      } else if (STATE.model === 'v01') {
-        ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
-        [0.72, 2.88].forEach((ty) => {
-          ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
-        });
-        ctx2d.strokeStyle = '#c084fc';
-        ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.70)); ctx2d.lineTo(toX(5.45), toY(2.90)); ctx2d.stroke();
       } else if (STATE.model === 'v0') {
         ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
         [0.90, 2.70].forEach((ty) => {
@@ -1562,15 +1636,25 @@
       STATE.model = modelKey;
       document.querySelectorAll('.model-btn').forEach((b) => b.classList.toggle('active', b.dataset.model === modelKey));
       document.getElementById('panel-v0').style.display = modelKey === 'v0' ? 'flex' : 'none';
-      document.getElementById('panel-v01').style.display = modelKey === 'v01' ? 'flex' : 'none';
       document.getElementById('panel-v02').style.display = modelKey === 'v02' ? 'flex' : 'none';
+      document.getElementById('panel-v03').style.display = modelKey === 'v03' ? 'flex' : 'none';
       document.getElementById('panel-shell').style.display = modelKey === 'shell' ? 'flex' : 'none';
       document.getElementById('struct-sliders').style.display = modelKey === 'v0' ? 'none' : 'flex';
 
       const b3 = document.getElementById('badge-3d');
       const leg = document.getElementById('legend-bar');
 
-      if (modelKey === 'v02') {
+      if (modelKey === 'v03') {
+        b3.innerHTML = `
+          <div><span class="tag" style="background:#059669;">V0.3 練團室版本 (5人全編制)</span><strong>鼓 / Bass / 電吉他 / 鍵盤 / 主唱 ＋ PA 監聽與混音設備區</strong></div>
+          <div>聲學核心：<strong>主唱背對 PA 面向鼓手防回授</strong> ＋ <strong>Bass/吉他音箱左右交叉投射不互蓋</strong> ＋ <strong>梁後巨型低頻陷阱</strong></div>`;
+        leg.innerHTML = `
+          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓 (中軸基準位)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱 (左中交叉投射)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>電吉他音箱 (右中交叉投射)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f43f5e;"></span>主唱 (背對 PA 防回授)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽喇叭 & 混音機櫃區</div>`;
+      } else if (modelKey === 'v02') {
         b3.innerHTML = `
           <div><span class="tag" style="background:#ea580c;">V0.2 爵士鼓教學版本</span><strong>以鼓手聽覺清晰度為核心的聲學黃金擺位 + 錄影三點打光</strong></div>
           <div>黃金位：<strong>鼓椅 x=4.25m, y=1.80m 中軸（面向 A2，避開 58Hz 中央紅區與橫梁壓迫）</strong> ＋ <strong>A1 教材櫃 / B1 剪輯桌 / B2 沙發區</strong></div>`;
@@ -1580,16 +1664,6 @@
           <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽巨型低頻陷阱</div>
           <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>錄影45°交叉主面光(Key/Fill)</div>
           <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後凹槽鼓手輪廓背光(Rim)</div>`;
-      } else if (modelKey === 'v01') {
-        b3.innerHTML = `
-          <div><span class="tag" style="background:#059669;">V0.1 門窗橫梁最佳落地解</span><strong>融合現場結構 × 波動聲學 × EN 12464-1 軌道照明</strong></div>
-          <div>亮點：<strong>梁後 1.0m 凹槽巨型低頻陷阱封平至梁底</strong> ＋ <strong>A2 外開鋁門吸音簾</strong> ＋ <strong>主軌外推 0.72m 避雲止步</strong></div>`;
-        leg.innerHTML = `
-          <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽巨型低頻陷阱(狙擊58-60Hz)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f472b6;"></span>A2 外開鋁門吸音門簾</div>
-          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>外推避雲主軌 4m 線條燈(60%)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>梁前 45° 交叉 COB 面光(25%)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後凹槽短軌背光(15%)</div>`;
       } else if (modelKey === 'v0') {
         b3.innerHTML = `
           <div><span class="tag" style="background:#9333ea;">V0 純理論研究模型</span><strong>理想 5.9m × 3.6m × 2.9m 矩形空間（無門窗橫梁）</strong></div>
@@ -1613,8 +1687,8 @@
     }
 
     document.getElementById('btn-m-v0').addEventListener('click', () => setModel('v0'));
-    document.getElementById('btn-m-v01').addEventListener('click', () => setModel('v01'));
     document.getElementById('btn-m-v02').addEventListener('click', () => setModel('v02'));
+    document.getElementById('btn-m-v03').addEventListener('click', () => setModel('v03'));
     document.getElementById('btn-m-shell').addEventListener('click', () => setModel('shell'));
 
     document.querySelectorAll('.view-btn').forEach((btn) => {
@@ -1643,12 +1717,11 @@
     bindChk('chk-v02-c2', 'v02C2');
     bindChk('chk-v02-c3', 'v02C3');
     bindChk('chk-v02-vis', 'v02Vis');
-    bindChk('chk-v01-superchunk', 'v01Superchunk');
-    bindChk('chk-v01-curtain', 'v01Curtain');
-    bindChk('chk-v01-c1', 'v01C1');
-    bindChk('chk-v01-c2', 'v01C2');
-    bindChk('chk-v01-c3', 'v01C3');
-    bindChk('chk-v01-vis', 'v01Vis');
+    bindChk('chk-v03-rays', 'v03Rays');
+    bindChk('chk-v03-superchunk', 'v03Superchunk');
+    bindChk('chk-v03-c1', 'v03C1');
+    bindChk('chk-v03-c2', 'v03C2');
+    bindChk('chk-v03-c3', 'v03C3');
     bindChk('chk-v0-c1', 'v0C1');
     bindChk('chk-v0-c2', 'v0C2');
     bindChk('chk-v0-c3', 'v0C3');
@@ -1666,7 +1739,7 @@
       rebuildScene();
     });
 
-    setModel('v02');
+    setModel('v03');
     resizeViewports();
     animate();
   </script>
