@@ -1207,48 +1207,51 @@
       desk.position.copy(toWorld(3.35, 1.80, 0.375));
       rootGroup.add(desk);
 
-      // 8. V0 軌道燈 (雙排離牆 0.9m + 前端 0.5m 洗牆軌)
-      const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.8 });
+      // 8. V0 軌道燈 (主軌設於 y=0.68/2.92m 避開吸音雲；線條燈與射燈嚴格錯位零重疊)
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#18202c', metalness: 0.6, roughness: 0.35 });
       const trkZ = ROOM.H - 0.04;
-      [0.90, 2.70].forEach((ty) => {
-        const t = new THREE.Mesh(new THREE.BoxGeometry(4.80, 0.035, 0.045), trkMat);
+      [0.68, 2.92].forEach((ty) => {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.60, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(3.00, ty, trkZ));
         rootGroup.add(t);
       });
-      const fTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 3.00), trkMat);
+      const fTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
       fTrk.position.copy(toWorld(0.50, ROOM.W / 2, trkZ));
       rootGroup.add(fTrk);
 
+      // 迴路一：1.0m 線條燈 (前段 x=1.45~2.45m, 後段 x=3.55~4.55m，與射燈完全錯開)
       if (STATE.v0C1) {
-        const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
-        [1.85, 4.15].forEach((lx) => [0.90, 2.70].forEach((ly) => {
-          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
-          b.position.copy(toWorld(lx, ly, trkZ - 0.03));
+        const linMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#e2e8f0', emissiveIntensity: 0.4 });
+        [1.95, 4.05].forEach((lx) => [0.68, 2.92].forEach((ly) => {
+          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
+          b.position.copy(toWorld(lx, ly, trkZ - 0.035));
           rootGroup.add(b);
-          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.95, 0x38bdf8, 0.08));
+          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.90, 0x38bdf8, 0.06));
         }));
       }
+      // 迴路二：前端洗牆軌偏光洗牆燈 (x=0.50m, y=1.30/2.30m)
       if (STATE.v0C2) {
-        const wMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#e879f9', emissiveIntensity: 1.2 });
+        const wMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 });
         [1.30, 2.30].forEach((wy) => {
-          const sV = toWorld(0.50, wy, trkZ - 0.07), tV = toWorld(0.02, wy, 1.45);
-          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), wMat);
+          const sV = toWorld(0.50, wy, trkZ - 0.08), tV = toWorld(0.02, wy, 1.45);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), wMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), 0.55, 0xe879f9, 0.18));
+          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), 0.50, 0xe879f9, 0.07));
         });
       }
+      // 迴路三：COB 射燈 (設於 x=1.00m 與 x=3.00m，與線條燈保持 >= 45cm 完整淨空)
       if (STATE.v0C3) {
-        const cMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
+        const cMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
         [
-          { x: 1.35, y: 0.90, tx: 0.85, ty: 1.80, tz: 1.55 },
-          { x: 1.35, y: 2.70, tx: 0.85, ty: 1.80, tz: 1.55 },
-          { x: 3.10, y: 0.90, tx: 3.45, ty: 1.80, tz: 0.75 },
-          { x: 3.10, y: 2.70, tx: 3.45, ty: 1.80, tz: 0.75 }
+          { x: 1.00, y: 0.68, tx: 0.85, ty: 1.80, tz: 1.55 },
+          { x: 1.00, y: 2.92, tx: 0.85, ty: 1.80, tz: 1.55 },
+          { x: 3.00, y: 0.68, tx: 3.45, ty: 1.80, tz: 0.75 },
+          { x: 3.00, y: 2.92, tx: 3.45, ty: 1.80, tz: 0.75 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
-          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cMat);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.325, 0xf59e0b, 0.15));
+          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.30, 0xf59e0b, 0.07));
         });
       }
 
@@ -1434,10 +1437,10 @@
         addDashLine(toWorld(2.75, 3.18, 0.55), toWorld(2.35, 1.05, 1.25), 0xef4444);
       }
 
-      // 5. V0.3 練團室避雲外推軌道照明
-      const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.85 });
+      // 5. V2 練團室避雲外推軌道照明 (主軌 y=0.50/3.10m，與吸音雲 y=0.70~2.90m 淨空 >= 20cm；燈具嚴格錯位零重疊)
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#18202c', metalness: 0.6, roughness: 0.35 });
       const trkZ = ROOM.H - 0.04;
-      [0.55, 3.05].forEach((ty) => {
+      [0.50, 3.10].forEach((ty) => {
         const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
@@ -1447,32 +1450,34 @@
       backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
       rootGroup.add(backTrk);
 
+      // 迴路一：1.0m 線條燈 (前段 x=0.80~1.80m, 後段 x=2.70~3.70m)
       if (STATE.v03C1) {
-        const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
-        [1.45, 3.30].forEach((lx) => [0.55, 3.05].forEach((ly) => {
-          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
-          b.position.copy(toWorld(lx, ly, trkZ - 0.03));
+        const linMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#e2e8f0', emissiveIntensity: 0.4 });
+        [1.30, 3.20].forEach((lx) => [0.50, 3.10].forEach((ly) => {
+          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
+          b.position.copy(toWorld(lx, ly, trkZ - 0.035));
           rootGroup.add(b);
         }));
       }
+      // 迴路二：COB 射燈 (設於 x=2.25m 與 x=4.25m，與線條燈保持 >= 45cm 淨空零重疊)
       if (STATE.v03C2) {
-        const cobMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
+        const cobMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
         [
-          { x: 2.50, y: 0.55, tx: 2.55, ty: 1.05, tz: 1.15 },
-          { x: 2.50, y: 3.05, tx: 2.50, ty: 2.75, tz: 1.00 },
-          { x: 3.70, y: 0.55, tx: 4.10, ty: 1.80, tz: 0.90 },
-          { x: 3.70, y: 3.05, tx: 4.10, ty: 1.80, tz: 0.90 }
+          { x: 2.25, y: 0.50, tx: 2.55, ty: 1.05, tz: 1.15 },
+          { x: 2.25, y: 3.10, tx: 2.50, ty: 2.75, tz: 1.00 },
+          { x: 4.25, y: 0.50, tx: 4.10, ty: 1.80, tz: 0.90 },
+          { x: 4.25, y: 3.10, tx: 4.10, ty: 1.80, tz: 0.90 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
-          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cobMat);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cobMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v03Rays) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.30, 0xf59e0b, 0.12));
+          if (STATE.v03Rays) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.28, 0xf59e0b, 0.07));
         });
       }
       if (STATE.v03C3) {
-        const rimMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#c084fc', emissiveIntensity: 1.2 });
+        const rimMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 });
         [1.10, 2.50].forEach((ry) => {
-          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), rimMat);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), rimMat);
           c.position.copy(toWorld(5.45, ry, backTrkZ - 0.08));
           rootGroup.add(c);
         });
@@ -1623,10 +1628,10 @@
         });
       }
 
-      // 7. V0.2 影棚級三點打光 + 日常教學外推主軌道 (y=0.55m & y=3.05m 避開寬 2.2m 鼓組大吸音雲，於橫梁前止步)
-      const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.85 });
+      // 7. V1 鼓教室避雲外推主軌道 (y=0.50/3.10m，與吸音雲保持 >= 20cm 水平淨空；線條燈與射燈嚴格錯位零重疊)
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#18202c', metalness: 0.6, roughness: 0.35 });
       const trkZ = ROOM.H - 0.04;
-      [0.55, 3.05].forEach((ty) => {
+      [0.50, 3.10].forEach((ty) => {
         const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
@@ -1636,42 +1641,42 @@
       backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
       rootGroup.add(backTrk);
 
-      // 迴路一：外推避雲防眩線條燈 (日常教學、剪輯與練鼓均勻光)
+      // 迴路一：1.0m 線條燈 (前段 x=0.80~1.80m, 後段 x=2.70~3.70m)
       if (STATE.v02C1) {
-        const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
-        [1.45, 3.30].forEach((lx) => [0.55, 3.05].forEach((ly) => {
-          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
-          b.position.copy(toWorld(lx, ly, trkZ - 0.03));
+        const linMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#e2e8f0', emissiveIntensity: 0.4 });
+        [1.30, 3.20].forEach((lx) => [0.50, 3.10].forEach((ly) => {
+          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
+          b.position.copy(toWorld(lx, ly, trkZ - 0.035));
           rootGroup.add(b);
-          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.95, 0x38bdf8, 0.07));
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.90, 0x38bdf8, 0.06));
         }));
       }
-      // 迴路二：錄影主面光與側補光 (Key + Fill: 鼓組前 45° 交叉 COB 射燈 × 4)
+      // 迴路二：COB 射燈 (設於 x=2.25m 與 x=4.25m，與線條燈保持 >= 45cm 淨空零重疊)
       if (STATE.v02C2) {
-        const cobMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
+        const cobMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
         [
-          { x: 2.75, y: 0.55, tx: 4.10, ty: 1.80, tz: 1.15 }, // 左前 45° 主面光
-          { x: 2.75, y: 3.05, tx: 4.10, ty: 1.80, tz: 1.15 }, // 右前 45° 側補光
-          { x: 3.65, y: 0.55, tx: 3.95, ty: 1.80, tz: 0.70 }, // 鼓面與小鼓特寫光
-          { x: 3.65, y: 3.05, tx: 3.95, ty: 1.80, tz: 0.70 }
+          { x: 2.25, y: 0.50, tx: 4.10, ty: 1.80, tz: 1.15 },
+          { x: 2.25, y: 3.10, tx: 4.10, ty: 1.80, tz: 1.15 },
+          { x: 4.25, y: 0.50, tx: 3.95, ty: 1.80, tz: 0.70 },
+          { x: 4.25, y: 3.10, tx: 3.95, ty: 1.80, tz: 0.70 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
-          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cobMat);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cobMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.325, 0xf59e0b, 0.16));
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.28, 0xf59e0b, 0.07));
         });
       }
-      // 迴路三：梁後凹槽鼓手輪廓背光 (Rim Light × 2) + 客廳沙發暖光
+      // 迴路三：梁後凹槽背光射燈 × 2 (x=5.45m, y=1.10/2.50m)
       if (STATE.v02C3) {
-        const rimMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#c084fc', emissiveIntensity: 1.2 });
+        const rimMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 });
         [
-          { x: 5.45, y: 1.10, tx: 4.25, ty: 1.80, tz: 1.25 }, // 左後髮絲/肩膀輪廓光
-          { x: 5.45, y: 2.50, tx: 4.25, ty: 1.80, tz: 1.25 }  // 右後輪廓光 + 洗亮 A1 背景
+          { x: 5.45, y: 1.10, tx: 4.25, ty: 1.80, tz: 1.25 },
+          { x: 5.45, y: 2.50, tx: 4.25, ty: 1.80, tz: 1.25 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
-          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), rimMat);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), rimMat);
           c.position.copy(sV); rootGroup.add(c);
-          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0., 0, 0.18));
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.30, 0xc084fc, 0.07));
         });
       }
 
