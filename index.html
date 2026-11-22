@@ -1081,10 +1081,10 @@
       rootGroup.add(doorFrame);
       wallMeshes.A2.push(doorFrame);
 
-      // 外開門扇 (鉸鏈位於 y = 3.50m 靠 B2 側，向外 -X 旋轉)
+      // 外開門扇 (鉸鏈位於 y = 3.50m 靠 B2 側，繞 +Y 正角度旋轉即向外 -X 開啟，與地面外開弧線吻合)
       const doorPivot = new THREE.Group();
       doorPivot.position.copy(toWorld(-0.02, ROOM.DOOR_Y_START + ROOM.DOOR_W, 0));
-      doorPivot.rotation.y = -THREE.MathUtils.degToRad(STATE.doorAngle);
+      doorPivot.rotation.y = THREE.MathUtils.degToRad(STATE.doorAngle);
 
       const lowerLeaf = new THREE.Mesh(
         new THREE.BoxGeometry(0.04, 1.05, ROOM.DOOR_W),
