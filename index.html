@@ -547,12 +547,12 @@
     </div>
 
     <div class="header-controls">
-      <!-- 四大核心模型切換器 (V0 / V1 / V2 / 純空間) -->
+      <!-- 四大核心模型切換器 (純空間 -> V0 -> V1 -> V2) -->
       <div class="model-switcher">
+        <button class="model-btn" data-model="shell" id="btn-m-shell">純空間</button>
         <button class="model-btn" data-model="v0" id="btn-m-v0">V0 理論</button>
         <button class="model-btn" data-model="v1" id="btn-m-v1">V1 鼓教室</button>
         <button class="model-btn active" data-model="v2" id="btn-m-v2">V2 練團室</button>
-        <button class="model-btn" data-model="shell" id="btn-m-shell">純空間</button>
       </div>
 
       <div class="view-switcher">
@@ -623,7 +623,7 @@
             <input type="checkbox" id="chk-v02-superchunk" checked />
           </label>
           <label class="toggle-item">
-            <span>迴路一：主軌防眩線條燈 (y=0.55 / 3.05m)</span>
+            <span>迴路一：主軌防眩線條燈 (y=0.85 / 2.75m, 軌距 1.9m)</span>
             <input type="checkbox" id="chk-v02-c1" checked />
           </label>
           <label class="toggle-item">
@@ -689,7 +689,7 @@
             <input type="checkbox" id="chk-v03-superchunk" checked />
           </label>
           <label class="toggle-item">
-            <span>迴路一：主軌防眩線條燈 (y=0.55 / 3.05m)</span>
+            <span>迴路一：主軌防眩線條燈 (y=0.85 / 2.75m, 軌距 1.9m)</span>
             <input type="checkbox" id="chk-v03-c1" checked />
           </label>
           <label class="toggle-item">
@@ -1180,9 +1180,9 @@
         addBoxWithEdge(0.55, 1.10, 0.12, px, ROOM.W - 0.06, 1.35, diffMat, 0xfbbf24);
       });
 
-      // 5. 天花板 RFZ 吸音雲 (x=2.4~3.3m, 寬 2.0m, 降 10cm)
+      // 5. 天花板 RFZ 吸音雲 (x=2.4~3.3m, 總寬 1.60m [y=1.00~2.60m] 精準嵌於 1.80m 雙主軌之間，零遮擋)
       const cloudZ = ROOM.H - 0.15;
-      [1.15, 1.80, 2.45].forEach((cy) => addBoxWithEdge(0.90, 0.10, 0.62, 2.85, cy, cloudZ, panelMat));
+      [1.27, 1.80, 2.33].forEach((cy) => addBoxWithEdge(0.90, 0.10, 0.50, 2.85, cy, cloudZ, panelMat));
 
       // 6. 後牆 N=7 1D QRD 擴散板 (最大井深 19.6cm) + 150mm 吸音邊框
       const wells = [0.02, 0.05, 0.19, 0.09, 0.09, 0.19, 0.05];
@@ -1207,29 +1207,29 @@
       desk.position.copy(toWorld(3.35, 1.80, 0.375));
       rootGroup.add(desk);
 
-      // 8. V0 軌道燈 (主軌設於 y=0.68/2.92m 避開吸音雲；線條燈與射燈嚴格錯位零重疊)
+      // 8. V0 軌道燈 (嚴格依報告：雙主軌離側牆 0.90m / 軌距 1.80m / 長 4.80m + 前端 3.00m 洗牆軌距前牆 0.50m)
       const trkMat = new THREE.MeshStandardMaterial({ color: '#18202c', metalness: 0.6, roughness: 0.35 });
       const trkZ = ROOM.H - 0.04;
-      [0.68, 2.92].forEach((ty) => {
-        const t = new THREE.Mesh(new THREE.BoxGeometry(4.60, 0.035, 0.045), trkMat);
+      [0.90, 2.70].forEach((ty) => {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.80, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(3.00, ty, trkZ));
         rootGroup.add(t);
       });
-      const fTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
+      const fTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 3.00), trkMat);
       fTrk.position.copy(toWorld(0.50, ROOM.W / 2, trkZ));
       rootGroup.add(fTrk);
 
-      // 迴路一：1.0m 線條燈 (前段 x=1.45~2.45m, 後段 x=3.55~4.55m，與射燈完全錯開)
+      // 迴路一 (60% | 128.5W)：1.0m 線條燈 × 4 (x=1.65~2.65m 與 x=3.70~4.70m，與射燈完全零重疊)
       if (STATE.v0C1) {
         const linMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#e2e8f0', emissiveIntensity: 0.4 });
-        [1.95, 4.05].forEach((lx) => [0.68, 2.92].forEach((ly) => {
+        [2.15, 4.20].forEach((lx) => [0.90, 2.70].forEach((ly) => {
           const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
           b.position.copy(toWorld(lx, ly, trkZ - 0.035));
           rootGroup.add(b);
           if (STATE.v0Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.90, 0x38bdf8, 0.06));
         }));
       }
-      // 迴路二：前端洗牆軌偏光洗牆燈 (x=0.50m, y=1.30/2.30m)
+      // 迴路二 (15% | 32.1W)：前端洗牆軌 30° 偏光洗牆燈 × 2 (x=0.50m, y=1.30/2.30m)
       if (STATE.v0C2) {
         const wMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 });
         [1.30, 2.30].forEach((wy) => {
@@ -1239,14 +1239,14 @@
           if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), 0.50, 0xe879f9, 0.07));
         });
       }
-      // 迴路三：COB 射燈 (設於 x=1.00m 與 x=3.00m，與線條燈保持 >= 45cm 完整淨空)
+      // 迴路三 (25% | 53.5W)：COB 36° 射燈 × 4 (講者面部補光嚴格位於報告規範 x=1.35m [1.2~1.5m]；後作業射燈位於 x=3.15m，與線條燈淨空 >= 30cm)
       if (STATE.v0C3) {
         const cMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
         [
-          { x: 1.00, y: 0.68, tx: 0.85, ty: 1.80, tz: 1.55 },
-          { x: 1.00, y: 2.92, tx: 0.85, ty: 1.80, tz: 1.55 },
-          { x: 3.00, y: 0.68, tx: 3.45, ty: 1.80, tz: 0.75 },
-          { x: 3.00, y: 2.92, tx: 3.45, ty: 1.80, tz: 0.75 }
+          { x: 1.35, y: 0.90, tx: 0.85, ty: 1.80, tz: 1.55 },
+          { x: 1.35, y: 2.70, tx: 0.85, ty: 1.80, tz: 1.55 },
+          { x: 3.15, y: 0.90, tx: 3.45, ty: 1.80, tz: 0.75 },
+          { x: 3.15, y: 2.70, tx: 3.45, ty: 1.80, tz: 0.75 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cMat);
@@ -1315,13 +1315,13 @@
 
       // 3. 全室 24 片 60×120×5cm 吸音板 (離牆 7.5cm，嚴格壓制高音壓練團室 RT60 至 0.30~0.38s)
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
-      // 鼓組與中央練團區正上方大型吸音雲 (6 片，x=3.10~4.65m，壓制銅鈸與全團高頻互蓋)
+      // 鼓組與中央練團區正上方大型吸音雲 (6 片緊密拼裝總寬 1.60m [y=1.00~2.60m]，精準嵌於 y=0.85/2.75m 雙主軌內側，兩側各留 15cm 淨空)
       const cloudZ = ROOM.H - 0.18 - pT / 2;
-      [3.45, 4.15].forEach((cx) => [1.05, 1.80, 2.55].forEach((cy) => {
-        addBoxWithEdge(pW, pT, pH * 0.58, cx, cy, cloudZ, panelMat, 0x34d399);
+      [3.45, 4.15].forEach((cx) => [1.27, 1.80, 2.33].forEach((cy) => {
+        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0x34d399);
         const pts = [
-          toWorld(cx - 0.25, cy - 0.28, ROOM.H), toWorld(cx - 0.25, cy - 0.28, cloudZ + pT / 2),
-          toWorld(cx + 0.25, cy + 0.28, ROOM.H), toWorld(cx + 0.25, cy + 0.28, cloudZ + pT / 2)
+          toWorld(cx - 0.25, cy - 0.22, ROOM.H), toWorld(cx - 0.25, cy - 0.22, cloudZ + pT / 2),
+          toWorld(cx + 0.25, cy + 0.22, ROOM.H), toWorld(cx + 0.25, cy + 0.22, cloudZ + pT / 2)
         ];
         rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
       }));
@@ -1437,10 +1437,10 @@
         addDashLine(toWorld(2.75, 3.18, 0.55), toWorld(2.35, 1.05, 1.25), 0xef4444);
       }
 
-      // 5. V2 練團室避雲外推軌道照明 (主軌 y=0.50/3.10m，與吸音雲 y=0.70~2.90m 淨空 >= 20cm；燈具嚴格錯位零重疊)
+      // 5. V2 練團室軌道照明 (依報告黃金軌距 y=0.85/2.75m [軌距 1.90m]，與吸音雲 y=1.00~2.60m 保持 15cm 淨空；燈具嚴格錯位零重疊)
       const trkMat = new THREE.MeshStandardMaterial({ color: '#18202c', metalness: 0.6, roughness: 0.35 });
       const trkZ = ROOM.H - 0.04;
-      [0.50, 3.10].forEach((ty) => {
+      [0.85, 2.75].forEach((ty) => {
         const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
@@ -1453,7 +1453,7 @@
       // 迴路一：1.0m 線條燈 (前段 x=0.80~1.80m, 後段 x=2.70~3.70m)
       if (STATE.v03C1) {
         const linMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#e2e8f0', emissiveIntensity: 0.4 });
-        [1.30, 3.20].forEach((lx) => [0.50, 3.10].forEach((ly) => {
+        [1.30, 3.20].forEach((lx) => [0.85, 2.75].forEach((ly) => {
           const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
           b.position.copy(toWorld(lx, ly, trkZ - 0.035));
           rootGroup.add(b);
@@ -1463,10 +1463,10 @@
       if (STATE.v03C2) {
         const cobMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
         [
-          { x: 2.25, y: 0.50, tx: 2.55, ty: 1.05, tz: 1.15 },
-          { x: 2.25, y: 3.10, tx: 2.50, ty: 2.75, tz: 1.00 },
-          { x: 4.25, y: 0.50, tx: 4.10, ty: 1.80, tz: 0.90 },
-          { x: 4.25, y: 3.10, tx: 4.10, ty: 1.80, tz: 0.90 }
+          { x: 2.25, y: 0.85, tx: 2.55, ty: 1.05, tz: 1.15 },
+          { x: 2.25, y: 2.75, tx: 2.50, ty: 2.75, tz: 1.00 },
+          { x: 4.25, y: 0.85, tx: 4.10, ty: 1.80, tz: 0.90 },
+          { x: 4.25, y: 2.75, tx: 4.10, ty: 1.80, tz: 0.90 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cobMat);
@@ -1542,13 +1542,13 @@
 
       // 4. 24 片 60×120×5cm 吸音板 (離牆空腔 7.5cm) — 專為「鼓手聽覺清晰度」重新配重！
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
-      // (a) 鼓組正上方大型懸吊吸音雲 × 6 片 (1.80m × 2.40m, 覆蓋 x=3.10~4.65m, y=0.70~2.90m, 鋼索垂降 18cm，避開 x=4.90m 橫梁)
+      // (a) 鼓組正上方大型懸吊吸音雲 × 6 片 (總寬 1.60m [y=1.00~2.60m]，精準嵌於 y=0.85/2.75m 雙主軌內側，兩側各留 15cm 淨空)
       const cloudZ = ROOM.H - 0.18 - pT / 2;
-      [3.45, 4.15].forEach((cx) => [1.05, 1.80, 2.55].forEach((cy) => {
-        addBoxWithEdge(pW, pT, pH * 0.58, cx, cy, cloudZ, panelMat, 0xfbbf24);
+      [3.45, 4.15].forEach((cx) => [1.27, 1.80, 2.33].forEach((cy) => {
+        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0xfbbf24);
         const pts = [
-          toWorld(cx - 0.25, cy - 0.28, ROOM.H), toWorld(cx - 0.25, cy - 0.28, cloudZ + pT / 2),
-          toWorld(cx + 0.25, cy + 0.28, ROOM.H), toWorld(cx + 0.25, cy + 0.28, cloudZ + pT / 2)
+          toWorld(cx - 0.25, cy - 0.22, ROOM.H), toWorld(cx - 0.25, cy - 0.22, cloudZ + pT / 2),
+          toWorld(cx + 0.25, cy + 0.22, ROOM.H), toWorld(cx + 0.25, cy + 0.22, cloudZ + pT / 2)
         ];
         rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
       }));
@@ -1628,10 +1628,10 @@
         });
       }
 
-      // 7. V1 鼓教室避雲外推主軌道 (y=0.50/3.10m，與吸音雲保持 >= 20cm 水平淨空；線條燈與射燈嚴格錯位零重疊)
+      // 7. V1 鼓教室軌道照明 (依報告黃金軌距 y=0.85/2.75m [軌距 1.90m]，與吸音雲 y=1.00~2.60m 保持 15cm 淨空；燈具嚴格錯位零重疊)
       const trkMat = new THREE.MeshStandardMaterial({ color: '#18202c', metalness: 0.6, roughness: 0.35 });
       const trkZ = ROOM.H - 0.04;
-      [0.50, 3.10].forEach((ty) => {
+      [0.85, 2.75].forEach((ty) => {
         const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
@@ -1644,7 +1644,7 @@
       // 迴路一：1.0m 線條燈 (前段 x=0.80~1.80m, 後段 x=2.70~3.70m)
       if (STATE.v02C1) {
         const linMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#e2e8f0', emissiveIntensity: 0.4 });
-        [1.30, 3.20].forEach((lx) => [0.50, 3.10].forEach((ly) => {
+        [1.30, 3.20].forEach((lx) => [0.85, 2.75].forEach((ly) => {
           const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
           b.position.copy(toWorld(lx, ly, trkZ - 0.035));
           rootGroup.add(b);
@@ -1655,10 +1655,10 @@
       if (STATE.v02C2) {
         const cobMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
         [
-          { x: 2.25, y: 0.50, tx: 4.10, ty: 1.80, tz: 1.15 },
-          { x: 2.25, y: 3.10, tx: 4.10, ty: 1.80, tz: 1.15 },
-          { x: 4.25, y: 0.50, tx: 3.95, ty: 1.80, tz: 0.70 },
-          { x: 4.25, y: 3.10, tx: 3.95, ty: 1.80, tz: 0.70 }
+          { x: 2.25, y: 0.85, tx: 4.10, ty: 1.80, tz: 1.15 },
+          { x: 2.25, y: 2.75, tx: 4.10, ty: 1.80, tz: 1.15 },
+          { x: 4.25, y: 0.85, tx: 3.95, ty: 1.80, tz: 0.70 },
+          { x: 4.25, y: 2.75, tx: 3.95, ty: 1.80, tz: 0.70 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cobMat);
@@ -1809,7 +1809,7 @@
         ctx2d.fillStyle = '#1d4ed8'; ctx2d.fillText('PA 監聽喇叭 (x=3.65m)', toX(3.25), toY(0.32));
 
         ctx2d.strokeStyle = '#64748b'; ctx2d.lineWidth = 1.8;
-        [0.55, 3.05].forEach((ty) => {
+        [0.85, 2.75].forEach((ty) => {
           ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
         });
         ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
@@ -1844,7 +1844,7 @@
         ctx2d.fillRect(toX(1.55), toY(2.05), 0.90 * scale, 0.50 * scale);
 
         ctx2d.strokeStyle = '#64748b'; ctx2d.lineWidth = 1.8;
-        [0.55, 3.05].forEach((ty) => {
+        [0.85, 2.75].forEach((ty) => {
           ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
         });
         ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
