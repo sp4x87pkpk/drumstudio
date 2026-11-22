@@ -390,30 +390,30 @@
 
         <div class="metrics-grid">
           <div class="metric-box">
-            <div class="metric-label">防回授核心配置</div>
-            <div class="metric-val" style="color:#34d399;">主唱背對 PA / 面向鼓</div>
+            <div class="metric-label">防回授＋主唱監聽解</div>
+            <div class="metric-val" style="color:#34d399;">PA 在鼓兩側直射主唱</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">麥克風 180° 零收音角</div>
+            <div class="metric-val" style="color:#38bdf8;">屁股正對 PA 零回授</div>
           </div>
           <div class="metric-box">
             <div class="metric-label">低頻解耦合距離</div>
-            <div class="metric-val" style="color:#38bdf8;">Bass 音箱離牆角 ≥1.2m</div>
+            <div class="metric-val" style="color:#fbbf24;">Bass 音箱離牆角 ≥1.2m</div>
           </div>
           <div class="metric-box">
             <div class="metric-label">目標混響 RT60</div>
-            <div class="metric-val" style="color:#fbbf24;">0.30 ~ 0.38s (控音壓)</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">編制與動線</div>
-            <div class="metric-val" style="color:#c084fc;">鼓/貝/吉/鍵/主唱+PA</div>
+            <div class="metric-val" style="color:#c084fc;">0.30 ~ 0.38s (控音壓)</div>
           </div>
         </div>
 
         <div class="spec-box">
-          <strong style="color:#34d399;">🎯 練團室聲學黃金擺位邏輯（防回授＋不互蓋）：</strong><br/>
-          1. <strong>爵士鼓 (x=4.35m, y=1.80m 中軸面向 A2)</strong>：鎖定全室最大聲源在橫梁前方中軸，頭頂直吊 6 片大吸音雲，背後梁後凹槽填滿 45cm 巨型低頻陷阱。<br/>
-          2. <strong>貝斯音箱 (B1 左中 x=3.15m) 與電吉他音箱 (B2 右中 x=3.15m)</strong>：置於左右兩側**斜角對向鼓手與對側樂手（交叉投射）**，避免直射自己膝蓋造成音量越轉越大聲，同時遠離牆角防 58Hz 轟鳴！<br/>
-          3. <strong>鍵盤手 (B2 右前中 x=2.05m)</strong>：聲音進 PA 混音器，與吉他同側互補頻段。<br/>
-          4. <strong>主唱麥克風 (x=1.45m, y=1.80m，背對 A2 面向鼓手)</strong>：PA 主喇叭架於前兩側 (x=0.85m, y=0.65/2.95m) 斜向中央，心型指向麥克風「零收音背面」正好朝向 PA 與兩側音箱，<strong>徹底根除主唱麥克風回授 (Feedback)</strong>！<br/>
-          5. <strong>混音器與 PA 設備機櫃區 (B1 左前 x=0.60m, y=0.55m)</strong>：緊鄰 A2 門左實牆，避開右側外開鋁門動線，方便集中走線與調整總音場。
+          <strong style="color:#34d399;">🎯 V0.3 解法 A 聲學黃金擺位（主唱聽最清楚＋零回授）：</strong><br/>
+          1. <strong>爵士鼓 (x=4.20m, y=1.80m 中軸面向 A2)</strong>：全室基準核心，頭頂直吊 6 片大吸音雲，背後梁後凹槽填滿 45cm 巨型低頻陷阱。<br/>
+          2. <strong>★ PA 主監聽喇叭一對（移至鼓組左右前緣 x=3.65m, y=0.48m & 3.12m）</strong>：高腳架升至耳高以上，<strong>斜前方 (-X) 直接投射主唱、貝斯、吉他與鍵盤手</strong>！主唱面向鼓手唱歌時，人聲直射雙耳聽最清楚，同時心型麥克風「180° 零收音屁股」正好對準 PA 喇叭，徹底防回授！<br/>
+          3. <strong>貝斯音箱 (B1 左中 x=2.75m) 與電吉他音箱 (B2 右中 x=2.75m)</strong>：斜角交叉投射對側樂手與鼓手，遠離牆角防 58Hz 轟鳴。<br/>
+          4. <strong>鍵盤手 (B2 右前中 x=1.75m)</strong>：訊號進 PA 混音器，與吉他同側互補。<br/>
+          5. <strong>主唱 (x=1.40m, y=1.80m，背對 A2 面向鼓手)</strong> ＋ <strong>混音器與設備機櫃區 (B1 左前 x=0.55m)</strong>：前入口區完全淨空好進出！
         </div>
 
         <div class="toggle-list">
@@ -1051,35 +1051,33 @@
       kit.add(rug, kick, throne, snare, fTom, c1, c2);
       rootGroup.add(kit);
 
-      // (b) 貝斯音箱 Bass Amp (靠 B1 左中段 x=3.10m, y=0.42m，遠離牆角防 58Hz 轟鳴，墊高並斜向中央鼓手/吉他手)
+      // (b) 貝斯音箱 Bass Amp (靠 B1 左中段 x=2.75m, y=0.42m，遠離牆角防 58Hz 轟鳴，斜射中央鼓手與對側)
       const bassAmp = new THREE.Mesh(
         new THREE.BoxGeometry(0.58, 0.85, 0.46),
         new THREE.MeshStandardMaterial({ color: '#1e3a8a', roughness: 0.6 })
       );
-      bassAmp.position.copy(toWorld(3.10, 0.42, 0.425));
-      bassAmp.rotation.y = THREE.MathUtils.degToRad(-28); // 斜射向房間中央與對側
+      bassAmp.position.copy(toWorld(2.75, 0.42, 0.425));
+      bassAmp.rotation.y = THREE.MathUtils.degToRad(-28);
       rootGroup.add(bassAmp);
-      // 貝斯手站位圓環 (站在音箱斜前方 x=2.65m, y=1.10m，清楚聽見大鼓與自己音箱)
       const bassSpot = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.28, 24), new THREE.MeshBasicMaterial({ color: 0x3b82f6, side: THREE.DoubleSide }));
-      bassSpot.rotation.x = -Math.PI / 2; bassSpot.position.copy(toWorld(2.55, 1.05, 0.015));
+      bassSpot.rotation.x = -Math.PI / 2; bassSpot.position.copy(toWorld(2.35, 1.05, 0.015));
       rootGroup.add(bassSpot);
 
-      // (c) 電吉他音箱 Guitar Amp (靠 B2 右中段 x=3.10m, y=3.18m，斜角朝向中央與對側貝斯手，避免直射吉他手膝蓋)
+      // (c) 電吉他音箱 Guitar Amp (靠 B2 右中段 x=2.75m, y=3.18m，斜角朝向中央與對側貝斯手)
       const gtrAmp = new THREE.Mesh(
         new THREE.BoxGeometry(0.62, 0.72, 0.36),
         new THREE.MeshStandardMaterial({ color: '#991b1b', roughness: 0.6 })
       );
-      gtrAmp.position.copy(toWorld(3.10, 3.18, 0.36));
+      gtrAmp.position.copy(toWorld(2.75, 3.18, 0.36));
       gtrAmp.rotation.y = THREE.MathUtils.degToRad(28);
       rootGroup.add(gtrAmp);
-      // 電吉他手站位圓環 (x=2.75m, y=2.55m)
       const gtrSpot = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.28, 24), new THREE.MeshBasicMaterial({ color: 0xef4444, side: THREE.DoubleSide }));
-      gtrSpot.rotation.x = -Math.PI / 2; gtrSpot.position.copy(toWorld(2.85, 2.55, 0.015));
+      gtrSpot.rotation.x = -Math.PI / 2; gtrSpot.position.copy(toWorld(2.55, 2.55, 0.015));
       rootGroup.add(gtrSpot);
 
-      // (d) 鍵盤手 Keyboard + X型架 (靠 B2 右前中段 x=1.95m, y=2.95m，面向房間中央與鼓手，聲音進 PA 混音器)
+      // (d) 鍵盤手 Keyboard + X型架 (靠 B2 右前中段 x=1.75m, y=2.95m，面向房間中央與鼓手)
       const kbGroup = new THREE.Group();
-      kbGroup.position.copy(toWorld(1.90, 2.95, 0));
+      kbGroup.position.copy(toWorld(1.75, 2.95, 0));
       kbGroup.rotation.y = THREE.MathUtils.degToRad(15);
       const kbBody = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.10, 0.38), new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.35 }));
       kbBody.position.set(0, 0.82, 0);
@@ -1090,51 +1088,49 @@
       kbGroup.add(kbBody, kbKeys, kbStand);
       rootGroup.add(kbGroup);
 
-      // (e) 主唱位置與心型指向麥克風架 (x=1.45m, y=1.80m，★ 背對 A2 與 PA 喇叭、面向鼓手與團員，徹底防回授！)
+      // (e) 主唱位置與心型指向麥克風架 (x=1.40m, y=1.80m，背對 A2 面向鼓手，麥克風屁股 180° 零收音角正好對準鼓兩側 PA 喇叭！)
       const micStand = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.14, 1.45, 12), new THREE.MeshStandardMaterial({ color: '#94a3b8' }));
-      micStand.position.copy(toWorld(1.55, 1.80, 0.725));
+      micStand.position.copy(toWorld(1.50, 1.80, 0.725));
       const micHead = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12), new THREE.MeshStandardMaterial({ color: '#f43f5e', emissive: '#f43f5e', emissiveIntensity: 0.6 }));
-      micHead.position.copy(toWorld(1.50, 1.80, 1.48));
+      micHead.position.copy(toWorld(1.45, 1.80, 1.48));
       const vocalSpot = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.28, 24), new THREE.MeshBasicMaterial({ color: 0xf43f5e, side: THREE.DoubleSide }));
-      vocalSpot.rotation.x = -Math.PI / 2; vocalSpot.position.copy(toWorld(1.25, 1.80, 0.015));
+      vocalSpot.rotation.x = -Math.PI / 2; vocalSpot.position.copy(toWorld(1.22, 1.80, 0.015));
       rootGroup.add(micStand, micHead, vocalSpot);
 
-      // (f) 主 PA / 監聽喇叭一對 (架設於前兩側高腳架 x=0.85m, y=0.68m & y=2.92m，斜向房間中後區投射主唱與鍵盤)
-      // + 地面舞台監聽楔型喇叭 (Floor Monitor Wedge) 位於主唱前下方 (x=1.85m, y=1.80m 朝向主唱耳朵)
-      [0.68, 2.92].forEach((py, i) => {
-        const paStand = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.22, 1.35, 12), new THREE.MeshStandardMaterial({ color: '#334155' }));
-        paStand.position.copy(toWorld(0.95, py, 0.675));
-        const paCab = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.58, 0.34), new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.5 }));
-        paCab.position.copy(toWorld(0.95, py, 1.62));
-        paCab.rotation.y = THREE.MathUtils.degToRad(i === 0 ? -25 : 25);
+      // (f) ★ 解法 A：主 PA / 監聽喇叭一對移至鼓組左右前緣 (x=3.65m, y=0.48m & y=3.12m)
+      // 高腳架升至 1.70m，朝前下方 (-X) 45° 對準主唱雙耳與全團中前區！
+      [0.48, 3.12].forEach((py, i) => {
+        const paStand = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.22, 1.40, 12), new THREE.MeshStandardMaterial({ color: '#334155' }));
+        paStand.position.copy(toWorld(3.65, py, 0.70));
+        const paCab = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.58, 0.34), new THREE.MeshStandardMaterial({ color: '#0284c7', roughness: 0.45 }));
+        paCab.position.copy(toWorld(3.65, py, 1.68));
+        paCab.rotation.y = THREE.MathUtils.degToRad(i === 0 ? 28 : -28); // 朝前內側對準主唱
         rootGroup.add(paStand, paCab);
       });
-      // 地面監聽喇叭 Wedge (讓鼓手與主唱聽清楚人聲，且正對主唱心型麥克風背面 180° 零收音角)
-      const wedge = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.28, 0.48), new THREE.MeshStandardMaterial({ color: '#1e293b' }));
-      wedge.position.copy(toWorld(2.00, 1.80, 0.14));
-      rootGroup.add(wedge);
 
-      // (g) 混音器與 PA 設備機櫃區 (B1 左前區 x=0.55m, y=0.55m，緊貼實牆完全避開右側外開鋁門)
+      // (g) 混音器與 PA 設備機櫃區 (B1 左前區 x=0.55m, y=0.65m，緊貼實牆完全避開右側外開鋁門)
       const rackMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.45 });
       addBoxWithEdge(0.65, 0.88, 0.95, 0.52, 0.65, 0.44, rackMat, 0x38bdf8);
-      // 混音器斜面控制台
       addBoxWithEdge(0.45, 0.12, 0.65, 0.52, 0.65, 0.94, new THREE.MeshStandardMaterial({ color: '#020617', metalness: 0.7 }), 0x38bdf8);
 
-      // (h) 音箱交叉投射與主唱防回授聲線視覺化
+      // (h) 解法 A 聲束投射視覺化：PA 主喇叭從鼓兩側直射主唱雙耳與中前樂手 + 音箱交叉投射
       if (STATE.v03Rays) {
         const addDashLine = (p1, p2, hex) => {
           const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([p1, p2]), new THREE.LineDashedMaterial({ color: hex, dashSize: 0.10, gapSize: 0.05 }));
           l.computeLineDistances(); rootGroup.add(l);
         };
-        // PA 喇叭投射向鼓手與全團 (避開主唱麥克風正面收音角)
-        addDashLine(toWorld(0.95, 0.68, 1.62), toWorld(4.10, 1.80, 1.25), 0x38bdf8);
-        addDashLine(toWorld(0.95, 2.92, 1.62), toWorld(4.10, 1.80, 1.25), 0x38bdf8);
+        // PA 雙喇叭由鼓兩側直射主唱臉部/雙耳 (正好對準心型麥克風 180° 零收音背面！)
+        addDashLine(toWorld(3.65, 0.48, 1.68), toWorld(1.30, 1.80, 1.50), 0x38bdf8);
+        addDashLine(toWorld(3.65, 3.12, 1.68), toWorld(1.30, 1.80, 1.50), 0x38bdf8);
+        // PA 同步覆蓋鍵盤手與貝斯/吉他手
+        addDashLine(toWorld(3.65, 0.48, 1.68), toWorld(1.75, 2.75, 1.30), 0x7dd3fc);
+        addDashLine(toWorld(3.65, 3.12, 1.68), toWorld(2.35, 1.05, 1.30), 0x7dd3fc);
         // Bass 音箱交叉投射向鼓手與吉他手
-        addDashLine(toWorld(3.10, 0.42, 0.55), toWorld(4.10, 1.80, 1.10), 0x3b82f6);
-        addDashLine(toWorld(3.10, 0.42, 0.55), toWorld(2.85, 2.55, 1.25), 0x3b82f6);
+        addDashLine(toWorld(2.75, 0.42, 0.55), toWorld(4.10, 1.80, 1.10), 0x3b82f6);
+        addDashLine(toWorld(2.75, 0.42, 0.55), toWorld(2.55, 2.55, 1.25), 0x3b82f6);
         // Guitar 音箱交叉投射向鼓手與貝斯手
-        addDashLine(toWorld(3.10, 3.18, 0.55), toWorld(4.10, 1.80, 1.10), 0xef4444);
-        addDashLine(toWorld(3.10, 3.18, 0.55), toWorld(2.55, 1.05, 1.25), 0xef4444);
+        addDashLine(toWorld(2.75, 3.18, 0.55), toWorld(4.10, 1.80, 1.10), 0xef4444);
+        addDashLine(toWorld(2.75, 3.18, 0.55), toWorld(2.35, 1.05, 1.25), 0xef4444);
       }
 
       // 5. V0.3 練團室避雲外推軌道照明
@@ -1181,16 +1177,16 @@
         });
       }
 
-      // 6. V0.3 精簡立體標籤
+      // 6. V0.3 精簡立體標籤 (解法 A)
       if (STATE.showGrid) {
         const mk = (txt, pos, bg, fg, bd) => { const s = makeTextSprite(txt, bg, fg, 26, bd); s.position.copy(pos); rootGroup.add(s); };
         mk('🥁 爵士鼓 (中軸基準位 x=4.2m)', toWorld(4.20, 1.80, 1.72), 'rgba(154,52,18,0.92)', '#fef3c7', '#f59e0b');
-        mk('🎸 Bass 音箱 + 貝斯手 (離牆角防轟鳴)', toWorld(3.00, 0.65, 1.35), 'rgba(30,58,138,0.92)', '#bfdbfe', '#3b82f6');
-        mk('⚡ 電吉他音箱 + 吉他手 (交叉投射)', toWorld(3.00, 3.00, 1.35), 'rgba(153,27,27,0.92)', '#fecaca', '#ef4444');
-        mk('🎹 鍵盤手 (進 PA 混音器)', toWorld(1.90, 2.95, 1.35), 'rgba(15,23,42,0.92)', '#e2e8f0', '#94a3b8');
-        mk('🎙️ 主唱 (背對 PA 面向鼓手防回授)', toWorld(1.40, 1.80, 1.82), 'rgba(159,18,57,0.92)', '#ffe4e6', '#f43f5e');
+        mk('🔊 PA 主監聽喇叭×2 (鼓組兩側直射主唱雙耳＋零回授)', toWorld(3.65, 3.12, 2.25), 'rgba(3,105,161,0.94)', '#e0f2fe', '#38bdf8');
+        mk('🎸 Bass 音箱 + 貝斯手 (離牆角防轟鳴)', toWorld(2.65, 0.65, 1.35), 'rgba(30,58,138,0.92)', '#bfdbfe', '#3b82f6');
+        mk('⚡ 電吉他音箱 + 吉他手 (交叉投射)', toWorld(2.65, 3.00, 1.35), 'rgba(153,27,27,0.92)', '#fecaca', '#ef4444');
+        mk('🎹 鍵盤手 (進 PA 混音器)', toWorld(1.75, 2.95, 1.35), 'rgba(15,23,42,0.92)', '#e2e8f0', '#94a3b8');
+        mk('🎙️ 主唱 (面向鼓與PA，麥克風背面死角正對喇叭！)', toWorld(1.40, 1.80, 1.82), 'rgba(159,18,57,0.92)', '#ffe4e6', '#f43f5e');
         mk('🎛️ 混音器 & PA 設備機櫃區', toWorld(0.55, 0.65, 1.38), 'rgba(3,105,161,0.92)', '#e0f2fe', '#38bdf8');
-        mk('🔊 PA 主監聽喇叭 (左右斜射)', toWorld(0.95, 2.92, 2.15), 'rgba(15,23,42,0.92)', '#7dd3fc', '#38bdf8');
       }
     }
 
@@ -1483,36 +1479,40 @@
 
         // 2. Bass 音箱 (B1 左中) & 電吉他音箱 (B2 右中)
         ctx2d.fillStyle = 'rgba(59, 130, 246, 0.3)'; ctx2d.strokeStyle = '#3b82f6';
-        ctx2d.fillRect(toX(2.80), toY(0.18), 0.58 * scale, 0.46 * scale);
-        ctx2d.strokeRect(toX(2.80), toY(0.18), 0.58 * scale, 0.46 * scale);
-        ctx2d.fillStyle = '#bfdbfe'; ctx2d.fillText('🎸 Bass 音箱/站位', toX(2.35), toY(0.95));
+        ctx2d.fillRect(toX(2.46), toY(0.18), 0.58 * scale, 0.46 * scale);
+        ctx2d.strokeRect(toX(2.46), toY(0.18), 0.58 * scale, 0.46 * scale);
+        ctx2d.fillStyle = '#bfdbfe'; ctx2d.fillText('🎸 Bass 音箱/站位', toX(2.05), toY(0.95));
 
         ctx2d.fillStyle = 'rgba(239, 68, 68, 0.3)'; ctx2d.strokeStyle = '#ef4444';
-        ctx2d.fillRect(toX(2.80), toY(2.96), 0.62 * scale, 0.36 * scale);
-        ctx2d.strokeRect(toX(2.80), toY(2.96), 0.62 * scale, 0.36 * scale);
-        ctx2d.fillStyle = '#fecaca'; ctx2d.fillText('⚡ 電吉他音箱/站位', toX(2.55), toY(2.65));
+        ctx2d.fillRect(toX(2.46), toY(2.96), 0.62 * scale, 0.36 * scale);
+        ctx2d.strokeRect(toX(2.46), toY(2.96), 0.62 * scale, 0.36 * scale);
+        ctx2d.fillStyle = '#fecaca'; ctx2d.fillText('⚡ 電吉他音箱/站位', toX(2.25), toY(2.65));
 
         // 3. 鍵盤手 (B2 右前中)
         ctx2d.fillStyle = 'rgba(148, 163, 184, 0.3)'; ctx2d.strokeStyle = '#94a3b8';
-        ctx2d.fillRect(toX(1.30), toY(2.75), 1.25 * scale, 0.38 * scale);
-        ctx2d.strokeRect(toX(1.30), toY(2.75), 1.25 * scale, 0.38 * scale);
-        ctx2d.fillStyle = '#f8fafc'; ctx2d.fillText('🎹 鍵盤手', toX(1.60), toY(3.00));
+        ctx2d.fillRect(toX(1.12), toY(2.75), 1.25 * scale, 0.38 * scale);
+        ctx2d.strokeRect(toX(1.12), toY(2.75), 1.25 * scale, 0.38 * scale);
+        ctx2d.fillStyle = '#f8fafc'; ctx2d.fillText('🎹 鍵盤手', toX(1.45), toY(3.00));
 
-        // 4. 主唱麥克風 (背對 PA 面向鼓手) + 地面監聽 Wedge
+        // 4. 主唱麥克風 (面向鼓手與前方兩側 PA 喇叭，麥克風背面 180° 對準 PA 零回授！)
         ctx2d.fillStyle = '#f43f5e';
-        ctx2d.beginPath(); ctx2d.arc(toX(1.45), toY(1.80), 8, 0, Math.PI * 2); ctx2d.fill();
-        ctx2d.fillStyle = '#ffe4e6'; ctx2d.fillText('🎙️ 主唱 (背對PA防回授)', toX(1.05), toY(1.55));
-        ctx2d.fillStyle = '#334155'; ctx2d.fillRect(toX(1.82), toY(1.56), 0.36 * scale, 0.48 * scale);
+        ctx2d.beginPath(); ctx2d.arc(toX(1.40), toY(1.80), 8, 0, Math.PI * 2); ctx2d.fill();
+        ctx2d.fillStyle = '#ffe4e6'; ctx2d.fillText('🎙️ 主唱 (面朝PA聽最清楚)', toX(0.95), toY(1.55));
 
-        // 5. 混音器與 PA 設備機櫃區 (B1 左前) + 雙 PA 主監聽喇叭
+        // 5. 混音器與設備機櫃區 (B1 左前) + ★ 解法 A 雙 PA 主監聽喇叭 (移至鼓組左右前緣 x=3.65m 直射主唱)
         ctx2d.fillStyle = 'rgba(56, 189, 248, 0.28)'; ctx2d.strokeStyle = '#38bdf8';
         ctx2d.fillRect(toX(0.20), toY(0.18), 0.65 * scale, 0.95 * scale);
         ctx2d.strokeRect(toX(0.20), toY(0.18), 0.65 * scale, 0.95 * scale);
         ctx2d.fillStyle = '#e0f2fe'; ctx2d.fillText('🎛️ 混音機櫃', toX(0.22), toY(0.68));
-        [0.68, 2.92].forEach((py) => {
-          ctx2d.fillStyle = '#38bdf8';
-          ctx2d.fillRect(toX(0.95) - 7, toY(py) - 7, 14, 14);
+        [0.48, 3.12].forEach((py) => {
+          ctx2d.fillStyle = '#0284c7';
+          ctx2d.fillRect(toX(3.65) - 8, toY(py) - 8, 16, 16);
+          // 畫出藍色直射聲線指向主唱
+          ctx2d.strokeStyle = 'rgba(56, 189, 248, 0.65)'; ctx2d.lineWidth = 1.5; ctx2d.setLineDash([4, 3]);
+          ctx2d.beginPath(); ctx2d.moveTo(toX(3.65), toY(py)); ctx2d.lineTo(toX(1.40), toY(1.80)); ctx2d.stroke();
+          ctx2d.setLineDash([]);
         });
+        ctx2d.fillStyle = '#7dd3fc'; ctx2d.fillText('🔊 PA主監聽(直射主唱)', toX(3.30), toY(0.32));
 
         // 6. 外推避雲軌道燈
         ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
@@ -1646,8 +1646,8 @@
 
       if (modelKey === 'v03') {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#059669;">V0.3 練團室版本 (5人全編制)</span><strong>鼓 / Bass / 電吉他 / 鍵盤 / 主唱 ＋ PA 監聽與混音設備區</strong></div>
-          <div>聲學核心：<strong>主唱背對 PA 面向鼓手防回授</strong> ＋ <strong>Bass/吉他音箱左右交叉投射不互蓋</strong> ＋ <strong>梁後巨型低頻陷阱</strong></div>`;
+          <div><span class="tag" style="background:#059669;">V0.3 練團室版本 (解法 A)</span><strong>鼓 / Bass / 電吉他 / 鍵盤 / 主唱 ＋ 鼓組兩側 PA 直射監聽</strong></div>
+          <div>聲學核心：<strong>PA 主喇叭置於鼓組左右前緣 (x=3.65m) 直射主唱與全團</strong> ＋ <strong>麥克風 180° 背面死角正對 PA 零回授</strong></div>`;
         leg.innerHTML = `
           <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓 (中軸基準位)</div>
           <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱 (左中交叉投射)</div>
