@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🥁 爵士鼓工作室 3D / 2D 空間模型檢視器 (V0 / V0.1 / 純空間)</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-bg: rgba(15, 23, 42, 0.95);
+      --panel-border: rgba(148, 163, 184, 0.22);
+      --accent: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --blue: #38bdf8;
+      --purple: #c084fc;
+      --green: #34d399;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      height: 58px;
+      background: rgba(15, 23, 42, 0.98);
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 20;
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand h1 {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .badge {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      font-size: 11.5px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 3-Model Switcher */
+    .model-switcher {
+      display: flex;
+      gap: 5px;
+      background: rgba(30, 41, 59, 0.95);
+      padding: 4px;
+      border-radius: 9px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .model-btn {
+      background: transparent;
+      color: #cbd5e1;
+      border: none;
+      padding: 6px 13px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .model-btn:hover { color: #fff; }
+    .model-btn.active[data-model="v0"] {
+      background: linear-gradient(135deg, #7c3aed, #db2777);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(192, 132, 252, 0.45);
+    }
+    .model-btn.active[data-model="v01"] {
+      background: linear-gradient(135deg, #0284c7, #059669);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
+    }
+    .model-btn.active[data-model="v02"] {
+      background: linear-gradient(135deg, #ea580c, #d97706);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.55);
+    }
+    .model-btn.active[data-model="shell"] {
+      background: #475569;
+      color: #f8fafc;
+    }
+
+    .view-switcher {
+      display: flex;
+      gap: 4px;
+      background: rgba(30, 41, 59, 0.9);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--panel-border);
+    }
+    .view-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .view-btn.active {
+      background: rgba(248, 250, 252, 0.16);
+      color: #fff;
+    }
+
+    /* Workspace */
+    .workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 350px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--panel-border);
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .section-card {
+      background: rgba(30, 41, 59, 0.55);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .section-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .spec-box {
+      font-size: 11.5px;
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.72);
+      padding: 9px;
+      border-radius: 7px;
+      line-height: 1.6;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .metric-box {
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .metric-label { font-size: 10.5px; color: #94a3b8; }
+    .metric-val { font-size: 12px; font-weight: 700; color: #38bdf8; margin-top: 2px; }
+
+    .toggle-list { display: flex; flex-direction: column; gap: 6px; }
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #e2e8f0;
+      cursor: pointer;
+      gap: 8px;
+    }
+    .toggle-item input[type="checkbox"] {
+      accent-color: var(--blue);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .control-row { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+    .control-label { display: flex; justify-content: space-between; color: #cbd5e1; }
+    .control-val { color: var(--blue); font-family: monospace; font-weight: 600; }
+    input[type="range"] { width: 100%; height: 6px; accent-color: var(--accent); cursor: pointer; }
+
+    .cam-presets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .cam-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      color: #e2e8f0;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .cam-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Viewport */
+    .viewport-container { flex: 1; display: flex; position: relative; background: #070b14; }
+    .pane-3d, .pane-2d { position: relative; height: 100%; flex: 1; overflow: hidden; }
+    .pane-2d {
+      background: #0b1120;
+      border-left: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #canvas3d, #canvas2d { display: block; width: 100%; height: 100%; }
+
+    .overlay-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--panel-border);
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.55;
+      pointer-events: none;
+      backdrop-filter: blur(6px);
+      z-index: 10;
+    }
+    .tag {
+      display: inline-block;
+      color: #fff;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-right: 6px;
+      font-size: 11px;
+    }
+    .legend-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--panel-border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-box { width: 12px; height: 12px; border-radius: 3px; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>🥁 爵士鼓工作室 3D / 2D 規劃模型</h1>
+      <span class="badge">5.90m × 3.60m × 2.90m (6.42 坪)</span>
+    </div>
+
+    <div class="header-controls">
+      <!-- 四大核心模型切換器 -->
+      <div class="model-switcher">
+        <button class="model-btn" data-model="v0" id="btn-m-v0">🔬 V0 理論模型</button>
+        <button class="model-btn" data-model="v01" id="btn-m-v01">🏆 V0.1 門窗橫梁落地解</button>
+        <button class="model-btn active" data-model="v02" id="btn-m-v02">🥁 V0.2 爵士鼓教學版本</button>
+        <button class="model-btn" data-model="shell" id="btn-m-shell">📐 純空間樑柱門窗</button>
+      </div>
+
+      <div class="view-switcher">
+        <button class="view-btn active" data-mode="3d">3D 透視</button>
+        <button class="view-btn" data-mode="split">3D + 2D</button>
+        <button class="view-btn" data-mode="2d">2D 平面</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="sidebar">
+
+      <!-- [模型零] V0.2 爵士鼓教學、錄音與錄影專版 控制面板 -->
+      <div class="section-card" id="panel-v02" style="background: rgba(154, 52, 18, 0.25); border-color: rgba(245, 158, 11, 0.6);">
+        <div class="section-title" style="color:#fbbf24;">
+          <span>🥁 V0.2 爵士鼓教學版本</span>
+          <span style="font-size:10.5px; color:#fdba74;">Drum-First Acoustic</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-label">鼓手鼓椅黃金座標</div>
+            <div class="metric-val" style="color:#fbbf24;">x=4.25m, y=1.80m</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">鼓組頭頂可用淨高</div>
+            <div class="metric-val" style="color:#34d399;">全 2.90m (梁前避壓迫)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">目標混響 RT60</div>
+            <div class="metric-val" style="color:#38bdf8;">0.35 ~ 0.42s (自然有力)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">正面錄影機位縱深</div>
+            <div class="metric-val" style="color:#c084fc;">2.5 ~ 3.5m (背景 A1)</div>
+          </div>
+        </div>
+
+        <div class="spec-box">
+          <strong style="color:#fbbf24;">🎯 為什麼這裡是聲學唯一黃金位？</strong><br/>
+          1. <strong>橫向絕對中軸 (y=1.80m)</strong>：距左右牆各 1.8m，雙耳對稱無單側刺耳反射。<br/>
+          2. <strong>避開兩大低頻波腹</strong>：遠離中央 x=2.95m (58Hz 波腹) 與 A1 牆角 (椅背距 A1 1.65m)，大鼓緊實不轟鳴。<br/>
+          3. <strong>避開 x=4.90m 水泥橫梁</strong>：整套鼓組與 Overhead 麥克風全在橫梁前方，頭頂直吊 <strong>6 片大型吸音雲 (1.8×2.4m)</strong> 吸收銅鈸直衝高頻。<br/>
+          <strong style="color:#34d399;">📦 常見尺寸機能分區：</strong><br/>
+          • <strong>教材線材雜物櫃</strong>：A1 橫梁下 (寬 2.4m×深 0.45m×高 1.05m)<br/>
+          • <strong>剪輯工作桌</strong>：B1 左前區 (1.50m×0.70m)<br/>
+          • <strong>雙人布沙發＋茶几</strong>：B2 右中前區 (沙發 1.60m×0.85m)
+        </div>
+
+        <div class="toggle-list">
+          <label class="toggle-item">
+            <span style="color:#f87171;">🌊 顯示 58Hz 駐波紅區 (x=2.95m & A1角) 對照避讓</span>
+            <input type="checkbox" id="chk-v02-zones" checked />
+          </label>
+          <label class="toggle-item">
+            <span style="color:#34d399;">🧊 顯示「梁後 1.0m 凹槽巨型低頻陷阱」封平結構</span>
+            <input type="checkbox" id="chk-v02-superchunk" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路一 (教學均勻光)：外推至 y=0.55/3.05m 線條燈</span>
+            <input type="checkbox" id="chk-v02-c1" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路二 (錄影主面光)：鼓組前 45° 交叉 COB×4</span>
+            <input type="checkbox" id="chk-v02-c2" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路三 (輪廓背光)：梁後凹槽 Rim Light×2 + 客廳暖光</span>
+            <input type="checkbox" id="chk-v02-c3" checked />
+          </label>
+          <label class="toggle-item">
+            <span style="color:#fde047;">✨ 顯示影棚三點打光光錐與錄影機位取景線</span>
+            <input type="checkbox" id="chk-v02-vis" checked />
+          </label>
+        </div>
+      </div>
+
+      <!-- [模型一] V0.1 門窗橫梁最佳落地解 控制面板 -->
+      <div class="section-card" id="panel-v01" style="background: rgba(6, 78, 59, 0.25); border-color: rgba(56, 189, 248, 0.55);">
+        <div class="section-title" style="color:#38bdf8;">
+          <span>🏆 V0.1 門窗橫梁最佳落地解</span>
+          <span style="font-size:10.5px; color:#34d399;">Optimal Hybrid</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-label">58-60Hz 駐波對策</div>
+            <div class="metric-val" style="color:#34d399;">梁後凹槽巨型陷阱</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">A2 入口鋁門</div>
+            <div class="metric-val" style="color:#38bdf8;">外開 90° + 吸音門簾</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">軌道避雲外推</div>
+            <div class="metric-val" style="color:#fbbf24;">距側牆 0.72m 避雲</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">目標 RT60 / 照度</div>
+            <div class="metric-val">0.25~0.35s / ≥500lx</div>
+          </div>
+        </div>
+
+        <div class="spec-box">
+          <strong style="color:#34d399;">🔊 V0.1 聲學最佳落地配置：</strong><br/>
+          • <strong>梁後 1.0m 凹槽巨型低頻陷阱 (Superchunk)</strong>：x=4.9~5.9m 頂部填滿 45cm 低流阻棉封平至梁底，取代昂貴 MLV 箱體，一舉解決 58-60Hz 駐波與凹槽顫動！<br/>
+          • <strong>橫梁正面與底面</strong>：貼附 50mm 吸音板阻斷近場反射。<br/>
+          • <strong>三實角 350mm 落地陷阱 + A2 鋁門內側密封條與吸音簾</strong>。<br/>
+          • <strong>24 片 50mm 吸音板 (離牆架空 7.5~10cm)</strong>：精準覆蓋側牆 RFZ (x=2.4~3.2m) 與鼓組區，搭配 B1 中央 1D QRD 擴散板與避梁天花吸音雲 (x=2.3~3.5m, 垂降 15cm)。
+        </div>
+
+        <div class="toggle-list">
+          <label class="toggle-item">
+            <span style="color:#34d399;">🧊 顯示「梁後 1.0m 凹槽巨型低頻陷阱」封平結構</span>
+            <input type="checkbox" id="chk-v01-superchunk" checked />
+          </label>
+          <label class="toggle-item">
+            <span style="color:#f472b6;">🚪 顯示 A2 外開鋁門內側「重磅吸音門簾」</span>
+            <input type="checkbox" id="chk-v01-curtain" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路一 (60% | 128.5W)：外推避雲主軌 4m 線條燈</span>
+            <input type="checkbox" id="chk-v01-c1" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路二 (25% | 53.5W)：梁前 45° 交叉 COB 鼓組面光×4</span>
+            <input type="checkbox" id="chk-v01-c2" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路三 (15% | 32.1W)：梁後凹槽短軌背光×2 + 避梁燈帶</span>
+            <input type="checkbox" id="chk-v01-c3" checked />
+          </label>
+          <label class="toggle-item">
+            <span style="color:#fde047;">✨ 顯示 3D 光束角光錐與一次反射聲線</span>
+            <input type="checkbox" id="chk-v01-vis" checked />
+          </label>
+        </div>
+      </div>
+
+      <!-- [模型二] V0 純理論研究報告模型 控制面板 -->
+      <div class="section-card" id="panel-v0" style="display:none; background: rgba(59, 7, 100, 0.35); border-color: rgba(192, 132, 252, 0.55);">
+        <div class="section-title" style="color:#d8b4fe;">
+          <span>🔬 V0 純理論研究報告模型</span>
+          <span style="font-size:10.5px; color:#f472b6;">Ideal Box Theory</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-label">ITU 目標 RT60 / 總吸音</div>
+            <div class="metric-val" style="color:#e879f9;">0.213s / 46.62 Sabins</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">施羅德截止頻率 fs</div>
+            <div class="metric-val" style="color:#e879f9;">117.53 Hz (ᾱ=0.478)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">前後頂角 MLV 薄膜陷阱</div>
+            <div class="metric-val" style="color:#f472b6;">f0 = 59.2 Hz (33cm深)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">後牆 1D QRD (N=7)</div>
+            <div class="metric-val" style="color:#f472b6;">f0=500Hz (井深19.6cm)</div>
+          </div>
+        </div>
+
+        <div class="spec-box">
+          <strong style="color:#f472b6;">📦 V0 理想矩形理論配置（無門窗橫梁）：</strong><br/>
+          • 四垂直角 400mm 跨角低頻陷阱 × 4 座<br/>
+          • 前後牆頂角 59.2Hz MLV 薄膜共振陷阱 × 2 條<br/>
+          • 前牆 100mm SBIR 寬頻吸音板 × 4 片 + 教學白板<br/>
+          • 側牆 RFZ 吸音板 × 4 片 (x=2.4~3.2m) + 後段擴散 × 4 座<br/>
+          • 天花板 RFZ 吸音雲 × 3 片 (x=2.4~3.3m, 降10cm)<br/>
+          • 後牆 N=7 QRD 擴散板 + 150mm 吸音邊框 × 2 片
+        </div>
+
+        <div class="toggle-list">
+          <label class="toggle-item">
+            <span>💡 迴路一 (60% | 128.5W)：雙主軌(距側牆0.9m) 4m 線條燈</span>
+            <input type="checkbox" id="chk-v0-c1" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路二 (15% | 32.1W)：前端洗牆軌(0.5m) 30° 偏光洗牆×2</span>
+            <input type="checkbox" id="chk-v0-c2" checked />
+          </label>
+          <label class="toggle-item">
+            <span>💡 迴路三 (25% | 53.5W)：主軌 36° COB 45° 交叉面光×4</span>
+            <input type="checkbox" id="chk-v0-c3" checked />
+          </label>
+          <label class="toggle-item">
+            <span style="color:#fde047;">✨ 顯示 V0 光錐與方案 A 一次反射點 (2.62/3.04/2.88m)</span>
+            <input type="checkbox" id="chk-v0-vis" checked />
+          </label>
+        </div>
+      </div>
+
+      <!-- [模型三] 純空間尺寸樑柱門窗 說明面板 -->
+      <div class="section-card" id="panel-shell" style="display:none; background: rgba(120, 53, 15, 0.25); border-color: rgba(245, 158, 11, 0.55);">
+        <div class="section-title" style="color:#fbbf24;">
+          <span>📐 純空間尺寸、樑柱與門窗現況</span>
+          <span style="font-size:10.5px; color:#fde68a;">Empty Shell</span>
+        </div>
+        <div class="spec-box">
+          <strong style="color:#fbbf24;">🏗️ 現場核對建築基準：</strong><br/>
+          • <strong>室內淨尺寸</strong>：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br/>
+          • <strong>A2 前入口短牆 (x=0.0m)</strong>：右側 0.90×2.10m 銀灰鋁門（<strong>向外開 90°、鉸鏈在 B2 側</strong>，室內無開門迴轉干擾）；門旁 1.15×1.15m 原鋁窗已木板封平。<br/>
+          • <strong>A1 後封閉短牆 (x=5.9m)</strong>：對稱位置原鋁門與原鋁窗皆已木板封死齊平。<br/>
+          • <strong>B1 / B2 左右長牆</strong>：5.90m 完整實心水泥牆。<br/>
+          • <strong>天花板水泥橫梁</strong>：距 A1 正好 1.00m (x=4.90m)，跨度 3.60m。
+        </div>
+      </div>
+
+      <!-- 通用視角與結構微調 -->
+      <div class="section-card">
+        <div class="section-title"><span>🎥 3D 鏡頭與結構檢視控制</span></div>
+        <div class="cam-presets">
+          <button class="cam-btn" id="cam-iso">全局等角透視</button>
+          <button class="cam-btn" id="cam-a2">🎥 錄影機位 / A2 入口視角</button>
+          <button class="cam-btn" id="cam-a1">🥁 鼓手第一人稱視角</button>
+          <button class="cam-btn" id="cam-top">正上方 3D 俯視</button>
+        </div>
+
+        <div class="toggle-list" style="margin-top:4px;">
+          <label class="toggle-item">
+            <span>自動半透明隱藏遮擋牆面 (智慧剖面)</span>
+            <input type="checkbox" id="chk-autowall" checked />
+          </label>
+          <label class="toggle-item">
+            <span>顯示天花板實體頂蓋</span>
+            <input type="checkbox" id="chk-ceiling" />
+          </label>
+          <label class="toggle-item">
+            <span>顯示 1.0m 座標網格與立體標註</span>
+            <input type="checkbox" id="chk-grid" checked />
+          </label>
+        </div>
+
+        <div id="struct-sliders" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+          <div class="control-row">
+            <div class="control-label">
+              <span>距 A1 1.0m 水泥橫梁深度 (梁深)</span>
+              <span class="control-val" id="val-beam-depth">45 cm (梁底 2.45m)</span>
+            </div>
+            <input type="range" id="rng-beam-depth" min="25" max="65" step="1" value="45" />
+          </div>
+          <div class="control-row">
+            <div class="control-label">
+              <span>A2 入口鋁門向外開啟角度</span>
+              <span class="control-val" id="val-door-angle">45°</span>
+            </div>
+            <input type="range" id="rng-door-angle" min="0" max="90" step="5" value="45" />
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Main Viewport -->
+    <div class="viewport-container">
+      <div class="pane-3d" id="pane3d">
+        <div class="overlay-badge" id="badge-3d"></div>
+        <canvas id="canvas3d"></canvas>
+        <div class="legend-bar" id="legend-bar"></div>
+      </div>
+      <div class="pane-2d" id="pane2d" style="display:none;">
+        <div class="overlay-badge">
+          <div><strong>2D 精確比例平面圖</strong>（單位：公尺 m）</div>
+          <div id="badge-2d-sub">同步顯示當前選定模型之建築、聲學與軌道照明落點</div>
+        </div>
+        <canvas id="canvas2d"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // ==========================================
+    // 1. 空間基準常數 (嚴格對齊平面校對圖)
+    // ==========================================
+    const ROOM = {
+      L: 5.90,
+      W: 3.60,
+      H: 2.90,
+      WALL_THICK: 0.12,
+      // A2 & A1 對稱門窗：入口鋁門靠 B2 側 (y = 2.60~3.50m, 寬 0.90m, 高 2.10m, 向外開 90°, 鉸鏈在 B2 側)
+      DOOR_Y_START: 2.60,
+      DOOR_W: 0.90,
+      DOOR_H: 2.10,
+      // 緊鄰門左側木板封窗 (y = 1.35~2.50m, 寬 1.15m, 高 1.15m, 上緣齊門 2.10m)
+      WIN_Y_START: 1.35,
+      WIN_W: 1.15,
+      WIN_H: 1.15,
+      WIN_Z_TOP: 2.10,
+      // 距 A1 1.00m 天花板水泥橫梁 (x = 4.90m)
+      BEAM_X_FROM_A1: 1.00,
+      BEAM_WIDTH: 0.35
+    };
+
+    const STATE = {
+      model: 'v02', // 'v0' | 'v01' | 'v02' | 'shell'
+      viewMode: '3d',
+      beamDepth: 0.45,
+      doorAngle: 45,
+      autoHideWall: true,
+      showCeiling: false,
+      showGrid: true,
+      // V0.2 爵士鼓教學專版開關
+      v02Zones: true,
+      v02Superchunk: true,
+      v02C1: true,
+      v02C2: true,
+      v02C3: true,
+      v02Vis: true,
+      // V0.1 專屬開關
+      v01Superchunk: true,
+      v01Curtain: true,
+      v01C1: true,
+      v01C2: true,
+      v01C3: true,
+      v01Vis: true,
+      // V0 專屬開關
+      v0C1: true,
+      v0C2: true,
+      v0C3: true,
+      v0Vis: true
+    };
+
+    function toWorld(rx, ry, rz) {
+      return new THREE.Vector3(rx - ROOM.L / 2, rz, ry - ROOM.W / 2);
+    }
+
+    // ==========================================
+    // 2. Three.js 基礎設定
+    // ==========================================
+    const canvas3d = document.getElementById('canvas3d');
+    const pane3d = document.getElementById('pane3d');
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas3d, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#070b14');
+
+    const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 100);
+    camera.position.set(-5.0, 4.5, 4.9);
+
+    const controls = new OrbitControls(camera, canvas3d);
+    controls.target.set(0.15, 1.15, 0);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xfffbeb, 0.78);
+    dirLight.position.set(-4, 7, 5);
+    scene.add(dirLight);
+
+    const rootGroup = new THREE.Group();
+    scene.add(rootGroup);
+    let wallMeshes = {};
+
+    function makeTextSprite(text, bgColor = 'rgba(15,23,42,0.88)', textColor = '#f8fafc', fontSize = 32, borderColor = 'rgba(56,189,248,0.65)') {
+      const c = document.createElement('canvas');
+      const ctx = c.getContext('2d');
+      ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, sans-serif`;
+      const m = ctx.measureText(text);
+      const pad = 18;
+      c.width = m.width + pad * 2;
+      c.height = fontSize + pad * 1.3;
+
+      ctx.fillStyle = bgColor;
+      ctx.beginPath(); ctx.roundRect(0, 0, c.width, c.height, 10); ctx.fill();
+      ctx.strokeStyle = borderColor; ctx.lineWidth = 3; ctx.stroke();
+
+      ctx.fillStyle = textColor;
+      ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, pad, c.height / 2);
+
+      const tex = new THREE.CanvasTexture(c);
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false }));
+      const sc = 0.003;
+      sprite.scale.set(c.width * sc, c.height * sc, 1);
+      sprite.renderOrder = 999;
+      return sprite;
+    }
+
+    function createAimedLightCone(startVec, targetVec, coneLength, radiusBottom, hexColor, opacity = 0.16) {
+      const dir = new THREE.Vector3().subVectors(targetVec, startVec).normalize();
+      const midPos = new THREE.Vector3().copy(startVec).addScaledVector(dir, coneLength / 2);
+      const cone = new THREE.Mesh(
+        new THREE.ConeGeometry(radiusBottom, coneLength, 24, 1, true),
+        new THREE.MeshBasicMaterial({ color: hexColor, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+      );
+      cone.position.copy(midPos);
+      cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), dir);
+      return cone;
+    }
+
+    function addBoxWithEdge(w, h, d, rx, ry, rz, mat, edgeHex = 0x38bdf8) {
+      const geo = new THREE.BoxGeometry(w, h, d);
+      const m = new THREE.Mesh(geo, mat);
+      m.position.copy(toWorld(rx, ry, rz));
+      const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: edgeHex }));
+      e.position.copy(m.position);
+      rootGroup.add(m, e);
+      return m;
+    }
+
+    // 共用：繪製地板、網格、四面牆體 (可選是否含真實門窗與橫梁)
+    function buildRoomShell(includeRealFeatures) {
+      // 地板 (拋光深灰隔音水泥)
+      const floor = new THREE.Mesh(
+        new THREE.BoxGeometry(ROOM.L, 0.08, ROOM.W),
+        new THREE.MeshStandardMaterial({ color: '#262c34', roughness: 0.7 })
+      );
+      floor.position.set(0, -0.04, 0);
+      rootGroup.add(floor);
+
+      if (STATE.showGrid) {
+        const pts = [];
+        for (let x = 0; x <= ROOM.L + 0.01; x += 1.0) {
+          pts.push(new THREE.Vector3(x - ROOM.L / 2, 0.003, -ROOM.W / 2), new THREE.Vector3(x - ROOM.L / 2, 0.003, ROOM.W / 2));
+        }
+        for (let y = 0; y <= ROOM.W + 0.01; y += 1.0) {
+          pts.push(new THREE.Vector3(-ROOM.L / 2, 0.003, y - ROOM.W / 2), new THREE.Vector3(ROOM.L / 2, 0.003, y - ROOM.W / 2));
+        }
+        rootGroup.add(new THREE.LineSegments(
+          new THREE.BufferGeometry().setFromPoints(pts),
+          new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.16 })
+        ));
+      }
+
+      const makeWallMat = () => new THREE.MeshStandardMaterial({ color: '#F5F0E6', roughness: 0.85, transparent: true, opacity: 1.0 });
+
+      const wallA2 = new THREE.Mesh(new THREE.BoxGeometry(ROOM.WALL_THICK, ROOM.H, ROOM.W), makeWallMat());
+      wallA2.position.copy(toWorld(-ROOM.WALL_THICK / 2, ROOM.W / 2, ROOM.H / 2));
+      const wallA1 = new THREE.Mesh(new THREE.BoxGeometry(ROOM.WALL_THICK, ROOM.H, ROOM.W), makeWallMat());
+      wallA1.position.copy(toWorld(ROOM.L + ROOM.WALL_THICK / 2, ROOM.W / 2, ROOM.H / 2));
+      const wallB1 = new THREE.Mesh(new THREE.BoxGeometry(ROOM.L, ROOM.H, ROOM.WALL_THICK), makeWallMat());
+      wallB1.position.copy(toWorld(ROOM.L / 2, -ROOM.WALL_THICK / 2, ROOM.H / 2));
+      const wallB2 = new THREE.Mesh(new THREE.BoxGeometry(ROOM.L, ROOM.H, ROOM.WALL_THICK), makeWallMat());
+      wallB2.position.copy(toWorld(ROOM.L / 2, ROOM.W + ROOM.WALL_THICK / 2, ROOM.H / 2));
+      rootGroup.add(wallA2, wallA1, wallB1, wallB2);
+
+      wallMeshes = { A2: [wallA2], A1: [wallA1], B1: [wallB1], B2: [wallB2] };
+
+      if (STATE.showCeiling) {
+        const ceil = new THREE.Mesh(
+          new THREE.BoxGeometry(ROOM.L, 0.06, ROOM.W),
+          new THREE.MeshStandardMaterial({ color: '#374151', roughness: 0.9 })
+        );
+        ceil.position.copy(toWorld(ROOM.L / 2, ROOM.W / 2, ROOM.H + 0.03));
+        rootGroup.add(ceil);
+      }
+
+      if (!includeRealFeatures) return;
+
+      // --- 真實現場特徵：A2 向外開 90° 鋁門 (鉸鏈在 B2 側) + A2 封窗 + A1 封門窗 + x=4.90m 水泥橫梁 ---
+      const frameMat = new THREE.MeshStandardMaterial({ color: '#94a3b8', metalness: 0.6, roughness: 0.35, transparent: true });
+      const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(0.04, ROOM.DOOR_H, ROOM.DOOR_W), frameMat);
+      doorFrame.position.copy(toWorld(0.01, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2));
+      rootGroup.add(doorFrame);
+      wallMeshes.A2.push(doorFrame);
+
+      // 外開門扇 (鉸鏈位於 y = 3.50m 靠 B2 側，向外 -X 旋轉)
+      const doorPivot = new THREE.Group();
+      doorPivot.position.copy(toWorld(-0.02, ROOM.DOOR_Y_START + ROOM.DOOR_W, 0));
+      doorPivot.rotation.y = -THREE.MathUtils.degToRad(STATE.doorAngle);
+
+      const lowerLeaf = new THREE.Mesh(
+        new THREE.BoxGeometry(0.04, 1.05, ROOM.DOOR_W),
+        new THREE.MeshStandardMaterial({ color: '#9ca3af', metalness: 0.5, roughness: 0.4 })
+      );
+      lowerLeaf.position.set(0, 1.05 / 2, -ROOM.DOOR_W / 2);
+      const upperGlass = new THREE.Mesh(
+        new THREE.BoxGeometry(0.03, 1.05, ROOM.DOOR_W - 0.12),
+        new THREE.MeshStandardMaterial({ color: '#e0f2fe', roughness: 0.35, transparent: true, opacity: 0.65 })
+      );
+      upperGlass.position.set(0, 1.05 + 1.05 / 2, -ROOM.DOOR_W / 2);
+      doorPivot.add(lowerLeaf, upperGlass);
+      rootGroup.add(doorPivot);
+
+      // 門外 90° 外開弧線
+      const arcPts = [];
+      for (let a = 0; a <= 90; a += 5) {
+        const rad = THREE.MathUtils.degToRad(a);
+        arcPts.push(toWorld(-Math.sin(rad) * ROOM.DOOR_W, (ROOM.DOOR_Y_START + ROOM.DOOR_W) - Math.cos(rad) * ROOM.DOOR_W, 0.01));
+      }
+      const arcLine = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(arcPts),
+        new THREE.LineDashedMaterial({ color: 0xf87171, dashSize: 0.08, gapSize: 0.05 })
+      );
+      arcLine.computeLineDistances();
+      rootGroup.add(arcLine);
+
+      // A2 木板封窗 (y = 1.35 ~ 2.50m)
+      const boardMat = new THREE.MeshStandardMaterial({ color: '#d4b483', roughness: 0.9, transparent: true });
+      const winA2 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.WIN_H, ROOM.WIN_W), boardMat);
+      winA2.position.copy(toWorld(0.008, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2));
+      rootGroup.add(winA2);
+      wallMeshes.A2.push(winA2);
+
+      // A1 對稱木板封死原門窗
+      const boardMatA1 = new THREE.MeshStandardMaterial({ color: '#c8a97e', roughness: 0.9, transparent: true, opacity: 0.85 });
+      const bDoorA1 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.DOOR_H, ROOM.DOOR_W), boardMatA1);
+      bDoorA1.position.copy(toWorld(ROOM.L - 0.008, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2));
+      const bWinA1 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.WIN_H, ROOM.WIN_W), boardMatA1);
+      bWinA1.position.copy(toWorld(ROOM.L - 0.008, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2));
+      rootGroup.add(bDoorA1, bWinA1);
+      wallMeshes.A1.push(bDoorA1, bWinA1);
+
+      // 天花板水泥結構橫梁 (距 A1 1.00m -> x = 4.90m)
+      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1;
+      addBoxWithEdge(ROOM.BEAM_WIDTH, STATE.beamDepth, ROOM.W, beamX, ROOM.W / 2, ROOM.H - STATE.beamDepth / 2,
+        new THREE.MeshStandardMaterial({ color: '#64748b', roughness: 0.8 }), 0x38bdf8);
+    }
+
+    // ==========================================
+    // 3. 三大獨立模型建構邏輯
+    // ==========================================
+    function buildShellOnlyModel() {
+      ambientLight.intensity = 0.72;
+      buildRoomShell(true);
+
+      if (STATE.showGrid) {
+        const lA2 = makeTextSprite('A2 前短牆 (x=0.0m | 外開銀灰鋁門 + 木板封窗)', 'rgba(15,23,42,0.9)', '#fde68a', 28, '#f59e0b');
+        lA2.position.copy(toWorld(0, ROOM.W / 2, ROOM.H + 0.25));
+        const lA1 = makeTextSprite('A1 後短牆 (x=5.9m | 原門窗已木板封死齊平)', 'rgba(15,23,42,0.9)', '#fde68a', 28, '#f59e0b');
+        lA1.position.copy(toWorld(ROOM.L, ROOM.W / 2, ROOM.H + 0.25));
+        const lB1 = makeTextSprite('B1 左長牆 (5.90m 實心水泥)');
+        lB1.position.copy(toWorld(ROOM.L / 2, 0, ROOM.H + 0.25));
+        const lB2 = makeTextSprite('B2 右長牆 (5.90m 實心水泥 | 門鉸鏈側)');
+        lB2.position.copy(toWorld(ROOM.L / 2, ROOM.W, ROOM.H + 0.25));
+        const lBeam = makeTextSprite(`水泥橫梁 (距 A1 1.00m | 梁底 ${(ROOM.H - STATE.beamDepth).toFixed(2)}m)`, 'rgba(30,58,138,0.9)', '#93c5fd', 28, '#38bdf8');
+        lBeam.position.copy(toWorld(4.90, ROOM.W / 2, ROOM.H - STATE.beamDepth - 0.16));
+        rootGroup.add(lA2, lA1, lB1, lB2, lBeam);
+      }
+    }
+
+    function buildV0TheoryModel() {
+      const active = (STATE.v0C1 ? 0.45 : 0) + (STATE.v0C2 ? 0.18 : 0) + (STATE.v0C3 ? 0.25 : 0);
+      ambientLight.intensity = Math.max(0.25, active);
+      buildRoomShell(false); // 純理想矩形無門窗橫梁
+
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.9 });
+      const cornerMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.95 });
+      const mlvMat = new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.7 });
+      const diffMat = new THREE.MeshStandardMaterial({ color: '#b45309', roughness: 0.55 });
+
+      // 1. 四垂直角落 400mm 跨角低頻陷阱
+      const cS = 0.40;
+      [
+        { x: cS / 2, y: cS / 2 }, { x: cS / 2, y: ROOM.W - cS / 2 },
+        { x: ROOM.L - cS / 2, y: cS / 2 }, { x: ROOM.L - cS / 2, y: ROOM.W - cS / 2 }
+      ].forEach((c) => addBoxWithEdge(cS, ROOM.H - 0.02, cS, c.x, c.y, (ROOM.H - 0.02) / 2, cornerMat, 0xf43f5e));
+
+      // 2. 前後牆頂角 59.2Hz MLV 薄膜共振陷阱 (深度 33cm)
+      addBoxWithEdge(0.33, 0.33, ROOM.W - 0.82, 0.165, ROOM.W / 2, ROOM.H - 0.165, mlvMat, 0xf472b6);
+      addBoxWithEdge(0.33, 0.33, ROOM.W - 0.82, ROOM.L - 0.165, ROOM.W / 2, ROOM.H - 0.165, mlvMat, 0xf472b6);
+
+      // 3. 前牆寬頻吸音板 + 中央白板
+      [0.75, 2.85].forEach((py) => addBoxWithEdge(0.10, 1.20, 0.60, 0.10, py, 1.40, panelMat));
+      const wb = new THREE.Mesh(new THREE.BoxGeometry(0.03, 1.10, 1.60), new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.25 }));
+      wb.position.copy(toWorld(0.02, ROOM.W / 2, 1.45));
+      rootGroup.add(wb);
+
+      // 4. 側牆 RFZ 吸音板 (x=2.4~3.2m, z=0.8~1.6m) + 後段擴散板 (x=4.0~5.2m)
+      [2.60, 3.00].forEach((px) => {
+        addBoxWithEdge(0.38, 0.85, 0.10, px, 0.10, 1.20, panelMat);
+        addBoxWithEdge(0.38, 0.85, 0.10, px, ROOM.W - 0.10, 1.20, panelMat);
+      });
+      [4.30, 4.90].forEach((px) => {
+        addBoxWithEdge(0.55, 1.10, 0.12, px, 0.06, 1.35, diffMat, 0xfbbf24);
+        addBoxWithEdge(0.55, 1.10, 0.12, px, ROOM.W - 0.06, 1.35, diffMat, 0xfbbf24);
+      });
+
+      // 5. 天花板 RFZ 吸音雲 (x=2.4~3.3m, 寬 2.0m, 降 10cm)
+      const cloudZ = ROOM.H - 0.15;
+      [1.15, 1.80, 2.45].forEach((cy) => addBoxWithEdge(0.90, 0.10, 0.62, 2.85, cy, cloudZ, panelMat));
+
+      // 6. 後牆 N=7 1D QRD 擴散板 (最大井深 19.6cm) + 150mm 吸音邊框
+      const wells = [0.02, 0.05, 0.19, 0.09, 0.09, 0.19, 0.05];
+      const uW = 0.057;
+      const sy0 = ROOM.W / 2 - (wells.length * 3 * uW) / 2;
+      for (let r = 0; r < 3; r++) {
+        wells.forEach((d, idx) => {
+          const bar = new THREE.Mesh(new THREE.BoxGeometry(d, 1.00, uW * 0.9), diffMat);
+          bar.position.copy(toWorld(ROOM.L - d / 2, sy0 + (r * 7 + idx) * uW + uW / 2, 1.40));
+          rootGroup.add(bar);
+        });
+      }
+      [0.80, 2.80].forEach((py) => addBoxWithEdge(0.15, 1.20, 0.55, ROOM.L - 0.075, py, 1.40, panelMat));
+
+      // 7. 方案 A 揚聲器 (x=2.10m) + 聆聽位 (x=3.66m)
+      [0.90, 2.70].forEach((sy) => {
+        const spk = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.24), new THREE.MeshStandardMaterial({ color: '#0f172a' }));
+        spk.position.copy(toWorld(2.10, sy, 1.20));
+        rootGroup.add(spk);
+      });
+      const desk = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 1.50), new THREE.MeshStandardMaterial({ color: '#334155' }));
+      desk.position.copy(toWorld(3.35, 1.80, 0.375));
+      rootGroup.add(desk);
+
+      // 8. V0 軌道燈 (雙排離牆 0.9m + 前端 0.5m 洗牆軌)
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.8 });
+      const trkZ = ROOM.H - 0.04;
+      [0.90, 2.70].forEach((ty) => {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.80, 0.035, 0.045), trkMat);
+        t.position.copy(toWorld(3.00, ty, trkZ));
+        rootGroup.add(t);
+      });
+      const fTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 3.00), trkMat);
+      fTrk.position.copy(toWorld(0.50, ROOM.W / 2, trkZ));
+      rootGroup.add(fTrk);
+
+      if (STATE.v0C1) {
+        const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
+        [1.85, 4.15].forEach((lx) => [0.90, 2.70].forEach((ly) => {
+          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
+          b.position.copy(toWorld(lx, ly, trkZ - 0.03));
+          rootGroup.add(b);
+          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.95, 0x38bdf8, 0.08));
+        }));
+      }
+      if (STATE.v0C2) {
+        const wMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#e879f9', emissiveIntensity: 1.2 });
+        [1.30, 2.30].forEach((wy) => {
+          const sV = toWorld(0.50, wy, trkZ - 0.07), tV = toWorld(0.02, wy, 1.45);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), wMat);
+          c.position.copy(sV); rootGroup.add(c);
+          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), 0.55, 0xe879f9, 0.18));
+        });
+      }
+      if (STATE.v0C3) {
+        const cMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
+        [
+          { x: 1.35, y: 0.90, tx: 0.85, ty: 1.80, tz: 1.55 },
+          { x: 1.35, y: 2.70, tx: 0.85, ty: 1.80, tz: 1.55 },
+          { x: 3.10, y: 0.90, tx: 3.45, ty: 1.80, tz: 0.75 },
+          { x: 3.10, y: 2.70, tx: 3.45, ty: 1.80, tz: 0.75 }
+        ].forEach((sp) => {
+          const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cMat);
+          c.position.copy(sV); rootGroup.add(c);
+          if (STATE.v0Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.325, 0xf59e0b, 0.15));
+        });
+      }
+
+      if (STATE.v0Vis) {
+        const rMat = new THREE.LineDashedMaterial({ color: 0x34d399, dashSize: 0.10, gapSize: 0.05 });
+        const ear = toWorld(3.66, 1.80, 1.20);
+        [
+          [toWorld(2.10, 0.90, 1.20), toWorld(2.62, 0.12, 1.20), ear],
+          [toWorld(2.10, 2.70, 1.20), toWorld(3.04, 0.12, 1.20), ear],
+          [toWorld(2.10, 0.90, 1.20), toWorld(2.88, 1.35, cloudZ - 0.05), ear]
+        ].forEach((pts) => {
+          const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), rMat);
+          l.computeLineDistances(); rootGroup.add(l);
+        });
+      }
+
+      if (STATE.showGrid) {
+        const l1 = makeTextSprite('V0 理論前牆 (白板 + SBIR吸音板 + 59.2Hz MLV頂角陷阱)', 'rgba(88,28,135,0.9)', '#f5d0fe', 26, '#e879f9');
+        l1.position.copy(toWorld(0, ROOM.W / 2, ROOM.H + 0.25));
+        const l2 = makeTextSprite('V0 理論後牆 (N=7 QRD擴散板 + 150mm吸音邊框 + MLV陷阱)', 'rgba(88,28,135,0.9)', '#f5d0fe', 26, '#e879f9');
+        l2.position.copy(toWorld(ROOM.L, ROOM.W / 2, ROOM.H + 0.25));
+        rootGroup.add(l1, l2);
+      }
+    }
+
+    // ==========================================
+    // 🏆 V0.1「門窗橫梁最佳落地解」專屬 3D 模型
+    // ==========================================
+    function buildV01OptimalModel() {
+      const active = (STATE.v01C1 ? 0.45 : 0) + (STATE.v01C2 ? 0.25 : 0) + (STATE.v01C3 ? 0.18 : 0);
+      ambientLight.intensity = Math.max(0.25, active);
+      buildRoomShell(true); // 包含真實外開 A2 鋁門、A1/A2 木板封門窗與 x=4.90m 水泥橫梁
+
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.9 });
+      const trapMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.95 });
+      const diffMat = new THREE.MeshStandardMaterial({ color: '#b45309', roughness: 0.55 });
+      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
+      const beamBottomZ = ROOM.H - STATE.beamDepth; // 預設 2.45m
+
+      // 1. ★ 核心亮點：「梁後 1.00m 凹槽巨型低頻陷阱 (Superchunk Ceiling Bass Trap)」
+      // 將 x = 5.075m ~ 5.90m, z = beamBottomZ ~ 2.90m 整塊填滿低流阻玻璃棉並封平至梁底！
+      if (STATE.v01Superchunk) {
+        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2); // 約 0.825m 實淨寬
+        const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
+        const scMat = new THREE.MeshStandardMaterial({ color: '#065f46', roughness: 0.92, transparent: true, opacity: 0.88 });
+        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, scMat, 0x34d399);
+
+        // 橫梁正面 (朝房間中央 -X) 與底面 50mm 吸音包覆
+        const wrapMat = new THREE.MeshStandardMaterial({ color: '#134e4a', roughness: 0.9 });
+        addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat, 0x2dd4bf);
+        addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat, 0x2dd4bf);
+      }
+
+      // 2. A2 外開鋁門內側「可移動重磅吸音門簾」+ 門左開關面板標示
+      if (STATE.v01Curtain) {
+        const curtMat = new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: 0.82 });
+        addBoxWithEdge(0.04, 2.15, 0.96, 0.06, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 1.075, curtMat, 0xf472b6);
+      }
+      // 三迴路開關面板 (設於進門左手邊 y=2.45m 處)
+      addBoxWithEdge(0.02, 0.14, 0.10, 0.02, 2.42, 1.25, new THREE.MeshStandardMaterial({ color: '#f8fafc', emissive: '#38bdf8', emissiveIntensity: 0.6 }), 0x38bdf8);
+
+      // 3. 三實角 350mm 落地低頻陷阱 (A2-B1, A1-B1, A1-B2) + A2-B2 頂角斜置陷阱 (不擋門動線)
+      const tS = 0.35;
+      [
+        { x: tS / 2, y: tS / 2 },
+        { x: ROOM.L - tS / 2, y: tS / 2 },
+        { x: ROOM.L - tS / 2, y: ROOM.W - tS / 2 }
+      ].forEach((c) => addBoxWithEdge(tS, beamBottomZ - 0.02, tS, c.x, c.y, (beamBottomZ - 0.02) / 2, trapMat, 0xef4444));
+      // A2-B2 門上方頂角低頻陷阱 (z = 2.25 ~ 2.88m，不干涉進出)
+      addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0xef4444);
+
+      // 4. 24 片標準 60×120×5cm 吸音板 (離牆空腔 7.5cm) + B1 中央 1D QRD 擴散板
+      const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
+      // B1 左長牆 (6片: 前中 RFZ + 後段鼓組) + 中央木質 1D QRD (x=3.35m)
+      [1.10, 1.75, 2.45, 4.35, 4.98, 5.55].forEach((px) => addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat));
+      const qrdW = 1.10, qrdWells = [0.03, 0.08, 0.14, 0.06, 0.11, 0.14, 0.08, 0.03, 0.12, 0.05];
+      qrdWells.forEach((d, idx) => {
+        const w = qrdW / qrdWells.length;
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(w * 0.88, 1.20, d), diffMat);
+        bar.position.copy(toWorld(3.40 - qrdW / 2 + idx * w + w / 2, d / 2 + 0.01, 1.45));
+        rootGroup.add(bar);
+      });
+      // B2 右長牆 (6片)
+      [1.40, 2.10, 2.75, 3.65, 4.35, 5.05].forEach((px) => addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat));
+      // A1 後封閉牆 (3片，鎖固於木板封板骨架)
+      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, py, 1.40, panelMat));
+      // A2 前入口牆 (3片，集中於左側實牆與封窗區避開右側鋁門)
+      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat));
+      // 天花板避梁雙吸音雲 (6片: x=2.55m & x=3.95m, 寬 1.80m, 鋼索垂降 15cm，完美避開 x=4.90m 橫梁)
+      const cloudZ = ROOM.H - 0.15 - pT / 2;
+      [2.55, 3.95].forEach((cx) => [1.15, 1.80, 2.45].forEach((cy) => {
+        addBoxWithEdge(pH, pT, pW, cx, cy, cloudZ, panelMat);
+        const pts = [
+          toWorld(cx - 0.45, cy - 0.2, ROOM.H), toWorld(cx - 0.45, cy - 0.2, cloudZ + pT / 2),
+          toWorld(cx + 0.45, cy + 0.2, ROOM.H), toWorld(cx + 0.45, cy + 0.2, cloudZ + pT / 2)
+        ];
+        rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
+      }));
+
+      // 5. 核心設備：5件式爵士鼓 (x=4.50m, y=1.15m) + 混音控台 (x=3.66m) + 監聽喇叭 (x=2.10m, 推離 A2 消除不對稱門窗干涉)
+      // 鼓組
+      const kit = new THREE.Group();
+      kit.position.copy(toWorld(4.50, 1.15, 0));
+      const rug = new THREE.Mesh(new THREE.BoxGeometry(1.40, 0.015, 1.60), new THREE.MeshStandardMaterial({ color: '#18181b' }));
+      rug.position.set(0, 0.008, 0);
+      const dMat = new THREE.MeshStandardMaterial({ color: '#d97706', roughness: 0.3 });
+      const kick = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.45, 24), dMat);
+      kick.rotation.z = Math.PI / 2; kick.position.set(-0.15, 0.29, 0);
+      const snare = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.14, 20), new THREE.MeshStandardMaterial({ color: '#f8fafc' }));
+      snare.position.set(0.15, 0.62, 0.26);
+      const fTom = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.40, 20), dMat);
+      fTom.position.set(0.14, 0.42, -0.42);
+      const cymMat = new THREE.MeshStandardMaterial({ color: '#fbbf24', metalness: 0.85, roughness: 0.2 });
+      const c1 = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.01, 20), cymMat); c1.position.set(-0.22, 1.08, 0.45);
+      const c2 = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.01, 20), cymMat); c2.position.set(-0.20, 1.05, -0.45);
+      kit.add(rug, kick, snare, fTom, c1, c2);
+      rootGroup.add(kit);
+
+      // 控台 & 監聽喇叭
+      const desk = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 1.50), new THREE.MeshStandardMaterial({ color: '#334155' }));
+      desk.position.copy(toWorld(3.35, 1.80, 0.375));
+      rootGroup.add(desk);
+      [0.90, 2.70].forEach((sy) => {
+        const spk = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.24), new THREE.MeshStandardMaterial({ color: '#0f172a' }));
+        spk.position.copy(toWorld(2.10, sy, 1.15));
+        rootGroup.add(spk);
+      });
+
+      // 6. ★ V0.1 燈光最佳配置：主軌道外推至 y=0.72m & y=2.88m 避開吸音雲 + 遇橫梁止步 (x=0.50~4.55m) + 梁後平齊梁底獨立短軌
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.85 });
+      const trkZ = ROOM.H - 0.04;
+      [0.72, 2.88].forEach((ty) => {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
+        t.position.copy(toWorld(2.525, ty, trkZ));
+        rootGroup.add(t);
+      });
+      // 梁後凹槽短軌：若啟用巨型低頻陷阱封平，軌道直接鎖在封平框底面 (平齊梁底 beamBottomZ - 0.02m)
+      const backTrkZ = STATE.v01Superchunk ? (beamBottomZ - 0.03) : trkZ;
+      const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.20), trkMat);
+      backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
+      rootGroup.add(backTrk);
+
+      if (STATE.v01C1) {
+        const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
+        [1.50, 3.35].forEach((lx) => [0.72, 2.88].forEach((ly) => {
+          const bar = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
+          bar.position.copy(toWorld(lx, ly, trkZ - 0.03));
+          rootGroup.add(bar);
+          if (STATE.v01Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.95, 0x38bdf8, 0.08));
+        }));
+      }
+      if (STATE.v01C2) {
+        const cobMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
+        [
+          { x: 4.05, y: 0.72, tx: 4.50, ty: 1.15, tz: 0.85 },
+          { x: 4.50, y: 0.72, tx: 4.65, ty: 1.35, tz: 1.05 },
+          { x: 4.05, y: 2.88, tx: 4.50, ty: 1.20, tz: 0.85 },
+          { x: 2.40, y: 0.72, tx: 3.55, ty: 1.80, tz: 0.75 }
+        ].forEach((sp) => {
+          const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cobMat);
+          c.position.copy(sV); rootGroup.add(c);
+          if (STATE.v01Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.325, 0xf59e0b, 0.18));
+        });
+      }
+      if (STATE.v01C3) {
+        const rimMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#c084fc', emissiveIntensity: 1.2 });
+        [
+          { x: 5.45, y: 1.15, tx: 4.60, ty: 1.15, tz: 1.10 },
+          { x: 5.45, y: 2.35, tx: 5.85, ty: 1.80, tz: 1.35 }
+        ].forEach((sp) => {
+          const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), rimMat);
+          c.position.copy(sV); rootGroup.add(c);
+          if (STATE.v01Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.36, 0xc084fc, 0.18));
+        });
+        // 牆頂分段避梁暖白燈槽
+        const coveMat = new THREE.MeshBasicMaterial({ color: 0xfde68a });
+        [0.04, ROOM.W - 0.04].forEach((cy) => {
+          const s1 = new THREE.Mesh(new THREE.BoxGeometry(4.45, 0.025, 0.025), coveMat);
+          s1.position.copy(toWorld(2.425, cy, ROOM.H - 0.05));
+          rootGroup.add(s1);
+        });
+      }
+
+      if (STATE.v01Vis) {
+        const rMat = new THREE.LineDashedMaterial({ color: 0x34d399, dashSize: 0.10, gapSize: 0.05 });
+        const ear = toWorld(3.66, 1.80, 1.18);
+        [
+          [toWorld(2.10, 0.90, 1.15), toWorld(2.62, 0.12, 1.18), ear],
+          [toWorld(2.10, 2.70, 1.15), toWorld(2.62, ROOM.W - 0.12, 1.18), ear],
+          [toWorld(2.10, 0.90, 1.15), toWorld(2.88, 1.35, cloudZ - 0.03), ear]
+        ].forEach((pts) => {
+          const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), rMat);
+          l.computeLineDistances(); rootGroup.add(l);
+        });
+      }
+
+      if (STATE.showGrid) {
+        const lSC = makeTextSprite('★ 梁後 1.0m 凹槽巨型低頻陷阱 (填滿 45cm 低流阻棉封平至梁底，狙擊 58-60Hz)', 'rgba(6,78,59,0.92)', '#a7f3d0', 26, '#34d399');
+        lSC.position.copy(toWorld(5.45, ROOM.W / 2, ROOM.H + 0.25));
+        const lDoor = makeTextSprite('A2 外開銀灰鋁門 + 內側重磅吸音門簾 + 門左三迴路開關', 'rgba(131,24,67,0.9)', '#fbcfe8', 26, '#f472b6');
+        lDoor.position.copy(toWorld(0, ROOM.W / 2, ROOM.H + 0.25));
+        const lTrack = makeTextSprite('主軌外推至距牆 0.72m (錯開中央吸音雲) + 遇橫梁止步', 'rgba(3,105,161,0.9)', '#e0f2fe', 26, '#38bdf8');
+        lTrack.position.copy(toWorld(2.50, 0, ROOM.H + 0.25));
+        rootGroup.add(lSC, lDoor, lTrack);
+      }
+    }
+
+    // ==========================================
+    // 🥁 V0.2「爵士鼓教學、錄音與錄影專版」專屬 3D 模型
+    // 以鼓手聽覺與聲學黃金位為核心：鼓椅 x=4.25m, y=1.80m (面向 A2)
+    // ==========================================
+    function buildV02DrumStudioModel() {
+      const active = (STATE.v02C1 ? 0.45 : 0) + (STATE.v02C2 ? 0.25 : 0) + (STATE.v02C3 ? 0.18 : 0);
+      ambientLight.intensity = Math.max(0.25, active);
+      buildRoomShell(true);
+
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.9 });
+      const trapMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.95 });
+      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
+      const beamBottomZ = ROOM.H - STATE.beamDepth;
+
+      // 1. 聲學避讓區視覺化：標示 58.14Hz 中央駐波紅區 (x=2.95m) 與 A1 角落駐波區，凸顯鼓組完美避讓
+      if (STATE.v02Zones) {
+        const zoneMat = new THREE.MeshBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.16, depthWrite: false });
+        // x = 2.95m 長向二階 (2,0,0)=58.14Hz 正中央駐波波腹帶
+        const midBand = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.03, ROOM.W - 0.1), zoneMat);
+        midBand.position.copy(toWorld(2.95, ROOM.W / 2, 0.02));
+        rootGroup.add(midBand);
+        // 鼓組黃金聲學安全綠區光環 (x = 3.45 ~ 4.65m, y = 1.80m 絕對中軸)
+        const goldZone = new THREE.Mesh(
+          new THREE.BoxGeometry(1.50, 0.02, 1.80),
+          new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.14, depthWrite: false })
+        );
+        goldZone.position.copy(toWorld(4.05, 1.80, 0.015));
+        rootGroup.add(goldZone);
+      }
+
+      // 2. 梁後 1.00m 凹槽巨型低頻陷阱 (填滿 45cm 低流阻棉封平至梁底) + 橫梁正面/底面 50mm 包覆
+      if (STATE.v02Superchunk) {
+        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
+        const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
+        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
+          new THREE.MeshStandardMaterial({ color: '#065f46', roughness: 0.92, transparent: true, opacity: 0.88 }), 0x34d399);
+        const wrapMat = new THREE.MeshStandardMaterial({ color: '#134e4a', roughness: 0.9 });
+        addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat, 0x2dd4bf);
+        addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat, 0x2dd4bf);
+      }
+
+      // 3. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 鋁門內側重磅吸音門簾
+      const tS = 0.35;
+      [
+        { x: tS / 2, y: tS / 2 },
+        { x: ROOM.L - tS / 2, y: tS / 2 },
+        { x: ROOM.L - tS / 2, y: ROOM.W - tS / 2 }
+      ].forEach((c) => addBoxWithEdge(tS, beamBottomZ - 0.02, tS, c.x, c.y, (beamBottomZ - 0.02) / 2, trapMat, 0xef4444));
+      addBoxWithEdge(0.35, 0.62, 0.35, 0.175, ROOM.W - 0.175, 2.56, trapMat, 0xef4444);
+      addBoxWithEdge(0.04, 2.15, 0.96, 0.06, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 1.075,
+        new THREE.MeshStandardMaterial({ color: '#831843', roughness: 0.95, transparent: true, opacity: 0.78 }), 0xf472b6);
+
+      // 4. 24 片 60×120×5cm 吸音板 (離牆空腔 7.5cm) — 專為「鼓手聽覺清晰度」重新配重！
+      const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
+      // (a) 鼓組正上方大型懸吊吸音雲 × 6 片 (1.80m × 2.40m, 覆蓋 x=3.10~4.65m, y=0.70~2.90m, 鋼索垂降 18cm，避開 x=4.90m 橫梁)
+      const cloudZ = ROOM.H - 0.18 - pT / 2;
+      [3.45, 4.15].forEach((cx) => [1.05, 1.80, 2.55].forEach((cy) => {
+        addBoxWithEdge(pW, pT, pH * 0.58, cx, cy, cloudZ, panelMat, 0xfbbf24);
+        const pts = [
+          toWorld(cx - 0.25, cy - 0.28, ROOM.H), toWorld(cx - 0.25, cy - 0.28, cloudZ + pT / 2),
+          toWorld(cx + 0.25, cy + 0.28, ROOM.H), toWorld(cx + 0.25, cy + 0.28, cloudZ + pT / 2)
+        ];
+        rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
+      }));
+      // (b) 左右長牆 B1 / B2 各 6 片：4 片集中包夾鼓組左右兩側 (x=3.20~5.00m) + 2 片前中段防顫動回聲 (x=1.20~2.50m)
+      const sideX = [1.25, 2.35, 3.25, 3.90, 4.55, 5.20];
+      sideX.forEach((px) => {
+        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat);
+        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat);
+      });
+      // (c) A1 後封閉牆 (3 片，掛於教材雜物矮櫃上方 z=1.75m 作為錄影高質感背牆並吸收鼓手後側反射)
+      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH * 0.85, pW, ROOM.L - gap - pT / 2, py, 1.72, panelMat));
+      // (d) A2 前入口牆 (3 片，避開右側鋁門吸收大鼓向前直達波)
+      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat));
+
+      // 5. ★ 單套原聲爵士鼓黃金擺位：鼓椅中心 (x=4.25m, y=1.80m 絕對中軸), 大鼓朝前 (-X 面向 A2)
+      const kit = new THREE.Group();
+      kit.position.copy(toWorld(4.00, 1.80, 0)); // 鼓毯中心 x=4.00m (涵蓋 x=3.25~4.75m, y=0.95~2.65m)
+      const rug = new THREE.Mesh(new THREE.BoxGeometry(1.50, 0.015, 1.70), new THREE.MeshStandardMaterial({ color: '#18181b', roughness: 0.95 }));
+      rug.position.set(0, 0.008, 0);
+      const dMat = new THREE.MeshStandardMaterial({ color: '#ea580c', roughness: 0.25, metalness: 0.25 });
+      const headMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.55 });
+      const cymMat = new THREE.MeshStandardMaterial({ color: '#fbbf24', metalness: 0.85, roughness: 0.18 });
+      // 大鼓 (前緣在 x ≈ 3.55m)
+      const kick = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.46, 24), dMat);
+      kick.rotation.z = Math.PI / 2; kick.position.set(-0.22, 0.29, 0);
+      // 鼓椅 (x = 4.25m, y = 1.80m，椅背距 A1 牆 1.65m)
+      const throne = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.09, 20), new THREE.MeshStandardMaterial({ color: '#0f172a' }));
+      throne.position.set(0.32, 0.54, 0);
+      const snare = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.14, 20), headMat);
+      snare.position.set(0.05, 0.64, 0.28);
+      const tom1 = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.22, 20), dMat); tom1.position.set(-0.18, 0.74, 0.17);
+      const tom2 = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.24, 20), dMat); tom2.position.set(-0.18, 0.74, -0.17);
+      const fTom = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.42, 20), dMat); fTom.position.set(0.08, 0.43, -0.45);
+      // 3片銅鈸 + 1對 Overhead 收音麥克風示意 (位於鼓組上方 z=2.05m，完全在橫梁前全淨高下)
+      const hihat = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.015, 20), cymMat); hihat.position.set(0.12, 0.94, 0.52);
+      const crash = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.23, 0.012, 20), cymMat); crash.position.set(-0.30, 1.15, 0.48);
+      const ride = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.012, 20), cymMat); ride.position.set(-0.26, 1.10, -0.52);
+      kit.add(rug, kick, throne, snare, tom1, tom2, fTom, hihat, crash, ride);
+      rootGroup.add(kit);
+
+      // 6. 常見尺寸三大機能家具：
+      // (a) 教材、線材、鼓盒雜物收納櫃 (靠 A1 後牆橫梁下方: 寬 2.40m × 深 0.45m × 高 1.05m, 兼具天然擴散與背景修飾)
+      const shelfMat = new THREE.MeshStandardMaterial({ color: '#78350f', roughness: 0.7 });
+      addBoxWithEdge(0.45, 1.05, 2.40, ROOM.L - 0.26, ROOM.W / 2, 0.525, shelfMat, 0xd97706);
+
+      // (b) 剪輯工作桌 (靠 B1 左前牆: 長 1.50m × 深 0.70m × 高 0.75m, x=0.45~1.95m, y=0.05~0.75m)
+      const deskMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.5 });
+      addBoxWithEdge(1.50, 0.75, 0.70, 1.20, 0.42, 0.375, deskMat, 0x38bdf8);
+      // 雙螢幕示意
+      addBoxWithEdge(0.85, 0.38, 0.04, 1.20, 0.22, 1.05, new THREE.MeshStandardMaterial({ color: '#020617', metalness: 0.8 }), 0x38bdf8);
+
+      // (c) 雙人布面沙發 + 茶几 + 客廳地毯 (靠 B2 右中前牆: 沙發 1.60m × 0.85m, x=1.20~2.80m, y=2.70~3.55m)
+      const sofaMat = new THREE.MeshStandardMaterial({ color: '#475569', roughness: 0.9 });
+      // 地毯
+      const lRug = new THREE.Mesh(new THREE.BoxGeometry(1.80, 0.012, 1.50), new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.95 }));
+      lRug.position.copy(toWorld(2.00, 2.75, 0.006));
+      rootGroup.add(lRug);
+      // 沙發座墊 + 靠背
+      addBoxWithEdge(1.60, 0.42, 0.85, 2.00, 3.12, 0.21, sofaMat, 0x94a3b8);
+      addBoxWithEdge(1.60, 0.78, 0.20, 2.00, 3.45, 0.39, sofaMat, 0x94a3b8);
+      // 小茶几 (0.90m × 0.50m × 0.42m)
+      addBoxWithEdge(0.90, 0.42, 0.50, 2.00, 2.30, 0.21, new THREE.MeshStandardMaterial({ color: '#92400e', roughness: 0.6 }), 0xf59e0b);
+
+      // (d) 錄影機位三腳架標示 (位於前中段 x=1.55m, y=1.80m，距鼓手 2.70m 正面全景構圖)
+      if (STATE.v02Vis) {
+        const camBody = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.16), new THREE.MeshStandardMaterial({ color: '#0f172a', emissive: '#f43f5e', emissiveIntensity: 0.6 }));
+        camBody.position.copy(toWorld(1.55, 1.80, 1.35));
+        const tripod = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.18, 1.30, 6), new THREE.MeshStandardMaterial({ color: '#64748b' }));
+        tripod.position.copy(toWorld(1.55, 1.80, 0.65));
+        rootGroup.add(camBody, tripod);
+        // 攝影機取景視錐線 (FOV 指向鼓組與 A1 背景牆)
+        const fovMat = new THREE.LineDashedMaterial({ color: 0xf43f5e, dashSize: 0.12, gapSize: 0.06 });
+        const cPos = toWorld(1.55, 1.80, 1.35);
+        [toWorld(4.65, 0.65, 1.65), toWorld(4.65, 2.95, 1.65), toWorld(4.65, 0.65, 0.35), toWorld(4.65, 2.95, 0.35)].forEach((pt) => {
+          const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([cPos, pt]), fovMat);
+          l.computeLineDistances(); rootGroup.add(l);
+        });
+      }
+
+      // 7. V0.2 影棚級三點打光 + 日常教學外推主軌道 (y=0.55m & y=3.05m 避開寬 2.2m 鼓組大吸音雲，於橫梁前止步)
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#0f172a', metalness: 0.85 });
+      const trkZ = ROOM.H - 0.04;
+      [0.55, 3.05].forEach((ty) => {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
+        t.position.copy(toWorld(2.525, ty, trkZ));
+        rootGroup.add(t);
+      });
+      const backTrkZ = STATE.v02Superchunk ? (beamBottomZ - 0.03) : trkZ;
+      const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
+      backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
+      rootGroup.add(backTrk);
+
+      // 迴路一：外推避雲防眩線條燈 (日常教學、剪輯與練鼓均勻光)
+      if (STATE.v02C1) {
+        const linMat = new THREE.MeshStandardMaterial({ color: '#e0f2fe', emissive: '#38bdf8', emissiveIntensity: 1.1 });
+        [1.45, 3.30].forEach((lx) => [0.55, 3.05].forEach((ly) => {
+          const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.045, 0.055), linMat);
+          b.position.copy(toWorld(lx, ly, trkZ - 0.03));
+          rootGroup.add(b);
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(toWorld(lx, ly, trkZ - 0.05), toWorld(lx, ROOM.W / 2, 0.75), 2.25, 0.95, 0x38bdf8, 0.07));
+        }));
+      }
+      // 迴路二：錄影主面光與側補光 (Key + Fill: 鼓組前 45° 交叉 COB 射燈 × 4)
+      if (STATE.v02C2) {
+        const cobMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', emissive: '#f59e0b', emissiveIntensity: 1.2 });
+        [
+          { x: 2.75, y: 0.55, tx: 4.10, ty: 1.80, tz: 1.15 }, // 左前 45° 主面光
+          { x: 2.75, y: 3.05, tx: 4.10, ty: 1.80, tz: 1.15 }, // 右前 45° 側補光
+          { x: 3.65, y: 0.55, tx: 3.95, ty: 1.80, tz: 0.70 }, // 鼓面與小鼓特寫光
+          { x: 3.65, y: 3.05, tx: 3.95, ty: 1.80, tz: 0.70 }
+        ].forEach((sp) => {
+          const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), cobMat);
+          c.position.copy(sV); rootGroup.add(c);
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.325, 0xf59e0b, 0.16));
+        });
+      }
+      // 迴路三：梁後凹槽鼓手輪廓背光 (Rim Light × 2) + 客廳沙發暖光
+      if (STATE.v02C3) {
+        const rimMat = new THREE.MeshStandardMaterial({ color: '#f3e8ff', emissive: '#c084fc', emissiveIntensity: 1.2 });
+        [
+          { x: 5.45, y: 1.10, tx: 4.25, ty: 1.80, tz: 1.25 }, // 左後髮絲/肩膀輪廓光
+          { x: 5.45, y: 2.50, tx: 4.25, ty: 1.80, tz: 1.25 }  // 右後輪廓光 + 洗亮 A1 背景
+        ].forEach((sp) => {
+          const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+          const c = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.13, 16), rimMat);
+          c.position.copy(sV); rootGroup.add(c);
+          if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.34, 0xc084fc, 0.18));
+        });
+      }
+
+      // 8. 精簡縮放立體標註
+      if (STATE.showGrid) {
+        const lDrum = makeTextSprite('★ 鼓組聲學黃金位 (鼓椅 x=4.25m, y=1.80m 中軸 | 避開 58Hz 波腹與橫梁)', 'rgba(154,52,18,0.92)', '#fef3c7', 26, '#f59e0b');
+        lDrum.position.copy(toWorld(4.05, 1.80, 1.75));
+        const lShelf = makeTextSprite('教材線材雜物收納櫃 (A1 橫梁下 | 兼具擴散與錄影背景)', 'rgba(120,53,15,0.9)', '#fde68a', 26, '#d97706');
+        lShelf.position.copy(toWorld(5.60, 1.80, 1.35));
+        const lDesk = makeTextSprite('剪輯工作桌 (1.5×0.7m | B1 左前區)', 'rgba(3,105,161,0.9)', '#e0f2fe', 26, '#38bdf8');
+        lDesk.position.copy(toWorld(1.20, 0.45, 1.45));
+        const lSofa = makeTextSprite('雙人布沙發＋茶几 (1.6×0.85m | 自然吸音兼旁聽區)', 'rgba(51,65,85,0.92)', '#f8fafc', 26, '#94a3b8');
+        lSofa.position.copy(toWorld(2.00, 3.05, 1.15));
+        const lMid = makeTextSprite('x=2.95m (58Hz 駐波紅區 — 鼓組已避開)', 'rgba(153,27,27,0.9)', '#fecaca', 24, '#ef4444');
+        lMid.position.copy(toWorld(2.95, 1.80, 0.35));
+        rootGroup.add(lDrum, lShelf, lDesk, lSofa, lMid);
+      }
+    }
+
+    function rebuildScene() {
+      while (rootGroup.children.length > 0) rootGroup.remove(rootGroup.children[0]);
+      wallMeshes = {};
+
+      if (STATE.model === 'shell') buildShellOnlyModel();
+      else if (STATE.model === 'v0') buildV0TheoryModel();
+      else if (STATE.model === 'v01') buildV01OptimalModel();
+      else buildV02DrumStudioModel();
+
+      draw2DFloorPlan();
+    }
+
+    // ==========================================
+    // 4. 2D 平面圖同步繪製
+    // ==========================================
+    const canvas2d = document.getElementById('canvas2d');
+    const ctx2d = canvas2d.getContext('2d');
+
+    function draw2DFloorPlan() {
+      const pane2d = document.getElementById('pane2d');
+      if (pane2d.style.display === 'none') return;
+
+      const rect = pane2d.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas2d.width = rect.width * dpr; canvas2d.height = rect.height * dpr;
+      canvas2d.style.width = `${rect.width}px`; canvas2d.style.height = `${rect.height}px`;
+
+      ctx2d.save();
+      ctx2d.scale(dpr, dpr);
+      const W = rect.width, H = rect.height;
+      ctx2d.fillStyle = '#0b1120'; ctx2d.fillRect(0, 0, W, H);
+
+      const scale = Math.min((W - 190) / ROOM.L, (H - 190) / ROOM.W);
+      const ox = (W - ROOM.L * scale) / 2;
+      const oy = (H - ROOM.W * scale) / 2;
+      const toX = (rx) => ox + rx * scale;
+      const toY = (ry) => oy + ry * scale;
+
+      ctx2d.fillStyle = '#162032';
+      ctx2d.fillRect(ox, oy, ROOM.L * scale, ROOM.W * scale);
+
+      // 1.0m 網格
+      ctx2d.strokeStyle = 'rgba(148,163,184,0.16)'; ctx2d.lineWidth = 1;
+      ctx2d.font = '11px monospace'; ctx2d.fillStyle = '#64748b';
+      for (let x = 0; x <= ROOM.L + 0.01; x += 1) {
+        ctx2d.beginPath(); ctx2d.moveTo(toX(x), oy); ctx2d.lineTo(toX(x), oy + ROOM.W * scale); ctx2d.stroke();
+        ctx2d.fillText(`${x.toFixed(1)}m`, toX(x) - 12, oy - 8);
+      }
+      for (let y = 0; y <= ROOM.W + 0.01; y += 1) {
+        ctx2d.beginPath(); ctx2d.moveTo(ox, toY(y)); ctx2d.lineTo(ox + ROOM.L * scale, toY(y)); ctx2d.stroke();
+        ctx2d.fillText(`${y.toFixed(1)}m`, ox - 36, toY(y) + 4);
+      }
+
+      // 真實門窗與橫梁 (V0.1 & Shell)
+      if (STATE.model !== 'v0') {
+        const bx = toX(4.90 - ROOM.BEAM_WIDTH / 2);
+        ctx2d.fillStyle = 'rgba(56, 189, 248, 0.16)';
+        ctx2d.fillRect(bx, oy, ROOM.BEAM_WIDTH * scale, ROOM.W * scale);
+        ctx2d.strokeStyle = '#38bdf8'; ctx2d.setLineDash([4, 4]);
+        ctx2d.strokeRect(bx, oy, ROOM.BEAM_WIDTH * scale, ROOM.W * scale);
+        ctx2d.setLineDash([]);
+
+        if ((STATE.model === 'v01' && STATE.v01Superchunk) || (STATE.model === 'v02' && STATE.v02Superchunk)) {
+          ctx2d.fillStyle = 'rgba(52, 211, 153, 0.22)';
+          ctx2d.fillRect(toX(5.075), oy, (5.90 - 5.075) * scale, ROOM.W * scale);
+          ctx2d.fillStyle = '#34d399'; ctx2d.font = 'bold 11px sans-serif';
+          ctx2d.fillText('梁後巨型低頻陷阱', toX(5.12), toY(0.45));
+        }
+      }
+
+      // V0.2 爵士鼓教學版 2D 精確平面圖配置
+      if (STATE.model === 'v02') {
+        // 58Hz 中央駐波紅帶 (x=2.95m)
+        if (STATE.v02Zones) {
+          ctx2d.fillStyle = 'rgba(239, 68, 68, 0.16)';
+          ctx2d.fillRect(toX(2.73), oy, 0.45 * scale, ROOM.W * scale);
+          ctx2d.fillStyle = '#fca5a5'; ctx2d.font = '10px sans-serif';
+          ctx2d.fillText('58Hz波腹紅區(x=2.95m)', toX(2.75), oy + 14);
+        }
+        // 1. 爵士鼓組黃金位 (鼓毯中心 x=4.00m, y=1.80m)
+        ctx2d.fillStyle = 'rgba(245, 158, 11, 0.2)'; ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2;
+        ctx2d.fillRect(toX(3.25), toY(0.95), 1.50 * scale, 1.70 * scale);
+        ctx2d.strokeRect(toX(3.25), toY(0.95), 1.50 * scale, 1.70 * scale);
+        ctx2d.fillStyle = '#fde68a'; ctx2d.font = 'bold 11px sans-serif';
+        ctx2d.fillText('★ 單套爵士鼓黃金位', toX(3.45), toY(1.70));
+        ctx2d.fillText('(鼓椅 x=4.25m, y=1.80m)', toX(3.38), toY(1.92));
+
+        // 2. 教材線材雜物櫃 (A1 橫梁下)
+        ctx2d.fillStyle = 'rgba(217, 119, 6, 0.25)'; ctx2d.strokeStyle = '#d97706';
+        ctx2d.fillRect(toX(5.40), toY(0.60), 0.45 * scale, 2.40 * scale);
+        ctx2d.strokeRect(toX(5.40), toY(0.60), 0.45 * scale, 2.40 * scale);
+        ctx2d.fillStyle = '#fde68a'; ctx2d.fillText('教材雜物櫃', toX(5.42), toY(1.80));
+
+        // 3. 剪輯工作桌 (B1 左前 1.50m × 0.70m)
+        ctx2d.fillStyle = 'rgba(56, 189, 248, 0.22)'; ctx2d.strokeStyle = '#38bdf8';
+        ctx2d.fillRect(toX(0.45), toY(0.07), 1.50 * scale, 0.70 * scale);
+        ctx2d.strokeRect(toX(0.45), toY(0.07), 1.50 * scale, 0.70 * scale);
+        ctx2d.fillStyle = '#e0f2fe'; ctx2d.fillText('剪輯桌 (1.5×0.7m)', toX(0.65), toY(0.46));
+
+        // 4. 雙人沙發 + 茶几 (B2 右中前)
+        ctx2d.fillStyle = 'rgba(148, 163, 184, 0.25)'; ctx2d.strokeStyle = '#94a3b8';
+        ctx2d.fillRect(toX(1.20), toY(2.70), 1.60 * scale, 0.85 * scale);
+        ctx2d.strokeRect(toX(1.20), toY(2.70), 1.60 * scale, 0.85 * scale);
+        ctx2d.fillStyle = '#f8fafc'; ctx2d.fillText('雙人布沙發 (1.6×0.85m)', toX(1.38), toY(3.15));
+        ctx2d.fillRect(toX(1.55), toY(2.05), 0.90 * scale, 0.50 * scale);
+
+        // 5. 軌道燈 (外推 y=0.55 & y=3.05m + 梁後短軌)
+        ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
+        [0.55, 3.05].forEach((ty) => {
+          ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
+        });
+        ctx2d.strokeStyle = '#c084fc';
+        ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
+      } else if (STATE.model === 'v01') {
+        ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
+        [0.72, 2.88].forEach((ty) => {
+          ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
+        });
+        ctx2d.strokeStyle = '#c084fc';
+        ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.70)); ctx2d.lineTo(toX(5.45), toY(2.90)); ctx2d.stroke();
+      } else if (STATE.model === 'v0') {
+        ctx2d.strokeStyle = '#f59e0b'; ctx2d.lineWidth = 2.5;
+        [0.90, 2.70].forEach((ty) => {
+          ctx2d.beginPath(); ctx2d.moveTo(toX(0.60), toY(ty)); ctx2d.lineTo(toX(5.40), toY(ty)); ctx2d.stroke();
+        });
+        ctx2d.strokeStyle = '#e879f9';
+        ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(0.30)); ctx2d.lineTo(toX(0.50), toY(3.30)); ctx2d.stroke();
+      }
+
+      // 牆體外框
+      ctx2d.strokeStyle = '#f8fafc'; ctx2d.lineWidth = 4;
+      ctx2d.strokeRect(ox, oy, ROOM.L * scale, ROOM.W * scale);
+
+      // A2 外開鋁門弧線 (V0.1 & Shell)
+      if (STATE.model !== 'v0') {
+        const dY1 = toY(ROOM.DOOR_Y_START), dY2 = toY(ROOM.DOOR_Y_START + ROOM.DOOR_W);
+        ctx2d.strokeStyle = '#ef4444'; ctx2d.lineWidth = 4;
+        ctx2d.beginPath(); ctx2d.moveTo(ox, dY2); ctx2d.lineTo(ox - ROOM.DOOR_W * scale, dY2); ctx2d.stroke();
+        ctx2d.strokeStyle = 'rgba(239,68,68,0.75)'; ctx2d.lineWidth = 1.5; ctx2d.setLineDash([4, 4]);
+        ctx2d.beginPath(); ctx2d.arc(ox, dY2, ROOM.DOOR_W * scale, -Math.PI, -Math.PI / 2); ctx2d.stroke();
+        ctx2d.setLineDash([]);
+      }
+
+      ctx2d.fillStyle = '#fbbf24'; ctx2d.font = 'bold 12px sans-serif';
+      ctx2d.fillText('A2 前短牆 (3.60m)', ox - 92, oy + (ROOM.W * scale) / 2);
+      ctx2d.fillText('A1 後短牆 (3.60m)', ox + ROOM.L * scale + 10, oy + (ROOM.W * scale) / 2);
+      ctx2d.fillText('B1 左長牆 (5.90m)', ox + (ROOM.L * scale) / 2 - 50, oy - 24);
+      ctx2d.fillText('B2 右長牆 (5.90m)', ox + (ROOM.L * scale) / 2 - 50, oy + ROOM.W * scale + 28);
+      ctx2d.restore();
+    }
+
+    // ==========================================
+    // 5. 智慧遮擋牆面與動畫迴圈
+    // ==========================================
+    function updateAutoWallOpacity() {
+      if (!wallMeshes.A2) return;
+      if (!STATE.autoHideWall) {
+        Object.values(wallMeshes).flat().forEach((m) => { m.material.opacity = 1.0; });
+        return;
+      }
+      const p = camera.position;
+      const setOp = (k, op) => (wallMeshes[k] || []).forEach((m) => { m.material.opacity = op; });
+      setOp('A2', p.x < -1.2 ? 0.15 : 1.0);
+      setOp('A1', p.x > 1.2 ? 0.15 : 1.0);
+      setOp('B1', p.z < -0.9 ? 0.15 : 1.0);
+      setOp('B2', p.z > 0.9 ? 0.15 : 1.0);
+    }
+
+    function resizeViewports() {
+      const r = pane3d.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        camera.aspect = r.width / r.height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(r.width, r.height);
+      }
+      draw2DFloorPlan();
+    }
+    window.addEventListener('resize', resizeViewports);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      updateAutoWallOpacity();
+      renderer.render(scene, camera);
+    }
+
+    // ==========================================
+    // 6. UI 狀態切換綁定
+    // ==========================================
+    function setModel(modelKey) {
+      STATE.model = modelKey;
+      document.querySelectorAll('.model-btn').forEach((b) => b.classList.toggle('active', b.dataset.model === modelKey));
+      document.getElementById('panel-v0').style.display = modelKey === 'v0' ? 'flex' : 'none';
+      document.getElementById('panel-v01').style.display = modelKey === 'v01' ? 'flex' : 'none';
+      document.getElementById('panel-v02').style.display = modelKey === 'v02' ? 'flex' : 'none';
+      document.getElementById('panel-shell').style.display = modelKey === 'shell' ? 'flex' : 'none';
+      document.getElementById('struct-sliders').style.display = modelKey === 'v0' ? 'none' : 'flex';
+
+      const b3 = document.getElementById('badge-3d');
+      const leg = document.getElementById('legend-bar');
+
+      if (modelKey === 'v02') {
+        b3.innerHTML = `
+          <div><span class="tag" style="background:#ea580c;">V0.2 爵士鼓教學版本</span><strong>以鼓手聽覺清晰度為核心的聲學黃金擺位 + 錄影三點打光</strong></div>
+          <div>黃金位：<strong>鼓椅 x=4.25m, y=1.80m 中軸（面向 A2，避開 58Hz 中央紅區與橫梁壓迫）</strong> ＋ <strong>A1 教材櫃 / B1 剪輯桌 / B2 沙發區</strong></div>`;
+        leg.innerHTML = `
+          <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>單套爵士鼓黃金位 (y=1.8m中軸)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>x=2.95m 58Hz駐波避讓紅區</div>
+          <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽巨型低頻陷阱</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>錄影45°交叉主面光(Key/Fill)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後凹槽鼓手輪廓背光(Rim)</div>`;
+      } else if (modelKey === 'v01') {
+        b3.innerHTML = `
+          <div><span class="tag" style="background:#059669;">V0.1 門窗橫梁最佳落地解</span><strong>融合現場結構 × 波動聲學 × EN 12464-1 軌道照明</strong></div>
+          <div>亮點：<strong>梁後 1.0m 凹槽巨型低頻陷阱封平至梁底</strong> ＋ <strong>A2 外開鋁門吸音簾</strong> ＋ <strong>主軌外推 0.72m 避雲止步</strong></div>`;
+        leg.innerHTML = `
+          <div class="legend-item"><span class="legend-box" style="background:#10b981;"></span>梁後凹槽巨型低頻陷阱(狙擊58-60Hz)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f472b6;"></span>A2 外開鋁門吸音門簾</div>
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>外推避雲主軌 4m 線條燈(60%)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>梁前 45° 交叉 COB 面光(25%)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#c084fc;"></span>梁後凹槽短軌背光(15%)</div>`;
+      } else if (modelKey === 'v0') {
+        b3.innerHTML = `
+          <div><span class="tag" style="background:#9333ea;">V0 純理論研究模型</span><strong>理想 5.9m × 3.6m × 2.9m 矩形空間（無門窗橫梁）</strong></div>
+          <div>依據研究報告：<strong>4角400mm陷阱 + 2條59.2Hz MLV頂角箱 + 後牆N=7 QRD</strong> ｜ <strong>214W 雙主軌(距牆0.9m)+前端30°洗牆軌</strong></div>`;
+        leg.innerHTML = `
+          <div class="legend-item"><span class="legend-box" style="background:#f472b6;"></span>前後頂角 59.2Hz MLV 薄膜陷阱</div>
+          <div class="legend-item"><span class="legend-box" style="background:#b45309;"></span>後牆 N=7 QRD & 側牆後段擴散</div>
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>雙主軌 4m 防眩線條燈(60%)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#e879f9;"></span>前端 30° 偏光白板洗牆(15%)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#f59e0b;"></span>主軌 45° 交叉 COB 面光(25%)</div>`;
+      } else {
+        b3.innerHTML = `
+          <div><span class="tag" style="background:#d97706;">純空間尺寸樑柱門窗</span><strong>5.90m × 3.60m × 2.90m 原始拆除空屋建築結構</strong></div>
+          <div>核對基準：<strong>A2 右側外開 90° 銀灰鋁門 (鉸鏈在 B2)</strong> ＋ <strong>A1/A2 木板封門窗</strong> ＋ <strong>距 A1 1.00m 水泥橫梁</strong></div>`;
+        leg.innerHTML = `
+          <div class="legend-item"><span class="legend-box" style="background:#94a3b8;"></span>A2 外開銀灰鋁門 (上段壓花玻璃)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#d4b483;"></span>A1 / A2 木板封平之原鋁門窗</div>
+          <div class="legend-item"><span class="legend-box" style="background:#64748b; border:1px solid #38bdf8;"></span>距 A1 1.00m 天花板水泥結構橫梁</div>`;
+      }
+      rebuildScene();
+    }
+
+    document.getElementById('btn-m-v0').addEventListener('click', () => setModel('v0'));
+    document.getElementById('btn-m-v01').addEventListener('click', () => setModel('v01'));
+    document.getElementById('btn-m-v02').addEventListener('click', () => setModel('v02'));
+    document.getElementById('btn-m-shell').addEventListener('click', () => setModel('shell'));
+
+    document.querySelectorAll('.view-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const m = btn.dataset.mode;
+        document.getElementById('pane3d').style.display = m === '2d' ? 'none' : 'block';
+        document.getElementById('pane2d').style.display = m === '3d' ? 'none' : 'flex';
+        resizeViewports();
+      });
+    });
+
+    document.getElementById('cam-iso').addEventListener('click', () => { camera.position.set(-5.0, 4.5, 4.9); controls.target.set(0.15, 1.15, 0); });
+    document.getElementById('cam-a2').addEventListener('click', () => { camera.position.copy(toWorld(1.55, 1.80, 1.40)); controls.target.copy(toWorld(4.25, 1.80, 1.15)); });
+    document.getElementById('cam-a1').addEventListener('click', () => { camera.position.copy(toWorld(4.30, 1.80, 1.32)); controls.target.copy(toWorld(1.50, 1.80, 1.10)); });
+    document.getElementById('cam-top').addEventListener('click', () => { camera.position.set(0, 8.2, 0.01); controls.target.set(0, 0, 0); });
+
+    const bindChk = (id, key) => document.getElementById(id).addEventListener('change', (e) => { STATE[key] = e.target.checked; rebuildScene(); });
+    bindChk('chk-autowall', 'autoHideWall');
+    bindChk('chk-ceiling', 'showCeiling');
+    bindChk('chk-grid', 'showGrid');
+    bindChk('chk-v02-zones', 'v02Zones');
+    bindChk('chk-v02-superchunk', 'v02Superchunk');
+    bindChk('chk-v02-c1', 'v02C1');
+    bindChk('chk-v02-c2', 'v02C2');
+    bindChk('chk-v02-c3', 'v02C3');
+    bindChk('chk-v02-vis', 'v02Vis');
+    bindChk('chk-v01-superchunk', 'v01Superchunk');
+    bindChk('chk-v01-curtain', 'v01Curtain');
+    bindChk('chk-v01-c1', 'v01C1');
+    bindChk('chk-v01-c2', 'v01C2');
+    bindChk('chk-v01-c3', 'v01C3');
+    bindChk('chk-v01-vis', 'v01Vis');
+    bindChk('chk-v0-c1', 'v0C1');
+    bindChk('chk-v0-c2', 'v0C2');
+    bindChk('chk-v0-c3', 'v0C3');
+    bindChk('chk-v0-vis', 'v0Vis');
+
+    document.getElementById('rng-beam-depth').addEventListener('input', (e) => {
+      const cm = parseInt(e.target.value, 10);
+      STATE.beamDepth = cm / 100;
+      document.getElementById('val-beam-depth').textContent = `${cm} cm (梁底 ${(ROOM.H - STATE.beamDepth).toFixed(2)}m)`;
+      rebuildScene();
+    });
+    document.getElementById('rng-door-angle').addEventListener('input', (e) => {
+      STATE.doorAngle = parseInt(e.target.value, 10);
+      document.getElementById('val-door-angle').textContent = `${STATE.doorAngle}°`;
+      rebuildScene();
+    });
+
+    setModel('v02');
+    resizeViewports();
+    animate();
+  </script>
+</body>
+</html>
