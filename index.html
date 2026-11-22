@@ -607,10 +607,10 @@
           • 爵士鼓毯：1.50m × 1.70m (中心 x=4.00m, y=1.80m)<br />
           • 教材雜物櫃：2.40m × 0.45m × 1.05m (A1 牆前)<br />
           • 剪輯工作桌：1.50m × 0.70m × 0.75m (B1 左前)<br />
-          • 雙人布沙發：1.60m × 0.85m (B2 右中前)<br />
-          • 茶几：0.90m × 0.50m × 0.42m<br />
-          • 天花板吸音雲：6 片 (60×120×5cm，垂降 18cm)<br />
-          • 梁後凹槽低頻陷阱：x=5.075~5.90m (深 45cm 封平至梁底)
+          • 雙人布沙發：1.60m × 0.85m (B2 右中前) / 茶几 0.90×0.50m<br />
+          • A1 吸音配置：封門客製板 (90×210cm) + 封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)，上緣齊平 2.10m<br />
+          • A2 吸音配置：封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)<br />
+          • 側牆與天花板：B1/B2 各 6 片 + 天花吸音雲 6 片 (60×120×5cm) + 梁後低頻陷阱
         </div>
 
         <div class="toggle-list">
@@ -671,12 +671,11 @@
         <div class="spec-box">
           <strong style="color:#34d399;">空間物件尺寸與座標：</strong><br />
           • 爵士鼓組：1.45m × 1.65m (中心 x=4.20m, y=1.80m，面向 A2)<br />
-          • PA 監聽喇叭 × 2：x=3.65m, y=0.48 / 3.12m，高 1.68m (斜射主唱與中前區)<br />
-          • Bass 音箱：0.58m × 0.46m × 0.85m (x=2.75m, y=0.42m)<br />
-          • 電吉他音箱：0.62m × 0.36m × 0.72m (x=2.75m, y=3.18m)<br />
-          • 鍵盤與琴架：1.25m × 0.38m (x=1.75m, y=2.95m)<br />
-          • 主唱麥克風：x=1.45m, y=1.80m (面向鼓與 PA，180° 背面防回授)<br />
-          • 混音器與機櫃區：0.65m × 0.95m (x=0.52m, y=0.65m)
+          • PA 監聽喇叭 × 2：x=3.65m, y=0.48 / 3.12m，高 1.68m<br />
+          • Bass 音箱 (0.58×0.46m) / 電吉他音箱 (0.62×0.36m)：x=2.75m<br />
+          • 鍵盤 (1.25×0.38m, x=1.75m) / 主唱麥克風 (x=1.45m) / 混音機櫃 (0.65×0.95m)<br />
+          • A1 吸音配置：封門客製板 (90×210cm) + 封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)，上緣齊平 2.10m<br />
+          • A2 吸音配置：封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)
         </div>
 
         <div class="toggle-list">
@@ -1341,8 +1340,16 @@
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, py, 1.45, panelMat, 0x94a3b8, 'A1'));
-      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat, 0x94a3b8, 'A2'));
+      // A1 後牆：封門客製吸音板 (90×210cm) + 封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m
+      const a1PanelX = ROOM.L - 0.02 - pT / 2;
+      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, panelMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A1');
+
+      // A2 前牆：封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m (右側維持外開鋁門)
+      const a2PanelX = 0.02 + pT / 2;
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A2');
+      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A2');
 
       // 4. ★ 練團室 5 人全編制＋PA/混音設備 黃金聲學擺位 ★
       // (a) 爵士鼓組 (全室基準核心：鼓椅 x=4.45m, y=1.80m 中軸線，面向 A2)
@@ -1564,8 +1571,16 @@
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      [0.95, 1.80, 2.65].forEach((py) => addBoxWithEdge(pT, pH * 0.85, pW, ROOM.L - gap - pT / 2, py, 1.72, panelMat, 0x94a3b8, 'A1'));
-      [0.55, 1.25, 1.95].forEach((py) => addBoxWithEdge(pT, pH, pW, gap + pT / 2, py, 1.45, panelMat, 0x94a3b8, 'A2'));
+      // A1 後牆：封門客製吸音板 (90×210cm) + 封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m
+      const a1PanelX = ROOM.L - 0.02 - pT / 2;
+      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, panelMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A1');
+      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A1');
+
+      // A2 前牆：封窗客製吸音板 (115×115cm) + 左側補 1 片常規板 (60×120×5cm)，上緣齊平 z=2.10m (右側維持外開鋁門)
+      const a2PanelX = 0.02 + pT / 2;
+      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, panelMat, 0x94a3b8, 'A2');
+      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A2');
 
       // 5. ★ 單套原聲爵士鼓黃金擺位：鼓椅中心 (x=4.25m, y=1.80m 絕對中軸), 大鼓朝前 (-X 面向 A2)
       const kit = new THREE.Group();
