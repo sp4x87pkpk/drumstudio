@@ -234,6 +234,56 @@
       flex-shrink: 0;
     }
 
+    .alt-switcher-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+
+    .alt-switcher-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .alt-switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      background: var(--panel-subtle);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 3px;
+    }
+
+    .alt-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.14s;
+      line-height: 1.25;
+    }
+
+    .alt-btn:hover {
+      color: var(--text-main);
+    }
+
+    .alt-btn.active {
+      background: #18202c;
+      color: #ffffff;
+    }
+
+    .alt-btn.active[data-beam-mode="slant45"] {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
     .control-row {
       display: flex;
       flex-direction: column;
@@ -422,7 +472,7 @@
 
       .model-switcher {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         padding: 3px;
         gap: 3px;
       }
@@ -547,12 +597,13 @@
     </div>
 
     <div class="header-controls">
-      <!-- 四大核心模型切換器 (純空間 -> V0 -> V1 -> V2) -->
+      <!-- 五大核心模型切換器 (純空間 -> 吸音配置 -> V0 -> V1 -> V2) -->
       <div class="model-switcher">
-        <button class="model-btn" data-model="shell" id="btn-m-shell">純空間</button>
+        <button class="model-btn active" data-model="shell" id="btn-m-shell">純空間</button>
+        <button class="model-btn" data-model="acoustic" id="btn-m-acoustic">吸音配置</button>
         <button class="model-btn" data-model="v0" id="btn-m-v0">V0 理論</button>
         <button class="model-btn" data-model="v1" id="btn-m-v1">V1 鼓教室</button>
-        <button class="model-btn active" data-model="v2" id="btn-m-v2">V2 練團室</button>
+        <button class="model-btn" data-model="v2" id="btn-m-v2">V2 練團室</button>
       </div>
 
       <div class="view-switcher">
@@ -574,6 +625,69 @@
           </span>
         </span>
       </button>
+
+      <!-- 純空間 + 吸音板配置專屬控制面板 -->
+      <div class="section-card" id="panel-acoustic" style="display:none;">
+        <div class="section-title">
+          <span>空間 ＋ 吸音板配置方案</span>
+          <span style="font-size:10.5px;">Acoustic Only</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-label">預估混響時間 RT60</div>
+            <div class="metric-val">約 0.33 秒</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">總聲學處理面積</div>
+            <div class="metric-val">24.33 m² (24.9%)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">常規吸音板總數</div>
+            <div class="metric-val">16 片 (60×120×5cm)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">封門窗客製板總數</div>
+            <div class="metric-val">7 塊 (厚 5cm)</div>
+          </div>
+        </div>
+
+        <div class="spec-box">
+          <strong>客製封門窗吸音板清單 (厚 5cm)：</strong><br />
+          • A1 封門滿蓋至地：88.5 × 145 cm × 2 塊 (上下拼裝)<br />
+          • A1 雙塊封窗：91.5 × 186.5 cm × 1 ＋ 110.5 × 186.5 cm × 1<br />
+          • A2 雙塊封窗：75.0 × 160.0 cm × 2 塊<br />
+          • A2 門上氣窗：80.6 × 49.5 cm × 1 塊<br /><br />
+          <strong>常規吸音板清單 (60×120×5cm 共 16 片)：</strong><br />
+          • A1 左實牆 1 片 ＋ A2 左實牆 1 片 (離牆 7.5cm)<br />
+          • B1 左長牆 4 片 ＋ B2 右長牆 4 片 (離牆 7.5cm)<br />
+          • 天花板鼓組上方吸音雲 6 片 (垂降 18cm)<br />
+          • 梁後 102cm 凹槽低頻陷阱 (深 34.5cm) ＋ 角落 35cm 低頻陷阱
+        </div>
+
+        <div class="alt-switcher-wrap">
+          <div class="alt-switcher-label">梁後凹槽聲學方案</div>
+          <div class="alt-switcher">
+            <button type="button" class="alt-btn active" data-beam-mode="superchunk">原方案：凹槽填滿</button>
+            <button type="button" class="alt-btn" data-beam-mode="slant45">替代方案：45° 斜掛</button>
+          </div>
+        </div>
+
+        <div class="toggle-list">
+          <label class="toggle-item">
+            <span>顯示梁後凹槽低頻處理</span>
+            <input type="checkbox" id="chk-ac-superchunk" checked />
+          </label>
+          <label class="toggle-item">
+            <span>顯示角落 35cm 落地低頻陷阱與門簾</span>
+            <input type="checkbox" id="chk-ac-traps" checked />
+          </label>
+          <label class="toggle-item">
+            <span>顯示天花板 6 片懸吊吸音雲</span>
+            <input type="checkbox" id="chk-ac-cloud" checked />
+          </label>
+        </div>
+      </div>
 
       <!-- V1 爵士鼓教學控制面板 -->
       <div class="section-card" id="panel-v1"
@@ -603,14 +717,20 @@
         </div>
 
         <div class="spec-box">
-          <strong style="color:#fbbf24;">空間物件尺寸與座標：</strong><br />
+          <strong style="color:#fbbf24;">空間物件與吸音板尺寸 (RT60 ≈ 0.33s)：</strong><br />
           • 爵士鼓毯：1.50m × 1.70m (中心 x=4.00m, y=1.80m)<br />
-          • 教材雜物櫃：2.40m × 0.45m × 1.05m (A1 牆前)<br />
-          • 剪輯工作桌：1.50m × 0.70m × 0.75m (B1 左前)<br />
-          • 雙人布沙發：1.60m × 0.85m (B2 右中前) / 茶几 0.90×0.50m<br />
-          • A1 吸音配置：封門客製板 (90×210cm) + 封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)，上緣齊平 2.10m<br />
-          • A2 吸音配置：封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)<br />
-          • 側牆與天花板：B1/B2 各 6 片 + 天花吸音雲 6 片 (60×120×5cm) + 梁後低頻陷阱
+          • 教材雜物櫃：2.40×0.45×1.05m / 剪輯桌：1.50×0.70m / 沙發：1.60×0.85m<br />
+          • A1 客製吸音板：封門滿蓋至地 (88.5×145cm × 2塊) + 封窗 (91.5+110.5 × 186.5cm)<br />
+          • A2 客製吸音板：封窗 (75×160cm × 2塊) + 氣窗 (80.6×49.5cm × 1塊)<br />
+          • 常規吸音板 (60×120×5cm 共 16 片)：A1左 1 + A2左 1 + B1 4 + B2 4 + 天花吸音雲 6
+        </div>
+
+        <div class="alt-switcher-wrap">
+          <div class="alt-switcher-label">梁後凹槽聲學方案</div>
+          <div class="alt-switcher">
+            <button type="button" class="alt-btn active" data-beam-mode="superchunk">原方案：凹槽填滿</button>
+            <button type="button" class="alt-btn" data-beam-mode="slant45">替代方案：45° 斜掛</button>
+          </div>
         </div>
 
         <div class="toggle-list">
@@ -619,7 +739,7 @@
             <input type="checkbox" id="chk-v02-zones" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#34d399;">顯示梁後凹槽低頻陷阱 (x=4.9~5.9m)</span>
+            <span style="color:#34d399;">顯示梁後凹槽低頻處理 (x=4.9~5.9m)</span>
             <input type="checkbox" id="chk-v02-superchunk" checked />
           </label>
           <label class="toggle-item">
@@ -669,13 +789,20 @@
         </div>
 
         <div class="spec-box">
-          <strong style="color:#34d399;">空間物件尺寸與座標：</strong><br />
-          • 爵士鼓組：1.45m × 1.65m (中心 x=4.20m, y=1.80m，面向 A2)<br />
-          • PA 監聽喇叭 × 2：x=3.65m, y=0.48 / 3.12m，高 1.68m<br />
-          • Bass 音箱 (0.58×0.46m) / 電吉他音箱 (0.62×0.36m)：x=2.75m<br />
-          • 鍵盤 (1.25×0.38m, x=1.75m) / 主唱麥克風 (x=1.45m) / 混音機櫃 (0.65×0.95m)<br />
-          • A1 吸音配置：封門客製板 (90×210cm) + 封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)，上緣齊平 2.10m<br />
-          • A2 吸音配置：封窗客製板 (115×115cm) + 左補常規板 (60×120×5cm)
+          <strong style="color:#34d399;">空間物件與吸音板尺寸 (RT60 ≈ 0.33s)：</strong><br />
+          • 爵士鼓組：1.45×1.65m (x=4.20m) / PA 監聽 × 2 (x=3.65m)<br />
+          • Bass 音箱 (0.58×0.46m) / 吉他音箱 (0.62×0.36m) / 鍵盤 (1.25×0.38m) / 混音機櫃<br />
+          • A1 客製吸音板：封門滿蓋至地 (88.5×145cm × 2塊) + 封窗 (91.5+110.5 × 186.5cm)<br />
+          • A2 客製吸音板：封窗 (75×160cm × 2塊) + 氣窗 (80.6×49.5cm × 1塊)<br />
+          • 常規吸音板 (60×120×5cm 共 16 片)：A1左 1 + A2左 1 + B1 4 + B2 4 + 天花吸音雲 6
+        </div>
+
+        <div class="alt-switcher-wrap">
+          <div class="alt-switcher-label">梁後凹槽聲學方案</div>
+          <div class="alt-switcher">
+            <button type="button" class="alt-btn active" data-beam-mode="superchunk">原方案：凹槽填滿</button>
+            <button type="button" class="alt-btn" data-beam-mode="slant45">替代方案：45° 斜掛</button>
+          </div>
         </div>
 
         <div class="toggle-list">
@@ -684,7 +811,7 @@
             <input type="checkbox" id="chk-v03-rays" checked />
           </label>
           <label class="toggle-item">
-            <span style="color:#34d399;">顯示梁後凹槽低頻陷阱 (x=4.9~5.9m)</span>
+            <span style="color:#34d399;">顯示梁後凹槽低頻處理 (x=4.9~5.9m)</span>
             <input type="checkbox" id="chk-v03-superchunk" checked />
           </label>
           <label class="toggle-item">
@@ -769,7 +896,7 @@
         <div class="spec-box">
           <strong style="color:#fbbf24;">建築基準尺寸：</strong><br />
           • 室內淨尺寸：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br />
-          • A2 前短牆 (x=0.0m)：右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2 側)；門旁 1.15×1.15m 木板封窗<br />
+          • A2 前短牆 (x=0.0m)：牆頂凸起 15cm 橫梁 (深 34.5cm, 梁底 2.555m)；貼 B2 外開鋁門 90×206.5cm ＋ 門上氣窗封板 80.6×49.5cm ＋ 雙塊封窗 150×160cm ＋ 最左實牆 120cm<br />
           • A1 後短牆 (x=5.9m)：右側貼 B2 封門 88.5×244cm (下露 46cm 鋁門) ＋ 相連雙封窗 (91.5+110.5cm × 自頂往下 186.5cm) ＋ 最左實牆 69.5cm<br />
           • B1 / B2 左右長牆：5.90m 實心水泥牆<br />
           • 水泥橫梁：距 A1 淨距 102cm (凹槽 1.02m)，跨度 3.60m，寬 26.5cm × 深 34.5cm (梁底高 2.555m)
@@ -809,20 +936,6 @@
             </div>
             <input type="range" id="rng-panel-opacity" min="15" max="100" step="5" value="65" />
           </div>
-          <div class="control-row">
-            <div class="control-label">
-              <span>距 A1 102cm 水泥橫梁深度 (實測 34.5cm)</span>
-              <span class="control-val" id="val-beam-depth">34.5 cm (梁底 2.555m)</span>
-            </div>
-            <input type="range" id="rng-beam-depth" min="25" max="65" step="0.5" value="34.5" />
-          </div>
-          <div class="control-row">
-            <div class="control-label">
-              <span>A2 入口鋁門向外開啟角度</span>
-              <span class="control-val" id="val-door-angle">45°</span>
-            </div>
-            <input type="range" id="rng-door-angle" min="0" max="90" step="5" value="45" />
-          </div>
         </div>
       </div>
 
@@ -857,10 +970,19 @@
       W: 3.60,
       H: 2.90,
       WALL_THICK: 0.12,
-      // A2 入口鋁門 (靠 B2 側，暫設寬 0.90m, 高 2.10m, 向外開 90°, 鉸鏈在 B2 側)
-      DOOR_Y_START: 2.60,
+      // A2 前入口牆實測門窗與牆頂橫梁 (面對 A2 時：門靠 B2 側 [y=2.70~3.60m]，窗在門旁 [y=1.20~2.70m]，其餘 120cm 為靠 B1 實牆)
+      // A2 牆頂橫梁：向室內凸起 15cm，梁深統一對齊為 34.5cm (梁底 2.555m，與 A1 橫梁一致)
+      A2_BEAM_PROTRUSION: 0.15,
+      A2_BEAM_DEPTH: 0.345,
       DOOR_W: 0.90,
-      DOOR_H: 2.10,
+      DOOR_H: 2.065,
+      DOOR_Y_START: 3.60 - 0.90, // 2.70m (緊貼 B2 牆，鉸鏈在 B2 側 y=3.60m 向外開)
+      A2_TRANSOM_W: 0.806,       // 門上方氣窗封板寬 80.6cm × 高 49.5cm
+      A2_TRANSOM_H: 0.49,        // 貼合 2.065 ~ 2.555m (實測 49.5cm)
+      WIN_W: 1.50,               // 緊連門旁雙塊木板封窗總寬 150cm × 高 160cm (z = 0.955 ~ 2.555m)
+      WIN_H: 1.60,
+      WIN_Y_START: 3.60 - 0.90 - 1.50, // 1.20m (靠 B1 剩餘實牆 120cm)
+      WIN_Z_TOP: 2.555,          // 上緣緊貼 A2 牆頂橫梁底面 255.5cm
       // A1 後牆實測封門 (鉸鏈貼 B2 牆 y = 2.715 ~ 3.600m，寬 88.5cm)
       // 木板封板自天花板 z=2.90m 往下至離地 46cm (封板高 244cm)；下方 0~46cm 未封板露出銀灰鋁門
       A1_DOOR_W: 0.885,
@@ -875,11 +997,6 @@
       A1_WIN_Z_BOTTOM: 2.90 - 1.865, // 1.035m
       A1_WIN_R_Y_START: 3.60 - 0.885 - 0.915,         // 1.800m
       A1_WIN_L_Y_START: 3.60 - 0.885 - 0.915 - 1.105, // 0.695m
-      // A2 封窗 (待實測，暫設 1.15m × 1.15m)
-      WIN_Y_START: 1.35,
-      WIN_W: 1.15,
-      WIN_H: 1.15,
-      WIN_Z_TOP: 2.10,
       // 實測水泥橫梁：距 A1 牆淨距 102cm (1.02m)，梁寬 26.5cm (0.265m)，梁深 34.5cm (0.345m)
       // 梁靠 A1 面 x = 5.90 - 1.02 = 4.88m；梁中心 x = 4.88 - 0.265/2 = 4.7475m；梁前緣 x = 4.615m
       BEAM_CLEAR_FROM_A1: 1.02,
@@ -888,7 +1005,7 @@
     };
 
     const STATE = {
-      model: 'v2', // 'v0' | 'v1' | 'v2' | 'shell'
+      model: 'shell', // 'shell' | 'acoustic' | 'v0' | 'v1' | 'v2'
       viewMode: '3d',
       isMobile: false,
       panelOpacity: 0.65,
@@ -897,6 +1014,11 @@
       autoHideWall: true,
       showCeiling: false,
       showGrid: true,
+      // 純空間 + 吸音板配置開關
+      beamTrapMode: 'superchunk', // 'superchunk' (原方案：凹槽填滿) | 'slant45' (替代方案：三面包覆＋頂角45°斜掛)
+      acSuperchunk: true,
+      acTraps: true,
+      acCloud: true,
       // V0.3 練團室版本開關
       v03Rays: true,
       v03Superchunk: true,
@@ -1128,12 +1250,34 @@
       arcLine.computeLineDistances();
       rootGroup.add(arcLine);
 
-      // A2 木板封窗 (y = 1.35 ~ 2.50m)
-      const boardMat = new THREE.MeshStandardMaterial({ color: '#d4b483', roughness: 0.9, transparent: true });
-      const winA2 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.WIN_H, ROOM.WIN_W), boardMat);
-      winA2.position.copy(toWorld(0.008, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2));
-      rootGroup.add(winA2);
-      wallMeshes.A2.push(winA2);
+      // A2 牆頂凸起橫梁 (向室內凸起 15cm，深 34cm，梁底 2.56m)
+      const a2Beam = addBoxWithEdge(ROOM.A2_BEAM_PROTRUSION, ROOM.A2_BEAM_DEPTH, ROOM.W, ROOM.A2_BEAM_PROTRUSION / 2, ROOM.W / 2, ROOM.H - ROOM.A2_BEAM_DEPTH / 2,
+        new THREE.MeshStandardMaterial({ color: '#d4d8de', roughness: 0.85, transparent: true }), 0x94a3b8, 'A2');
+
+      // A2 門上方氣窗封板 (寬 80.6cm × 高 49.5cm, 靠封窗側 y=2.70m 無縫緊貼封窗木板，z = 2.065 ~ 2.560m)
+      const boardMat = new THREE.MeshStandardMaterial({ color: '#c8a97e', roughness: 0.9, transparent: true });
+      const boardMat2 = new THREE.MeshStandardMaterial({ color: '#bfa074', roughness: 0.9, transparent: true });
+      const transomCenterY = ROOM.DOOR_Y_START + ROOM.A2_TRANSOM_W / 2; // 2.70 + 0.403 = 3.103m，與封窗 y=2.70m 無縫相接
+      const transomA2 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.A2_TRANSOM_H, ROOM.A2_TRANSOM_W), boardMat);
+      transomA2.position.copy(toWorld(0.008, transomCenterY, ROOM.DOOR_H + ROOM.A2_TRANSOM_H / 2));
+
+      // A2 緊連門旁之雙塊木板封窗 (總寬 150cm [兩塊各 75cm] × 高 160cm, z = 0.960 ~ 2.560m)
+      const winHalfW = ROOM.WIN_W / 2;
+      const winA2Z = ROOM.WIN_Z_TOP - ROOM.WIN_H / 2;
+      const winA2R = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.WIN_H, winHalfW), boardMat2);
+      winA2R.position.copy(toWorld(0.008, ROOM.WIN_Y_START + winHalfW * 1.5, winA2Z));
+      const winA2L = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.WIN_H, winHalfW), boardMat);
+      winA2L.position.copy(toWorld(0.008, ROOM.WIN_Y_START + winHalfW * 0.5, winA2Z));
+
+      const eA2T = new THREE.LineSegments(new THREE.EdgesGeometry(transomA2.geometry), new THREE.LineBasicMaterial({ color: 0x785a32, transparent: true, opacity: 0.55 }));
+      eA2T.position.copy(transomA2.position);
+      const eA2WR = new THREE.LineSegments(new THREE.EdgesGeometry(winA2R.geometry), new THREE.LineBasicMaterial({ color: 0x785a32, transparent: true, opacity: 0.55 }));
+      eA2WR.position.copy(winA2R.position);
+      const eA2WL = new THREE.LineSegments(new THREE.EdgesGeometry(winA2L.geometry), new THREE.LineBasicMaterial({ color: 0x785a32, transparent: true, opacity: 0.55 }));
+      eA2WL.position.copy(winA2L.position);
+
+      rootGroup.add(transomA2, winA2R, winA2L, eA2T, eA2WR, eA2WL);
+      wallMeshes.A2.push(transomA2, winA2R, winA2L, eA2T, eA2WR, eA2WL);
 
       // A1 後牆實測封門 (貼 B2 牆寬 88.5cm)：上方 244cm (z=0.46~2.90m) 木板封平 + 下方 46cm (z=0~0.46m) 未封板露出銀灰鋁門
       const boardMatA1 = new THREE.MeshStandardMaterial({ color: '#c8a97e', roughness: 0.9, transparent: true, opacity: 0.9 });
@@ -1329,6 +1473,55 @@
     }
 
     // ==========================================
+    // 梁後凹槽聲學處理共用模組：原方案 (凹槽填滿) vs 替代方案 (橫梁三面 ㄇ 字包覆 ＋ A1 頂角 45° 斜掛 60×120×10cm × 3)
+    // ==========================================
+    function buildBeamAcousticTreatment(enabled, beamX, beamBottomZ) {
+      if (!enabled) return;
+      if (STATE.beamTrapMode === 'slant45') {
+        const wT = 0.05;
+        const beamFrontX = beamX - ROOM.BEAM_WIDTH / 2;
+        const beamBackX = beamX + ROOM.BEAM_WIDTH / 2;
+        const wrapSideMat = new THREE.MeshStandardMaterial({ color: '#5b8a72', roughness: 0.9, transparent: true, opacity: Math.min(0.95, STATE.panelOpacity + 0.15) });
+        const wrapBotMat = new THREE.MeshStandardMaterial({ color: '#4a7560', roughness: 0.9, transparent: true, opacity: Math.min(0.96, STATE.panelOpacity + 0.18) });
+        // 構件 A：橫梁三面 ㄇ 字型 5cm 吸音包覆 (正面、背面、底面)
+        addBoxWithEdge(wT, STATE.beamDepth, ROOM.W - 0.04, beamFrontX - wT / 2, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapSideMat, 0x1e293b);
+        addBoxWithEdge(wT, STATE.beamDepth, ROOM.W - 0.04, beamBackX + wT / 2, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapSideMat, 0x1e293b);
+        addBoxWithEdge(ROOM.BEAM_WIDTH + wT * 2, wT, ROOM.W - 0.04, beamX, ROOM.W / 2, beamBottomZ - wT / 2, wrapBotMat, 0x1e293b);
+
+        // 構件 B：A1 天花頂角 45° 斜掛低頻陷阱 (標準 60×120×10cm × 3 片橫排 = 360cm)
+        const slantW = 0.60, slantT = 0.10;
+        const leg = slantW * Math.SQRT1_2; // 42.43cm
+        const offset = (slantT / 2) * Math.SQRT1_2; // 3.54cm
+        const cX = ROOM.L - leg / 2 - offset;
+        const cZ = ROOM.H - leg / 2 - offset;
+        const slantMat = new THREE.MeshStandardMaterial({ color: '#3b82f6', roughness: 0.85, transparent: true, opacity: Math.min(0.92, STATE.panelOpacity + 0.18) });
+        [0.60, 1.80, 3.00].forEach((cy) => {
+          const geo = new THREE.BoxGeometry(slantT, slantW, 1.18);
+          const m = new THREE.Mesh(geo, slantMat);
+          m.position.copy(toWorld(cX, cy, cZ));
+          m.rotation.z = Math.PI / 4; // +45°：上緣貼天花板、下緣貼 A1 後牆
+          const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: 0x1e3a8a, transparent: true, opacity: 0.7 }));
+          e.position.copy(m.position);
+          e.rotation.copy(m.rotation);
+          rootGroup.add(m, e);
+        });
+        if (STATE.showGrid) {
+          const lbl = makeTextSprite('替代方案：橫梁三面包覆 ＋ A1 頂角 45° 斜掛 (60×120cm × 3)');
+          lbl.position.copy(toWorld(5.35, ROOM.W / 2, 2.75));
+          rootGroup.add(lbl);
+        }
+      } else {
+        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
+        const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
+        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
+          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: Math.min(0.65, STATE.panelOpacity), depthWrite: false }), 0x64748b);
+        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity });
+        addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat);
+        addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat);
+      }
+    }
+
+    // ==========================================
     // 🎸 V0.3「練團室版本 (5人全編制：鼓/貝/吉/鍵/主唱 + PA 監聽與混音機櫃)」
     // 聲學核心：環形對視＋音箱交叉投射＋主唱背對 PA 徹底防回授 (Feedback Rejection)
     // ==========================================
@@ -1339,19 +1532,12 @@
 
       const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
-      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
+      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1;
       const beamBottomZ = ROOM.H - STATE.beamDepth;
+      const useSlant45 = STATE.v03Superchunk && STATE.beamTrapMode === 'slant45';
 
-      // 1. 梁後 1.00m 凹槽巨型低頻陷阱 (半透明顯示不擋視線)
-      if (STATE.v03Superchunk) {
-        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
-        const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
-        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
-          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: Math.min(0.65, STATE.panelOpacity), depthWrite: false }), 0x64748b);
-        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity });
-        addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat);
-        addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat);
-      }
+      // 1. 梁後 102cm 凹槽聲學處理 (原方案填滿 vs 替代方案三面包覆＋45°斜掛)
+      buildBeamAcousticTreatment(STATE.v03Superchunk, beamX, beamBottomZ);
 
       // 2. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 外開鋁門內側重磅吸音門簾 (連動牆面智慧透明)
       const tS = 0.35;
@@ -1364,41 +1550,58 @@
 
       // 3. 全室 24 片 60×120×5cm 吸音板 (半透明＋連動智慧剖面，絕不擋視線)
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
+      // 天花板 6 片常規吸音雲 (每片精準 120×60×5cm：長邊 120cm 沿 X 軸、短邊 60cm 沿 Y 軸，2排×3片 = 2.45m×1.84m，位於橫梁前 x=2.05~4.50m)
       const cloudZ = ROOM.H - 0.18 - pT / 2;
-      [3.45, 4.15].forEach((cx) => [1.27, 1.80, 2.33].forEach((cy) => {
-        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0x94a3b8);
+      [2.65, 3.90].forEach((cx) => [1.18, 1.80, 2.42].forEach((cy) => {
+        addBoxWithEdge(pH, pT, pW, cx, cy, cloudZ, panelMat, 0x94a3b8);
         const pts = [
-          toWorld(cx - 0.25, cy - 0.22, ROOM.H), toWorld(cx - 0.25, cy - 0.22, cloudZ + pT / 2),
-          toWorld(cx + 0.25, cy + 0.22, ROOM.H), toWorld(cx + 0.25, cy + 0.22, cloudZ + pT / 2)
+          toWorld(cx - 0.50, cy - 0.24, ROOM.H), toWorld(cx - 0.50, cy - 0.24, cloudZ + pT / 2),
+          toWorld(cx + 0.50, cy + 0.24, ROOM.H), toWorld(cx + 0.50, cy + 0.24, cloudZ + pT / 2)
         ];
         rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.5 })));
       }));
-      [1.15, 2.00, 2.85, 3.65, 4.45, 5.20].forEach((px) => {
+      // 左右長牆 B1 / B2 各減量為 4 片常規板 (60×120×5cm，離牆空腔 7.5cm，精準防顫動且保留自然共鳴)
+      [1.40, 2.45, 3.55, 4.35].forEach((px) => {
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆：封門客製吸音板 (88.5×244cm) + 雙塊封窗客製吸音板 (91.5×186.5cm + 110.5×186.5cm) + 最左側 69.5cm 實牆補 1 片常規板 (60×120×5cm)
-      const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      // A1 / A2 客製化封門窗吸音板：每種尺寸皆以獨立柔和建築色區分，清楚對照原封板位置
+      const mkCustomMat = (hex) => new THREE.MeshStandardMaterial({ color: hex, roughness: 0.88, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const matA1Door = mkCustomMat('#5b8a72');    // 鼠尾草綠：A1 封門滿蓋 (88.5×145cm × 2)
+      const matA1WinR = mkCustomMat('#5b7fa6');    // 霧藍：A1 封窗右塊 (91.5×186.5cm)
+      const matA1WinL = mkCustomMat('#4a909e');    // 青藍灰：A1 封窗左塊 (110.5×186.5cm)
+      const matA2Win = mkCustomMat('#b87d56');     // 赤陶暖橘：A2 雙塊封窗 (75×160cm × 2)
+      const matA2Transom = mkCustomMat('#8b7299'); // 薰衣草紫灰：A2 門上氣窗 (80.6×49.5cm)
+
       const a1PanelX = ROOM.L - 0.02 - pT / 2;
       const a1DoorCenterY = ROOM.A1_DOOR_Y_START + ROOM.A1_DOOR_W / 2;
-      const a1WinCenterZ = ROOM.A1_WIN_Z_BOTTOM + ROOM.A1_WIN_H / 2;
-      addBoxWithEdge(pT, ROOM.A1_DOOR_BOARD_H, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, ROOM.A1_DOOR_EXPOSED_H + ROOM.A1_DOOR_BOARD_H / 2, customPanelMat, 0x64748b, 'A1');
-      addBoxWithEdge(pT, ROOM.A1_WIN_H, ROOM.A1_WIN_R_W, a1PanelX, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, a1WinCenterZ, customPanelMat, 0x64748b, 'A1');
-      addBoxWithEdge(pT, ROOM.A1_WIN_H, ROOM.A1_WIN_L_W, a1PanelX, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, a1WinCenterZ, customPanelMat, 0x64748b, 'A1');
-      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.35, 1.85, panelMat, 0x94a3b8, 'A1');
+      const a1TopZ = useSlant45 ? (ROOM.H - 0.60 * Math.SQRT1_2) : ROOM.H; // 替代方案時與 45° 斜掛板下緣 (z=2.476m) 齊平相接
+      const a1WinEffH = a1TopZ - ROOM.A1_WIN_Z_BOTTOM;
+      const a1WinCenterZ = ROOM.A1_WIN_Z_BOTTOM + a1WinEffH / 2;
+      const halfDoorH = a1TopZ / 2;
+      addBoxWithEdge(pT, halfDoorH, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, halfDoorH * 1.5, matA1Door, 0x334155, 'A1');
+      addBoxWithEdge(pT, halfDoorH, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, halfDoorH * 0.5, matA1Door, 0x334155, 'A1');
+      addBoxWithEdge(pT, a1WinEffH, ROOM.A1_WIN_R_W, a1PanelX, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, a1WinCenterZ, matA1WinR, 0x334155, 'A1');
+      addBoxWithEdge(pT, a1WinEffH, ROOM.A1_WIN_L_W, a1PanelX, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, a1WinCenterZ, matA1WinL, 0x334155, 'A1');
+      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.35, ROOM.A1_WIN_Z_BOTTOM + pH / 2, panelMat, 0x94a3b8, 'A1');
 
-      // A2 前牆：封窗客製吸音板 + 左側補 1 片常規板 (60×120×5cm)
       const a2PanelX = 0.02 + pT / 2;
-      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A2');
-      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A2');
+      const a2TransomCenterY = ROOM.DOOR_Y_START + ROOM.A2_TRANSOM_W / 2;
+      const a2WinHalf = ROOM.WIN_W / 2;
+      addBoxWithEdge(pT, ROOM.WIN_H, a2WinHalf, a2PanelX, ROOM.WIN_Y_START + a2WinHalf * 0.5, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, matA2Win, 0x334155, 'A2');
+      addBoxWithEdge(pT, ROOM.WIN_H, a2WinHalf, a2PanelX, ROOM.WIN_Y_START + a2WinHalf * 1.5, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, matA2Win, 0x334155, 'A2');
+      addBoxWithEdge(pT, ROOM.A2_TRANSOM_H, ROOM.A2_TRANSOM_W, a2PanelX, a2TransomCenterY, ROOM.DOOR_H + ROOM.A2_TRANSOM_H / 2, matA2Transom, 0x334155, 'A2');
+      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.60, ROOM.WIN_Z_TOP - ROOM.WIN_H + pH / 2, panelMat, 0x94a3b8, 'A2');
 
       if (STATE.showGrid) {
         const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
-        addLbl('A1 封門客製吸音板 (88.5×244cm | 下露46cm鋁門)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
-        addLbl('A1 封窗客製吸音板 (91.5+110.5×186.5cm)', ROOM.L - 0.12, 1.70, 2.35);
-        addLbl('A1 左實牆常規板 (60×120cm)', ROOM.L - 0.12, 0.35, 2.35);
-        addLbl('A2 封窗客製吸音板 (暫估 115×115cm 待實測)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
-        addLbl('A2 左補常規吸音板 (60×120×5cm)', 0.12, 0.75, 2.25);
+        addLbl('A1 封門上/下板 (88.5×145cm × 2)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
+        addLbl('A1 封窗右 (91.5×186.5cm)', ROOM.L - 0.12, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, 2.15);
+        addLbl('A1 封窗左 (110.5×186.5cm)', ROOM.L - 0.12, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, 2.35);
+        addLbl('A1 左常規 (60×120cm)', ROOM.L - 0.12, 0.35, 2.15);
+        addLbl('A2 封窗 (75×160cm × 2)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.35);
+        addLbl('A2 氣窗 (80.6×49.5cm)', 0.12, a2TransomCenterY, 2.48);
+        addLbl('A2 左常規 (60×120cm)', 0.12, 0.60, 2.25);
       }
 
       // 4. ★ 練團室 5 人全編制＋PA/混音設備 黃金聲學擺位 ★
@@ -1512,9 +1715,10 @@
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
       });
-      const backTrkZ = STATE.v03Superchunk ? (beamBottomZ - 0.03) : trkZ;
+      const backTrkX = useSlant45 ? 5.20 : 5.45;
+      const backTrkZ = (STATE.v03Superchunk && !useSlant45) ? (beamBottomZ - 0.03) : trkZ;
       const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
-      backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
+      backTrk.position.copy(toWorld(backTrkX, ROOM.W / 2, backTrkZ));
       rootGroup.add(backTrk);
 
       // 迴路一：1.0m 線條燈 (前段 x=0.80~1.80m, 後段 x=2.70~3.70m)
@@ -1545,7 +1749,7 @@
         const rimMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 });
         [1.10, 2.50].forEach((ry) => {
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), rimMat);
-          c.position.copy(toWorld(5.45, ry, backTrkZ - 0.08));
+          c.position.copy(toWorld(backTrkX, ry, backTrkZ - 0.08));
           rootGroup.add(c);
         });
       }
@@ -1574,8 +1778,9 @@
 
       const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
-      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1; // 4.90m
+      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1;
       const beamBottomZ = ROOM.H - STATE.beamDepth;
+      const useSlant45 = STATE.v02Superchunk && STATE.beamTrapMode === 'slant45';
 
       // 1. 聲學避讓區視覺化：柔和淡紅標示 58Hz 駐波帶
       if (STATE.v02Zones) {
@@ -1585,16 +1790,8 @@
         rootGroup.add(midBand);
       }
 
-      // 2. 梁後 1.00m 凹槽巨型低頻陷阱 (半透明顯示不擋視線)
-      if (STATE.v02Superchunk) {
-        const scDepth = ROOM.L - (beamX + ROOM.BEAM_WIDTH / 2);
-        const scCenterX = (beamX + ROOM.BEAM_WIDTH / 2) + scDepth / 2;
-        addBoxWithEdge(scDepth, STATE.beamDepth, ROOM.W - 0.04, scCenterX, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2,
-          new THREE.MeshStandardMaterial({ color: '#9ca3af', roughness: 0.95, transparent: true, opacity: Math.min(0.65, STATE.panelOpacity), depthWrite: false }), 0x64748b);
-        const wrapMat = new THREE.MeshStandardMaterial({ color: '#6b7280', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity });
-        addBoxWithEdge(0.05, STATE.beamDepth, ROOM.W - 0.08, beamX - ROOM.BEAM_WIDTH / 2 - 0.025, ROOM.W / 2, beamBottomZ + STATE.beamDepth / 2, wrapMat);
-        addBoxWithEdge(ROOM.BEAM_WIDTH + 0.05, 0.05, ROOM.W - 0.08, beamX - 0.025, ROOM.W / 2, beamBottomZ - 0.025, wrapMat);
-      }
+      // 2. 梁後 102cm 凹槽聲學處理 (原方案填滿 vs 替代方案三面包覆＋45°斜掛)
+      buildBeamAcousticTreatment(STATE.v02Superchunk, beamX, beamBottomZ);
 
       // 3. 三實角 350mm 落地低頻陷阱 + A2-B2 頂角低頻陷阱 + A2 鋁門內側重磅吸音門簾 (連動牆面智慧透明)
       const tS = 0.35;
@@ -1607,42 +1804,59 @@
 
       // 4. 24 片 60×120×5cm 吸音板 (半透明＋連動智慧剖面)
       const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
+      // 天花板 6 片常規吸音雲 (每片精準 120×60×5cm：長邊 120cm 沿 X 軸、短邊 60cm 沿 Y 軸，2排×3片 = 2.45m×1.84m，位於橫梁前 x=2.05~4.50m)
       const cloudZ = ROOM.H - 0.18 - pT / 2;
-      [3.45, 4.15].forEach((cx) => [1.27, 1.80, 2.33].forEach((cy) => {
-        addBoxWithEdge(pW, pT, 0.50, cx, cy, cloudZ, panelMat, 0x94a3b8);
+      [2.65, 3.90].forEach((cx) => [1.18, 1.80, 2.42].forEach((cy) => {
+        addBoxWithEdge(pH, pT, pW, cx, cy, cloudZ, panelMat, 0x94a3b8);
         const pts = [
-          toWorld(cx - 0.25, cy - 0.22, ROOM.H), toWorld(cx - 0.25, cy - 0.22, cloudZ + pT / 2),
-          toWorld(cx + 0.25, cy + 0.22, ROOM.H), toWorld(cx + 0.25, cy + 0.22, cloudZ + pT / 2)
+          toWorld(cx - 0.50, cy - 0.24, ROOM.H), toWorld(cx - 0.50, cy - 0.24, cloudZ + pT / 2),
+          toWorld(cx + 0.50, cy + 0.24, ROOM.H), toWorld(cx + 0.50, cy + 0.24, cloudZ + pT / 2)
         ];
         rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.5 })));
       }));
-      const sideX = [1.25, 2.35, 3.25, 3.90, 4.55, 5.20];
+      // 左右長牆 B1 / B2 各減量為 4 片常規板 (60×120×5cm，離牆空腔 7.5cm，精準防顫動且保留自然共鳴)
+      const sideX = [1.40, 2.45, 3.55, 4.35];
       sideX.forEach((px) => {
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆：封門客製吸音板 (88.5×244cm) + 雙塊封窗客製吸音板 (91.5×186.5cm + 110.5×186.5cm) + 最左側 69.5cm 實牆補 1 片常規板 (60×120×5cm)
-      const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      // A1 / A2 客製化封門窗吸音板：獨立色區分
+      const mkCustomMat = (hex) => new THREE.MeshStandardMaterial({ color: hex, roughness: 0.88, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const matA1Door = mkCustomMat('#5b8a72');
+      const matA1WinR = mkCustomMat('#5b7fa6');
+      const matA1WinL = mkCustomMat('#4a909e');
+      const matA2Win = mkCustomMat('#b87d56');
+      const matA2Transom = mkCustomMat('#8b7299');
+
       const a1PanelX = ROOM.L - 0.02 - pT / 2;
       const a1DoorCenterY = ROOM.A1_DOOR_Y_START + ROOM.A1_DOOR_W / 2;
-      const a1WinCenterZ = ROOM.A1_WIN_Z_BOTTOM + ROOM.A1_WIN_H / 2;
-      addBoxWithEdge(pT, ROOM.A1_DOOR_BOARD_H, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, ROOM.A1_DOOR_EXPOSED_H + ROOM.A1_DOOR_BOARD_H / 2, customPanelMat, 0x64748b, 'A1');
-      addBoxWithEdge(pT, ROOM.A1_WIN_H, ROOM.A1_WIN_R_W, a1PanelX, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, a1WinCenterZ, customPanelMat, 0x64748b, 'A1');
-      addBoxWithEdge(pT, ROOM.A1_WIN_H, ROOM.A1_WIN_L_W, a1PanelX, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, a1WinCenterZ, customPanelMat, 0x64748b, 'A1');
-      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.35, 1.85, panelMat, 0x94a3b8, 'A1');
+      const a1TopZ = useSlant45 ? (ROOM.H - 0.60 * Math.SQRT1_2) : ROOM.H;
+      const a1WinEffH = a1TopZ - ROOM.A1_WIN_Z_BOTTOM;
+      const a1WinCenterZ = ROOM.A1_WIN_Z_BOTTOM + a1WinEffH / 2;
+      const halfDoorH = a1TopZ / 2;
+      addBoxWithEdge(pT, halfDoorH, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, halfDoorH * 1.5, matA1Door, 0x334155, 'A1');
+      addBoxWithEdge(pT, halfDoorH, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, halfDoorH * 0.5, matA1Door, 0x334155, 'A1');
+      addBoxWithEdge(pT, a1WinEffH, ROOM.A1_WIN_R_W, a1PanelX, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, a1WinCenterZ, matA1WinR, 0x334155, 'A1');
+      addBoxWithEdge(pT, a1WinEffH, ROOM.A1_WIN_L_W, a1PanelX, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, a1WinCenterZ, matA1WinL, 0x334155, 'A1');
+      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.35, ROOM.A1_WIN_Z_BOTTOM + pH / 2, panelMat, 0x94a3b8, 'A1');
 
-      // A2 前牆：封窗客製吸音板 + 左側補 1 片常規板 (60×120×5cm)
       const a2PanelX = 0.02 + pT / 2;
-      addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a2PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A2');
-      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A2');
+      const a2TransomCenterY = ROOM.DOOR_Y_START + ROOM.A2_TRANSOM_W / 2;
+      const a2WinHalf = ROOM.WIN_W / 2;
+      addBoxWithEdge(pT, ROOM.WIN_H, a2WinHalf, a2PanelX, ROOM.WIN_Y_START + a2WinHalf * 0.5, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, matA2Win, 0x334155, 'A2');
+      addBoxWithEdge(pT, ROOM.WIN_H, a2WinHalf, a2PanelX, ROOM.WIN_Y_START + a2WinHalf * 1.5, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, matA2Win, 0x334155, 'A2');
+      addBoxWithEdge(pT, ROOM.A2_TRANSOM_H, ROOM.A2_TRANSOM_W, a2PanelX, a2TransomCenterY, ROOM.DOOR_H + ROOM.A2_TRANSOM_H / 2, matA2Transom, 0x334155, 'A2');
+      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.60, ROOM.WIN_Z_TOP - ROOM.WIN_H + pH / 2, panelMat, 0x94a3b8, 'A2');
 
       if (STATE.showGrid) {
         const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
-        addLbl('A1 封門客製吸音板 (88.5×244cm | 下露46cm鋁門)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
-        addLbl('A1 封窗客製吸音板 (91.5+110.5×186.5cm)', ROOM.L - 0.12, 1.70, 2.35);
-        addLbl('A1 左實牆常規板 (60×120cm)', ROOM.L - 0.12, 0.35, 2.35);
-        addLbl('A2 封窗客製吸音板 (暫估 115×115cm 待實測)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
-        addLbl('A2 左補常規吸音板 (60×120×5cm)', 0.12, 0.75, 2.25);
+        addLbl('A1 封門上/下板 (88.5×145cm × 2)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
+        addLbl('A1 封窗右 (91.5×186.5cm)', ROOM.L - 0.12, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, 2.15);
+        addLbl('A1 封窗左 (110.5×186.5cm)', ROOM.L - 0.12, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, 2.35);
+        addLbl('A1 左常規 (60×120cm)', ROOM.L - 0.12, 0.35, 2.15);
+        addLbl('A2 封窗 (75×160cm × 2)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.35);
+        addLbl('A2 氣窗 (80.6×49.5cm)', 0.12, a2TransomCenterY, 2.48);
+        addLbl('A2 左常規 (60×120cm)', 0.12, 0.60, 2.25);
       }
 
       // 5. ★ 單套原聲爵士鼓黃金擺位：鼓椅中心 (x=4.25m, y=1.80m 絕對中軸), 大鼓朝前 (-X 面向 A2)
@@ -1718,9 +1932,10 @@
         t.position.copy(toWorld(2.525, ty, trkZ));
         rootGroup.add(t);
       });
-      const backTrkZ = STATE.v02Superchunk ? (beamBottomZ - 0.03) : trkZ;
+      const backTrkX = useSlant45 ? 5.20 : 5.45;
+      const backTrkZ = (STATE.v02Superchunk && !useSlant45) ? (beamBottomZ - 0.03) : trkZ;
       const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
-      backTrk.position.copy(toWorld(5.45, ROOM.W / 2, backTrkZ));
+      backTrk.position.copy(toWorld(backTrkX, ROOM.W / 2, backTrkZ));
       rootGroup.add(backTrk);
 
       // 迴路一：1.0m 線條燈 (前段 x=0.80~1.80m, 後段 x=2.70~3.70m)
@@ -1748,12 +1963,12 @@
           if (STATE.v02Vis) rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.28, 0xf59e0b, 0.07));
         });
       }
-      // 迴路三：梁後凹槽背光射燈 × 2 (x=5.45m, y=1.10/2.50m)
+      // 迴路三：梁後凹槽背光射燈 × 2 (替代方案 x=5.20m / 原方案 x=5.45m, y=1.10/2.50m)
       if (STATE.v02C3) {
         const rimMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 });
         [
-          { x: 5.45, y: 1.10, tx: 4.25, ty: 1.80, tz: 1.25 },
-          { x: 5.45, y: 2.50, tx: 4.25, ty: 1.80, tz: 1.25 }
+          { x: backTrkX, y: 1.10, tx: 4.25, ty: 1.80, tz: 1.25 },
+          { x: backTrkX, y: 2.50, tx: 4.25, ty: 1.80, tz: 1.25 }
         ].forEach((sp) => {
           const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
           const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), rimMat);
@@ -1778,11 +1993,99 @@
       }
     }
 
+    // ==========================================
+    // 純空間 ＋ 吸音板配置專屬 3D 模型 (無家具、無燈具，純看吸音板尺寸與位置)
+    // ==========================================
+    function buildAcousticOnlyModel() {
+      ambientLight.intensity = 0.65;
+      buildRoomShell(true);
+
+      const panelMat = new THREE.MeshStandardMaterial({ color: '#7d8590', roughness: 0.92, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const trapMat = new THREE.MeshStandardMaterial({ color: '#47505c', roughness: 0.94, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
+      const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1;
+      const beamBottomZ = ROOM.H - STATE.beamDepth;
+      const useSlant45 = STATE.acSuperchunk && STATE.beamTrapMode === 'slant45';
+      const gap = 0.075, pW = 0.60, pH = 1.20, pT = 0.05;
+
+      // 1. 梁後 102cm 凹槽聲學處理 (原方案填滿 vs 替代方案三面包覆＋45°斜掛)
+      buildBeamAcousticTreatment(STATE.acSuperchunk, beamX, beamBottomZ);
+
+      // 2. 角落 35cm 落地低頻陷阱 (A2-B1 左前角 & A1-B1 左後角，避開 A1 右側封門滿蓋吸音板與 A2 鋁門)
+      if (STATE.acTraps) {
+        const tS = 0.35;
+        addBoxWithEdge(tS, beamBottomZ - 0.02, tS, tS / 2, tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'B1');
+        addBoxWithEdge(tS, beamBottomZ - 0.02, tS, ROOM.L - tS / 2, tS / 2, (beamBottomZ - 0.02) / 2, trapMat, 0x94a3b8, 'A1');
+      }
+
+      // 3. 天花板 6 片常規吸音雲 (每片精準 120×60×5cm：長邊 120cm 沿 X 軸、短邊 60cm 沿 Y 軸，2排×3片 = 2.45m×1.84m)
+      if (STATE.acCloud) {
+        const cloudZ = ROOM.H - 0.18 - pT / 2;
+        [2.65, 3.90].forEach((cx) => [1.18, 1.80, 2.42].forEach((cy) => {
+          addBoxWithEdge(pH, pT, pW, cx, cy, cloudZ, panelMat, 0x94a3b8);
+          const pts = [
+            toWorld(cx - 0.50, cy - 0.24, ROOM.H), toWorld(cx - 0.50, cy - 0.24, cloudZ + pT / 2),
+            toWorld(cx + 0.50, cy + 0.24, ROOM.H), toWorld(cx + 0.50, cy + 0.24, cloudZ + pT / 2)
+          ];
+          rootGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.5 })));
+        }));
+      }
+
+      // 4. 左右長牆 B1 / B2 各 4 片常規吸音板 (60×120×5cm，離牆 7.5cm)
+      [1.40, 2.45, 3.55, 4.35].forEach((px) => {
+        addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
+        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
+      });
+
+      // 5. A1 / A2 客製化封門窗吸音板：使用較高不透明度完全遮蓋原封板接縫，不讓背後鋁門接縫透出造成三段錯覺
+      const mkCustomMat = (hex) => new THREE.MeshStandardMaterial({ color: hex, roughness: 0.88, transparent: true, opacity: Math.min(0.96, STATE.panelOpacity + 0.25), depthWrite: true });
+      const matA1Door = mkCustomMat('#5b8a72');    // 鼠尾草綠：A1 封門 (88.5×145cm × 2)
+      const matA1WinR = mkCustomMat('#5b7fa6');    // 霧藍：A1 封窗右 (91.5×186.5cm)
+      const matA1WinL = mkCustomMat('#4a909e');    // 青藍灰：A1 封窗左 (110.5×186.5cm)
+      const matA2Win = mkCustomMat('#b87d56');     // 赤陶暖橘：A2 封窗 (75×160cm × 2)
+      const matA2Transom = mkCustomMat('#8b7299'); // 薰衣草紫灰：A2 氣窗 (80.6×49.5cm)
+
+      const a1PanelX = ROOM.L - 0.02 - pT / 2;
+      const a1DoorCenterY = ROOM.A1_DOOR_Y_START + ROOM.A1_DOOR_W / 2;
+      const a1TopZ = useSlant45 ? (ROOM.H - 0.60 * Math.SQRT1_2) : ROOM.H;
+      const a1WinEffH = a1TopZ - ROOM.A1_WIN_Z_BOTTOM;
+      const a1WinCenterZ = ROOM.A1_WIN_Z_BOTTOM + a1WinEffH / 2;
+      const halfDoorH = a1TopZ / 2;
+      addBoxWithEdge(pT, halfDoorH, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, halfDoorH * 1.5, matA1Door, 0x334155, 'A1');
+      addBoxWithEdge(pT, halfDoorH, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, halfDoorH * 0.5, matA1Door, 0x334155, 'A1');
+      addBoxWithEdge(pT, a1WinEffH, ROOM.A1_WIN_R_W, a1PanelX, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, a1WinCenterZ, matA1WinR, 0x334155, 'A1');
+      addBoxWithEdge(pT, a1WinEffH, ROOM.A1_WIN_L_W, a1PanelX, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, a1WinCenterZ, matA1WinL, 0x334155, 'A1');
+      addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.35, ROOM.A1_WIN_Z_BOTTOM + pH / 2, panelMat, 0x94a3b8, 'A1');
+
+      const a2PanelX = 0.02 + pT / 2;
+      const a2TransomCenterY = ROOM.DOOR_Y_START + ROOM.A2_TRANSOM_W / 2;
+      const a2WinHalf = ROOM.WIN_W / 2;
+      addBoxWithEdge(pT, ROOM.WIN_H, a2WinHalf, a2PanelX, ROOM.WIN_Y_START + a2WinHalf * 0.5, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, matA2Win, 0x334155, 'A2');
+      addBoxWithEdge(pT, ROOM.WIN_H, a2WinHalf, a2PanelX, ROOM.WIN_Y_START + a2WinHalf * 1.5, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, matA2Win, 0x334155, 'A2');
+      addBoxWithEdge(pT, ROOM.A2_TRANSOM_H, ROOM.A2_TRANSOM_W, a2PanelX, a2TransomCenterY, ROOM.DOOR_H + ROOM.A2_TRANSOM_H / 2, matA2Transom, 0x334155, 'A2');
+      addBoxWithEdge(pT, pH, pW, gap + pT / 2, 0.60, ROOM.WIN_Z_TOP - ROOM.WIN_H + pH / 2, panelMat, 0x94a3b8, 'A2');
+
+      if (STATE.showGrid) {
+        const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
+        addLbl('A1 封門上/下板 (88.5×145cm × 2)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
+        addLbl('A1 封窗右 (91.5×186.5cm)', ROOM.L - 0.12, ROOM.A1_WIN_R_Y_START + ROOM.A1_WIN_R_W / 2, 2.15);
+        addLbl('A1 封窗左 (110.5×186.5cm)', ROOM.L - 0.12, ROOM.A1_WIN_L_Y_START + ROOM.A1_WIN_L_W / 2, 2.35);
+        addLbl('A1 左常規 (60×120cm)', ROOM.L - 0.12, 0.35, 2.15);
+        addLbl('A2 封窗 (75×160cm × 2)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.35);
+        addLbl('A2 氣窗 (80.6×49.5cm)', 0.12, a2TransomCenterY, 2.48);
+        addLbl('A2 左常規 (60×120cm)', 0.12, 0.60, 2.25);
+        addLbl('B1 常規板 × 4 (60×120×5cm)', 2.95, 0.15, 2.25);
+        addLbl('B2 常規板 × 4 (60×120×5cm)', 2.95, ROOM.W - 0.15, 2.25);
+        if (STATE.acCloud) addLbl('天花板吸音雲 × 6 片 (每片 120×60×5cm)', 3.28, 1.80, 2.42);
+      }
+    }
+
     function rebuildScene() {
       while (rootGroup.children.length > 0) rootGroup.remove(rootGroup.children[0]);
       wallMeshes = {};
 
       if (STATE.model === 'shell') buildShellOnlyModel();
+      else if (STATE.model === 'acoustic') buildAcousticOnlyModel();
       else if (STATE.model === 'v0') buildV0TheoryModel();
       else if (STATE.model === 'v1') buildV02DrumStudioModel();
       else buildV03BandRehearsalModel();
@@ -1843,12 +2146,52 @@
         ctx2d.strokeRect(bx, oy, ROOM.BEAM_WIDTH * scale, ROOM.W * scale);
         ctx2d.setLineDash([]);
 
-        if ((STATE.model === 'v1' && STATE.v02Superchunk) || (STATE.model === 'v2' && STATE.v03Superchunk)) {
+        const showBeamTreat = (STATE.model === 'acoustic' && STATE.acSuperchunk) || (STATE.model === 'v1' && STATE.v02Superchunk) || (STATE.model === 'v2' && STATE.v03Superchunk);
+        if (showBeamTreat) {
           const recessStart = ROOM.L - ROOM.BEAM_CLEAR_FROM_A1; // 4.88m
-          ctx2d.fillStyle = 'rgba(148, 163, 184, 0.18)';
-          ctx2d.fillRect(toX(recessStart), oy, ROOM.BEAM_CLEAR_FROM_A1 * scale, ROOM.W * scale);
-          ctx2d.fillStyle = '#475569'; ctx2d.font = 'bold 10.5px sans-serif';
-          ctx2d.fillText('梁後低頻陷阱 (102cm)', toX(recessStart + 0.04), toY(0.45));
+          if (STATE.beamTrapMode === 'slant45') {
+            // 替代方案：橫梁三面 5cm 綠色包覆 + A1 頂角 45° 斜掛板投影 (x = 5.405 ~ 5.90m)
+            ctx2d.fillStyle = 'rgba(91, 138, 114, 0.35)';
+            ctx2d.fillRect(toX(beamCenterX - ROOM.BEAM_WIDTH / 2 - 0.05), oy, (ROOM.BEAM_WIDTH + 0.10) * scale, ROOM.W * scale);
+            const slantProj = 0.60 * Math.SQRT1_2 + 0.05 * Math.SQRT1_2 * 2; // ~0.495m
+            ctx2d.fillStyle = 'rgba(59, 130, 246, 0.22)';
+            ctx2d.fillRect(toX(ROOM.L - slantProj), oy, slantProj * scale, ROOM.W * scale);
+            ctx2d.strokeStyle = '#2563eb'; ctx2d.lineWidth = 1.4; ctx2d.setLineDash([4, 3]);
+            ctx2d.strokeRect(toX(ROOM.L - slantProj), oy, slantProj * scale, ROOM.W * scale);
+            ctx2d.setLineDash([]);
+            ctx2d.fillStyle = '#1d4ed8'; ctx2d.font = 'bold 10px sans-serif';
+            ctx2d.fillText('替代方案 45° 斜掛', toX(ROOM.L - slantProj + 0.03), toY(0.42));
+            ctx2d.fillText('(60×120cm × 3)', toX(ROOM.L - slantProj + 0.03), toY(0.58));
+          } else {
+            ctx2d.fillStyle = 'rgba(148, 163, 184, 0.18)';
+            ctx2d.fillRect(toX(recessStart), oy, ROOM.BEAM_CLEAR_FROM_A1 * scale, ROOM.W * scale);
+            ctx2d.fillStyle = '#475569'; ctx2d.font = 'bold 10.5px sans-serif';
+            ctx2d.fillText('梁後低頻陷阱 (102cm)', toX(recessStart + 0.04), toY(0.45));
+          }
+        }
+      }
+
+      // 純空間 + 吸音板配置 2D 平面圖
+      if (STATE.model === 'acoustic') {
+        const gPx = 0.075 * scale, pTpx = 0.05 * scale, pWpx = 0.60 * scale;
+        ctx2d.fillStyle = '#64748b';
+        [1.40, 2.45, 3.55, 4.35].forEach((px) => {
+          ctx2d.fillRect(toX(px) - pWpx / 2, oy + gPx, pWpx, pTpx);
+          ctx2d.fillRect(toX(px) - pWpx / 2, oy + ROOM.W * scale - gPx - pTpx, pWpx, pTpx);
+        });
+        // A1 / A2 客製板 (藍灰) + 左常規板 (深灰)
+        ctx2d.fillStyle = '#475569';
+        ctx2d.fillRect(toX(ROOM.L - 0.075 - 0.05), toY(0.35) - pWpx / 2, pTpx, pWpx);
+        ctx2d.fillRect(toX(0.075), toY(0.60) - pWpx / 2, pTpx, pWpx);
+        ctx2d.fillStyle = '#3b82f6';
+        ctx2d.fillRect(toX(ROOM.L - 0.07), toY(ROOM.A1_WIN_L_Y_START), pTpx, (ROOM.A1_WIN_L_W + ROOM.A1_WIN_R_W + ROOM.A1_DOOR_W) * scale);
+        ctx2d.fillRect(toX(0.02), toY(ROOM.WIN_Y_START), pTpx, ROOM.WIN_W * scale);
+        if (STATE.acCloud) {
+          ctx2d.strokeStyle = '#64748b'; ctx2d.lineWidth = 1.5; ctx2d.setLineDash([4, 3]);
+          ctx2d.strokeRect(toX(3.15), toY(1.00), 1.30 * scale, 1.60 * scale);
+          ctx2d.setLineDash([]);
+          ctx2d.fillStyle = '#475569'; ctx2d.font = 'bold 11px sans-serif';
+          ctx2d.fillText('天花板吸音雲 × 6 片', toX(3.32), toY(1.80));
         }
       }
 
@@ -1896,7 +2239,8 @@
         [0.85, 2.75].forEach((ty) => {
           ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
         });
-        ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
+        const bx2d = (STATE.beamTrapMode === 'slant45') ? 5.20 : 5.45;
+        ctx2d.beginPath(); ctx2d.moveTo(toX(bx2d), toY(0.60)); ctx2d.lineTo(toX(bx2d), toY(3.00)); ctx2d.stroke();
       } else if (STATE.model === 'v1') {
         if (STATE.v02Zones) {
           ctx2d.fillStyle = 'rgba(220, 38, 38, 0.1)';
@@ -1931,7 +2275,8 @@
         [0.85, 2.75].forEach((ty) => {
           ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke();
         });
-        ctx2d.beginPath(); ctx2d.moveTo(toX(5.45), toY(0.60)); ctx2d.lineTo(toX(5.45), toY(3.00)); ctx2d.stroke();
+        const bx2d = (STATE.beamTrapMode === 'slant45') ? 5.20 : 5.45;
+        ctx2d.beginPath(); ctx2d.moveTo(toX(bx2d), toY(0.60)); ctx2d.lineTo(toX(bx2d), toY(3.00)); ctx2d.stroke();
       } else if (STATE.model === 'v0') {
         ctx2d.strokeStyle = '#64748b'; ctx2d.lineWidth = 1.8;
         [0.90, 2.70].forEach((ty) => {
@@ -1944,14 +2289,31 @@
       ctx2d.strokeStyle = '#18202c'; ctx2d.lineWidth = 3.5;
       ctx2d.strokeRect(ox, oy, ROOM.L * scale, ROOM.W * scale);
 
-      // A2 外開鋁門弧線
+      // A2 外開鋁門圖示 (鉸鏈在 B2 側 dY2，門扇向外開 45° + 門外 90° 開啟虛線弧 + 箭頭標註)
       if (STATE.model !== 'v0') {
         const dY1 = toY(ROOM.DOOR_Y_START), dY2 = toY(ROOM.DOOR_Y_START + ROOM.DOOR_W);
+        const rPx = ROOM.DOOR_W * scale;
+        // 清除牆線上的門洞口
+        ctx2d.strokeStyle = '#ffffff'; ctx2d.lineWidth = 5;
+        ctx2d.beginPath(); ctx2d.moveTo(ox, dY1); ctx2d.lineTo(ox, dY2); ctx2d.stroke();
+        // 繪製 45° 外開門扇 (往門外左側 -X 打開)
+        const rad45 = Math.PI / 4;
         ctx2d.strokeStyle = '#dc2626'; ctx2d.lineWidth = 3;
-        ctx2d.beginPath(); ctx2d.moveTo(ox, dY2); ctx2d.lineTo(ox - ROOM.DOOR_W * scale, dY2); ctx2d.stroke();
-        ctx2d.strokeStyle = 'rgba(220,38,38,0.65)'; ctx2d.lineWidth = 1.4; ctx2d.setLineDash([4, 4]);
-        ctx2d.beginPath(); ctx2d.arc(ox, dY2, ROOM.DOOR_W * scale, -Math.PI, -Math.PI / 2); ctx2d.stroke();
+        ctx2d.beginPath();
+        ctx2d.moveTo(ox, dY2);
+        ctx2d.lineTo(ox - Math.sin(rad45) * rPx, dY2 - Math.cos(rad45) * rPx);
+        ctx2d.stroke();
+        // 門外 90° 開門軌跡弧線
+        ctx2d.strokeStyle = 'rgba(220,38,38,0.7)'; ctx2d.lineWidth = 1.5; ctx2d.setLineDash([4, 3]);
+        ctx2d.beginPath();
+        ctx2d.arc(ox, dY2, rPx, -Math.PI, -Math.PI / 2);
+        ctx2d.stroke();
         ctx2d.setLineDash([]);
+        // 鉸鏈圓點與文字標示
+        ctx2d.fillStyle = '#dc2626';
+        ctx2d.beginPath(); ctx2d.arc(ox, dY2, 4, 0, Math.PI * 2); ctx2d.fill();
+        ctx2d.font = 'bold 10px sans-serif';
+        ctx2d.fillText('外開 90°', ox - rPx - 2, dY2 + 14);
       }
 
       ctx2d.fillStyle = '#18202c'; ctx2d.font = 'bold 12px sans-serif';
@@ -2024,36 +2386,53 @@
     function setModel(modelKey) {
       STATE.model = modelKey;
       document.querySelectorAll('.model-btn').forEach((b) => b.classList.toggle('active', b.dataset.model === modelKey));
+      document.getElementById('panel-acoustic').style.display = modelKey === 'acoustic' ? 'flex' : 'none';
       document.getElementById('panel-v0').style.display = modelKey === 'v0' ? 'flex' : 'none';
       document.getElementById('panel-v1').style.display = modelKey === 'v1' ? 'flex' : 'none';
       document.getElementById('panel-v2').style.display = modelKey === 'v2' ? 'flex' : 'none';
       document.getElementById('panel-shell').style.display = modelKey === 'shell' ? 'flex' : 'none';
-      document.getElementById('struct-sliders').style.display = modelKey === 'v0' ? 'none' : 'flex';
+      document.getElementById('struct-sliders').style.display = (modelKey === 'shell') ? 'none' : 'flex';
 
       const b3 = document.getElementById('badge-3d');
       const leg = document.getElementById('legend-bar');
+      const isAlt = STATE.beamTrapMode === 'slant45';
+      const altBadgeHtml = isAlt ? ' ｜ <strong>替代方案：橫梁三面包覆 ＋ 頂角 45° 斜掛 (60×120cm×3)</strong>' : '';
+      const altLegendHtml = isAlt
+        ? `<div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>替代方案：頂角 45° 斜掛 (60×120×3)</div>`
+        : `<div class="legend-item"><span class="legend-box" style="background:#9ca3af;"></span>原方案：梁後凹槽填滿 (102cm)</div>`;
 
-      if (modelKey === 'v2') {
+      if (modelKey === 'acoustic') {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#059669;">V2 練團室版本</span><strong>爵士鼓 / Bass / 電吉他 / 鍵盤 / 主唱 / PA 監聽 / 混音機櫃</strong></div>
-          <div>配置：PA 監聽喇叭 (x=3.65m) 面向主唱 (x=1.40m)，A1/A2 封門窗以客製吸音板覆蓋 (尺寸待實測)</div>`;
+          <div><span class="tag">吸音配置</span><strong>純空間結構 ＋ 16 片常規吸音板 ＋ 7 塊封門窗客製板 (預估 RT60 ≈ 0.33s)</strong>${altBadgeHtml}</div>
+          <div>A1 封門滿蓋至地 / A1 封窗 (91.5+110.5cm) / A2 封窗氣窗客製板 / B1、B2 各 4 片 / 天花吸音雲 6 片</div>`;
+        leg.innerHTML = `
+          <div class="legend-item"><span class="legend-box" style="background:#7d8590;"></span>常規 60×120×5cm (16片)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#5b8a72;"></span>A1 封門 88.5cm (×2)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#5b7fa6;"></span>A1 封窗右 91.5cm</div>
+          <div class="legend-item"><span class="legend-box" style="background:#4a909e;"></span>A1 封窗左 110.5cm</div>
+          <div class="legend-item"><span class="legend-box" style="background:#b87d56;"></span>A2 封窗 75×160 (×2)</div>
+          <div class="legend-item"><span class="legend-box" style="background:#8b7299;"></span>A2 氣窗 80.6×49.5</div>
+          ${altLegendHtml}`;
+      } else if (modelKey === 'v2') {
+        b3.innerHTML = `
+          <div><span class="tag" style="background:#059669;">V2 練團室版本</span><strong>爵士鼓 / Bass / 電吉他 / 鍵盤 / 主唱 / PA 監聽 / 混音機櫃</strong>${altBadgeHtml}</div>
+          <div>配置：PA 監聽喇叭 (x=3.65m) 面向主唱 (x=1.40m)，A1/A2 封門窗以客製吸音板覆蓋</div>`;
         leg.innerHTML = `
           <div class="legend-item"><span class="legend-box" style="background:#7d8590;"></span>常規吸音板 (60×120×5cm)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#6b8299;"></span>封門窗客製吸音板 (尺寸待實測)</div>
           <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組</div>
           <div class="legend-item"><span class="legend-box" style="background:#3b82f6;"></span>Bass 音箱</div>
           <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>電吉他音箱</div>
-          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽與混音區</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#38bdf8;"></span>PA 監聽與混音區</div>
+          ${altLegendHtml}`;
       } else if (modelKey === 'v1') {
         b3.innerHTML = `
-          <div><span class="tag" style="background:#ea580c;">V1 爵士鼓教學版本</span><strong>爵士鼓組 / 教材雜物櫃 / 剪輯工作桌 / 雙人沙發</strong></div>
-          <div>配置：鼓椅 (x=4.25m, y=1.80m)，A1/A2 封門窗以客製吸音板覆蓋 (尺寸待實測)</div>`;
+          <div><span class="tag" style="background:#ea580c;">V1 爵士鼓教學版本</span><strong>爵士鼓組 / 教材雜物櫃 / 剪輯工作桌 / 雙人沙發</strong>${altBadgeHtml}</div>
+          <div>配置：鼓椅 (x=4.25m, y=1.80m)，A1/A2 封門窗以客製吸音板覆蓋</div>`;
         leg.innerHTML = `
           <div class="legend-item"><span class="legend-box" style="background:#7d8590;"></span>常規吸音板 (60×120×5cm)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#6b8299;"></span>封門窗客製吸音板 (尺寸待實測)</div>
           <div class="legend-item"><span class="legend-box" style="background:#ea580c;"></span>爵士鼓組</div>
           <div class="legend-item"><span class="legend-box" style="background:#ef4444;"></span>58Hz 駐波帶 (x=2.95m)</div>
-          <div class="legend-item"><span class="legend-box" style="background:#9ca3af;"></span>梁後凹槽低頻陷阱</div>`;
+          ${altLegendHtml}`;
       } else if (modelKey === 'v0') {
         b3.innerHTML = `
           <div><span class="tag" style="background:#9333ea;">V0 純理論研究模型</span><strong>5.90m × 3.60m × 2.90m 理想矩形空間（無門窗橫梁）</strong></div>
@@ -2076,10 +2455,20 @@
       rebuildScene();
     }
 
+    document.getElementById('btn-m-shell').addEventListener('click', () => setModel('shell'));
+    document.getElementById('btn-m-acoustic').addEventListener('click', () => setModel('acoustic'));
     document.getElementById('btn-m-v0').addEventListener('click', () => setModel('v0'));
     document.getElementById('btn-m-v1').addEventListener('click', () => setModel('v1'));
     document.getElementById('btn-m-v2').addEventListener('click', () => setModel('v2'));
-    document.getElementById('btn-m-shell').addEventListener('click', () => setModel('shell'));
+
+    function setBeamTrapMode(mode) {
+      STATE.beamTrapMode = mode;
+      document.querySelectorAll('.alt-btn').forEach((b) => b.classList.toggle('active', b.dataset.beamMode === mode));
+      setModel(STATE.model);
+    }
+    document.querySelectorAll('.alt-btn').forEach((btn) => {
+      btn.addEventListener('click', () => setBeamTrapMode(btn.dataset.beamMode));
+    });
 
     // 手機版底部抽屜面板開合控制
     const sidebarEl = document.getElementById('sidebar');
@@ -2112,6 +2501,9 @@
     bindChk('chk-autowall', 'autoHideWall');
     bindChk('chk-ceiling', 'showCeiling');
     bindChk('chk-grid', 'showGrid');
+    bindChk('chk-ac-superchunk', 'acSuperchunk');
+    bindChk('chk-ac-traps', 'acTraps');
+    bindChk('chk-ac-cloud', 'acCloud');
     bindChk('chk-v02-zones', 'v02Zones');
     bindChk('chk-v02-superchunk', 'v02Superchunk');
     bindChk('chk-v02-c1', 'v02C1');
@@ -2134,19 +2526,8 @@
       document.getElementById('val-panel-opacity').textContent = `${pct}%`;
       rebuildScene();
     });
-    document.getElementById('rng-beam-depth').addEventListener('input', (e) => {
-      const cm = parseFloat(e.target.value);
-      STATE.beamDepth = cm / 100;
-      document.getElementById('val-beam-depth').textContent = `${cm} cm (梁底 ${(ROOM.H - STATE.beamDepth).toFixed(3)}m)`;
-      rebuildScene();
-    });
-    document.getElementById('rng-door-angle').addEventListener('input', (e) => {
-      STATE.doorAngle = parseInt(e.target.value, 10);
-      document.getElementById('val-door-angle').textContent = `${STATE.doorAngle}°`;
-      rebuildScene();
-    });
 
-    setModel('v2');
+    setModel('shell');
     resizeViewports();
     animate();
   </script>
