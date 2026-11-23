@@ -770,7 +770,7 @@
           <strong style="color:#fbbf24;">建築基準尺寸：</strong><br />
           • 室內淨尺寸：長 5.90m × 寬 3.60m × 高 2.90m (6.42 坪)<br />
           • A2 前短牆 (x=0.0m)：右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2 側)；門旁 1.15×1.15m 木板封窗<br />
-          • A1 後短牆 (x=5.9m)：對稱原鋁門與鋁窗皆木板封平<br />
+          • A1 後短牆 (x=5.9m)：右側貼 B2 封門寬 88.5cm (天花板往下至離地 46cm 木板封平，下露 46cm 鋁門)；原鋁窗木板封平<br />
           • B1 / B2 左右長牆：5.90m 實心水泥牆<br />
           • 水泥橫梁：距 A1 淨距 102cm (凹槽 1.02m)，跨度 3.60m，寬 26.5cm × 深 34.5cm (梁底高 2.555m)
         </div>
@@ -857,11 +857,17 @@
       W: 3.60,
       H: 2.90,
       WALL_THICK: 0.12,
-      // A2 & A1 對稱門窗：入口鋁門靠 B2 側 (y = 2.60~3.50m, 寬 0.90m, 高 2.10m, 向外開 90°, 鉸鏈在 B2 側)
+      // A2 入口鋁門 (靠 B2 側，暫設寬 0.90m, 高 2.10m, 向外開 90°, 鉸鏈在 B2 側)
       DOOR_Y_START: 2.60,
       DOOR_W: 0.90,
       DOOR_H: 2.10,
-      // 緊鄰門左側木板封窗 (y = 1.35~2.50m, 寬 1.15m, 高 1.15m, 上緣齊門 2.10m)
+      // A1 後牆實測封門尺寸 (鉸鏈貼 B2 牆 y = 2.715 ~ 3.600m，寬 88.5cm)
+      // 木板封板自天花板 z=2.90m 往下至離地 46cm (封板高 244cm)；下方 0~46cm 未封板露出銀灰鋁門
+      A1_DOOR_W: 0.885,
+      A1_DOOR_Y_START: 3.60 - 0.885, // 2.715m
+      A1_DOOR_EXPOSED_H: 0.46,       // 下方 46cm 露出鋁門
+      A1_DOOR_BOARD_H: 2.90 - 0.46,  // 上方 244cm 木板封板 (z = 0.46 ~ 2.90m)
+      // 緊鄰門左側木板封窗 (待實測，暫設 1.15m × 1.15m)
       WIN_Y_START: 1.35,
       WIN_W: 1.15,
       WIN_H: 1.15,
@@ -1083,10 +1089,10 @@
       rootGroup.add(doorFrame);
       wallMeshes.A2.push(doorFrame);
 
-      // 外開門扇 (鉸鏈位於 y = 3.50m 靠 B2 側，繞 +Y 正角度旋轉即向外 -X 開啟，與地面外開弧線吻合)
+      // 外開門扇 (鉸鏈位於 y = 3.50m 靠 B2 側，向外 -X 旋轉)
       const doorPivot = new THREE.Group();
       doorPivot.position.copy(toWorld(-0.02, ROOM.DOOR_Y_START + ROOM.DOOR_W, 0));
-      doorPivot.rotation.y = THREE.MathUtils.degToRad(STATE.doorAngle);
+      doorPivot.rotation.y = -THREE.MathUtils.degToRad(STATE.doorAngle);
 
       const lowerLeaf = new THREE.Mesh(
         new THREE.BoxGeometry(0.04, 1.05, ROOM.DOOR_W),
@@ -1121,14 +1127,23 @@
       rootGroup.add(winA2);
       wallMeshes.A2.push(winA2);
 
-      // A1 對稱木板封死原門窗
-      const boardMatA1 = new THREE.MeshStandardMaterial({ color: '#c8a97e', roughness: 0.9, transparent: true, opacity: 0.85 });
-      const bDoorA1 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.DOOR_H, ROOM.DOOR_W), boardMatA1);
-      bDoorA1.position.copy(toWorld(ROOM.L - 0.008, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2));
+      // A1 後牆實測封門 (貼 B2 牆寬 88.5cm)：上方 244cm (z=0.46~2.90m) 木板封平 + 下方 46cm (z=0~0.46m) 未封板露出銀灰鋁門
+      const boardMatA1 = new THREE.MeshStandardMaterial({ color: '#c8a97e', roughness: 0.9, transparent: true, opacity: 0.9 });
+      const exposedAlumMat = new THREE.MeshStandardMaterial({ color: '#9ca3af', metalness: 0.55, roughness: 0.38, transparent: true, opacity: 0.95 });
+      const a1DoorCenterY = ROOM.A1_DOOR_Y_START + ROOM.A1_DOOR_W / 2;
+
+      const bDoorA1Upper = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.A1_DOOR_BOARD_H, ROOM.A1_DOOR_W), boardMatA1);
+      bDoorA1Upper.position.copy(toWorld(ROOM.L - 0.008, a1DoorCenterY, ROOM.A1_DOOR_EXPOSED_H + ROOM.A1_DOOR_BOARD_H / 2));
+
+      const bDoorA1LowerAlum = new THREE.Mesh(new THREE.BoxGeometry(0.018, ROOM.A1_DOOR_EXPOSED_H, ROOM.A1_DOOR_W), exposedAlumMat);
+      bDoorA1LowerAlum.position.copy(toWorld(ROOM.L - 0.009, a1DoorCenterY, ROOM.A1_DOOR_EXPOSED_H / 2));
+
+      // A1 封窗 (待實測)
       const bWinA1 = new THREE.Mesh(new THREE.BoxGeometry(0.015, ROOM.WIN_H, ROOM.WIN_W), boardMatA1);
       bWinA1.position.copy(toWorld(ROOM.L - 0.008, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2));
-      rootGroup.add(bDoorA1, bWinA1);
-      wallMeshes.A1.push(bDoorA1, bWinA1);
+
+      rootGroup.add(bDoorA1Upper, bDoorA1LowerAlum, bWinA1);
+      wallMeshes.A1.push(bDoorA1Upper, bDoorA1LowerAlum, bWinA1);
 
       // 天花板水泥結構橫梁 (距 A1 1.00m -> x = 4.90m)
       const beamX = ROOM.L - ROOM.BEAM_X_FROM_A1;
@@ -1342,10 +1357,11 @@
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆：封門客製吸音板 + 封窗客製吸音板 (淺霧藍灰區分，待現場實測尺寸) + 左側補 1 片常規板 (60×120×5cm)
+      // A1 後牆：封門客製吸音板 (精準對應實測封板區 88.5×244cm, z=0.46~2.90m，下方露出 46cm 鋁門) + 封窗客製板 + 左補常規板
       const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const a1PanelX = ROOM.L - 0.02 - pT / 2;
-      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, customPanelMat, 0x64748b, 'A1');
+      const a1DoorCenterY = ROOM.A1_DOOR_Y_START + ROOM.A1_DOOR_W / 2;
+      addBoxWithEdge(pT, ROOM.A1_DOOR_BOARD_H, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, ROOM.A1_DOOR_EXPOSED_H + ROOM.A1_DOOR_BOARD_H / 2, customPanelMat, 0x64748b, 'A1');
       addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A1');
       addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A1');
 
@@ -1356,7 +1372,7 @@
 
       if (STATE.showGrid) {
         const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
-        addLbl('A1 封門客製吸音板 (暫估 90×210cm 待實測)', ROOM.L - 0.12, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 2.25);
+        addLbl('A1 封門客製吸音板 (實測 88.5×244cm | 下露 46cm 鋁門)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
         addLbl('A1 封窗客製吸音板 (暫估 115×115cm 待實測)', ROOM.L - 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
         addLbl('A1 左補常規吸音板 (60×120×5cm)', ROOM.L - 0.12, 0.75, 2.25);
         addLbl('A2 封窗客製吸音板 (暫估 115×115cm 待實測)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
@@ -1583,10 +1599,11 @@
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
         addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
       });
-      // A1 後牆：封門客製吸音板 + 封窗客製吸音板 (淺霧藍灰區分，待現場實測尺寸) + 左側補 1 片常規板 (60×120×5cm)
+      // A1 後牆：封門客製吸音板 (精準對應實測封板區 88.5×244cm, z=0.46~2.90m，下方露出 46cm 鋁門) + 封窗客製板 + 左補常規板
       const customPanelMat = new THREE.MeshStandardMaterial({ color: '#6b8299', roughness: 0.9, transparent: true, opacity: STATE.panelOpacity, depthWrite: STATE.panelOpacity > 0.85 });
       const a1PanelX = ROOM.L - 0.02 - pT / 2;
-      addBoxWithEdge(pT, ROOM.DOOR_H, ROOM.DOOR_W, a1PanelX, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, ROOM.DOOR_H / 2, customPanelMat, 0x64748b, 'A1');
+      const a1DoorCenterY = ROOM.A1_DOOR_Y_START + ROOM.A1_DOOR_W / 2;
+      addBoxWithEdge(pT, ROOM.A1_DOOR_BOARD_H, ROOM.A1_DOOR_W, a1PanelX, a1DoorCenterY, ROOM.A1_DOOR_EXPOSED_H + ROOM.A1_DOOR_BOARD_H / 2, customPanelMat, 0x64748b, 'A1');
       addBoxWithEdge(pT, ROOM.WIN_H, ROOM.WIN_W, a1PanelX, ROOM.WIN_Y_START + ROOM.WIN_W / 2, ROOM.WIN_Z_TOP - ROOM.WIN_H / 2, customPanelMat, 0x64748b, 'A1');
       addBoxWithEdge(pT, pH, pW, ROOM.L - gap - pT / 2, 0.75, ROOM.WIN_Z_TOP - pH / 2, panelMat, 0x94a3b8, 'A1');
 
@@ -1597,7 +1614,7 @@
 
       if (STATE.showGrid) {
         const addLbl = (txt, x, y, z) => { const s = makeTextSprite(txt); s.position.copy(toWorld(x, y, z)); rootGroup.add(s); };
-        addLbl('A1 封門客製吸音板 (暫估 90×210cm 待實測)', ROOM.L - 0.12, ROOM.DOOR_Y_START + ROOM.DOOR_W / 2, 2.25);
+        addLbl('A1 封門客製吸音板 (實測 88.5×244cm | 下露 46cm 鋁門)', ROOM.L - 0.12, a1DoorCenterY, 2.35);
         addLbl('A1 封窗客製吸音板 (暫估 115×115cm 待實測)', ROOM.L - 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
         addLbl('A1 左補常規吸音板 (60×120×5cm)', ROOM.L - 0.12, 0.75, 2.25);
         addLbl('A2 封窗客製吸音板 (暫估 115×115cm 待實測)', 0.12, ROOM.WIN_Y_START + ROOM.WIN_W / 2, 2.25);
