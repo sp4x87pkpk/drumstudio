@@ -772,7 +772,7 @@
           • A2 前短牆 (x=0.0m)：右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2 側)；門旁 1.15×1.15m 木板封窗<br />
           • A1 後短牆 (x=5.9m)：對稱原鋁門與鋁窗皆木板封平<br />
           • B1 / B2 左右長牆：5.90m 實心水泥牆<br />
-          • 水泥橫梁：距 A1 1.00m (x=4.90m)，跨度 3.60m，寬 35cm × 深 45cm
+          • 水泥橫梁：距 A1 淨距 102cm (凹槽 1.02m)，跨度 3.60m，寬 26.5cm × 深 34.5cm (梁底高 2.555m)
         </div>
       </div>
 
@@ -811,10 +811,10 @@
           </div>
           <div class="control-row">
             <div class="control-label">
-              <span>距 A1 1.0m 水泥橫梁深度 (梁深)</span>
-              <span class="control-val" id="val-beam-depth">45 cm (梁底 2.45m)</span>
+              <span>距 A1 102cm 水泥橫梁深度 (實測 34.5cm)</span>
+              <span class="control-val" id="val-beam-depth">34.5 cm (梁底 2.555m)</span>
             </div>
-            <input type="range" id="rng-beam-depth" min="25" max="65" step="1" value="45" />
+            <input type="range" id="rng-beam-depth" min="25" max="65" step="0.5" value="34.5" />
           </div>
           <div class="control-row">
             <div class="control-label">
@@ -866,9 +866,11 @@
       WIN_W: 1.15,
       WIN_H: 1.15,
       WIN_Z_TOP: 2.10,
-      // 距 A1 1.00m 天花板水泥橫梁 (x = 4.90m)
-      BEAM_X_FROM_A1: 1.00,
-      BEAM_WIDTH: 0.35
+      // 實測水泥橫梁：距 A1 牆淨距 102cm (1.02m)，梁寬 26.5cm (0.265m)，梁深 34.5cm (0.345m)
+      // 梁靠 A1 面 x = 5.90 - 1.02 = 4.88m；梁中心 x = 4.88 - 0.265/2 = 4.7475m；梁前緣 x = 4.615m
+      BEAM_CLEAR_FROM_A1: 1.02,
+      BEAM_WIDTH: 0.265,
+      BEAM_X_FROM_A1: 1.02 + 0.265 / 2 // 1.1525m (中心 x = 4.7475m)
     };
 
     const STATE = {
@@ -876,7 +878,7 @@
       viewMode: '3d',
       isMobile: false,
       panelOpacity: 0.65,
-      beamDepth: 0.45,
+      beamDepth: 0.345, // 實測 34.5cm (梁底 2.555m)
       doorAngle: 45,
       autoHideWall: true,
       showCeiling: false,
@@ -1150,8 +1152,8 @@
         lB1.position.copy(toWorld(ROOM.L / 2, 0, ROOM.H + 0.25));
         const lB2 = makeTextSprite('B2 右長牆 (5.90m 實心水泥 | 門鉸鏈側)');
         lB2.position.copy(toWorld(ROOM.L / 2, ROOM.W, ROOM.H + 0.25));
-        const lBeam = makeTextSprite(`水泥橫梁 (距 A1 1.00m | 梁底 ${(ROOM.H - STATE.beamDepth).toFixed(2)}m)`, 'rgba(30,58,138,0.9)', '#93c5fd', 28, '#38bdf8');
-        lBeam.position.copy(toWorld(4.90, ROOM.W / 2, ROOM.H - STATE.beamDepth - 0.16));
+        const lBeam = makeTextSprite(`水泥橫梁 (距 A1 102cm | 寬 26.5×深 34.5cm | 梁底 ${(ROOM.H - STATE.beamDepth).toFixed(3)}m)`);
+        lBeam.position.copy(toWorld(ROOM.L - ROOM.BEAM_X_FROM_A1, ROOM.W / 2, ROOM.H - STATE.beamDepth - 0.16));
         rootGroup.add(lA2, lA1, lB1, lB2, lBeam);
       }
     }
@@ -1790,9 +1792,10 @@
         ctx2d.fillText(`${y.toFixed(1)}m`, ox - 36, toY(y) + 4);
       }
 
-      // 真實門窗與橫梁
+      // 真實門窗與橫梁 (實測距 A1 淨距 102cm，梁寬 26.5cm，中心 x = 4.7475m)
       if (STATE.model !== 'v0') {
-        const bx = toX(4.90 - ROOM.BEAM_WIDTH / 2);
+        const beamCenterX = ROOM.L - ROOM.BEAM_X_FROM_A1;
+        const bx = toX(beamCenterX - ROOM.BEAM_WIDTH / 2);
         ctx2d.fillStyle = 'rgba(148, 163, 184, 0.25)';
         ctx2d.fillRect(bx, oy, ROOM.BEAM_WIDTH * scale, ROOM.W * scale);
         ctx2d.strokeStyle = '#64748b'; ctx2d.setLineDash([4, 4]);
@@ -1800,10 +1803,11 @@
         ctx2d.setLineDash([]);
 
         if ((STATE.model === 'v1' && STATE.v02Superchunk) || (STATE.model === 'v2' && STATE.v03Superchunk)) {
+          const recessStart = ROOM.L - ROOM.BEAM_CLEAR_FROM_A1; // 4.88m
           ctx2d.fillStyle = 'rgba(148, 163, 184, 0.18)';
-          ctx2d.fillRect(toX(5.075), oy, (5.90 - 5.075) * scale, ROOM.W * scale);
+          ctx2d.fillRect(toX(recessStart), oy, ROOM.BEAM_CLEAR_FROM_A1 * scale, ROOM.W * scale);
           ctx2d.fillStyle = '#475569'; ctx2d.font = 'bold 10.5px sans-serif';
-          ctx2d.fillText('梁後低頻陷阱', toX(5.12), toY(0.45));
+          ctx2d.fillText('梁後低頻陷阱 (102cm)', toX(recessStart + 0.04), toY(0.45));
         }
       }
 
@@ -2022,11 +2026,11 @@
       } else {
         b3.innerHTML = `
           <div><span class="tag" style="background:#475569;">純空間結構</span><strong>5.90m × 3.60m × 2.90m 建築現況尺寸</strong></div>
-          <div>結構：A2 右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2)、A1/A2 木板封門窗、距 A1 1.00m 水泥橫梁</div>`;
+          <div>結構：A2 右側 0.90×2.10m 外開鋁門 (鉸鏈在 B2)、A1/A2 木板封門窗、距 A1 102cm 水泥橫梁 (寬 26.5×深 34.5cm)</div>`;
         leg.innerHTML = `
           <div class="legend-item"><span class="legend-box" style="background:#94a3b8;"></span>A2 外開鋁門 (0.90×2.10m)</div>
           <div class="legend-item"><span class="legend-box" style="background:#d4b483;"></span>A1 / A2 木板封平門窗</div>
-          <div class="legend-item"><span class="legend-box" style="background:#64748b; border:1px solid #38bdf8;"></span>距 A1 1.00m 水泥橫梁 (35×45cm)</div>`;
+          <div class="legend-item"><span class="legend-box" style="background:#d4d8de; border:1px solid #64748b;"></span>距 A1 102cm 水泥橫梁 (寬 26.5×深 34.5cm)</div>`;
       }
       rebuildScene();
     }
@@ -2090,9 +2094,9 @@
       rebuildScene();
     });
     document.getElementById('rng-beam-depth').addEventListener('input', (e) => {
-      const cm = parseInt(e.target.value, 10);
+      const cm = parseFloat(e.target.value);
       STATE.beamDepth = cm / 100;
-      document.getElementById('val-beam-depth').textContent = `${cm} cm (梁底 ${(ROOM.H - STATE.beamDepth).toFixed(2)}m)`;
+      document.getElementById('val-beam-depth').textContent = `${cm} cm (梁底 ${(ROOM.H - STATE.beamDepth).toFixed(3)}m)`;
       rebuildScene();
     });
     document.getElementById('rng-door-angle').addEventListener('input', (e) => {
