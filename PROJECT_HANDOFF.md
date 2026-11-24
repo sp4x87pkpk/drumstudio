@@ -20,6 +20,8 @@
 | `acoustic-and-lighting-research-synthesis-report.md` | 唯讀理論參考報告（波動聲學、58.14 / 59.14 Hz 重疊模態、施羅德頻率 117.53 Hz、MLV 59.2 Hz 薄膜陷阱、1D QRD N=7、EN 12464-1 流明法 21,411 lm / 214.1W）。 |
 | `room_parameters_audit_plan_v2.png` | 原始空間參數校對平面圖。 |
 | `IMG_1274.HEIC` / `IMG_1275.HEIC` | 現場實拍照片（用於核對 A1 / A2 封門窗與橫梁現況）。 |
+| `materials/fabrics/` | 聲學吸音板實品布料建檔庫（含 4 張實拍照、[`README.md`](materials/fabrics/README.md) 材質色號對照手冊與 [`fabrics.json`](materials/fabrics/fabrics.json) 結構化參數）。 |
+| `equipment/drumkit/` | 原聲爵士鼓組實拍建檔庫（240×180 cm 地毯居中擺放、5 件式湖水藍綠亮片鼓組＋亮黑小鼓＋4 組銅鈸＋譜架雙托盤與 Yamaha EAD10；含 [`README.md`](equipment/drumkit/README.md)、[`drumkit.json`](equipment/drumkit/drumkit.json) 與 [`drumkit-textures.js`](equipment/drumkit/drumkit-textures.js)）。 |
 
 ---
 

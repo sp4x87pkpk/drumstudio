@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drum Studio - IKEA 三大風格方案擺設預覽</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --border: #dfe3e8;
+      --text: #18202c;
+      --muted: #5b6676;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      height: 54px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    .plan-tabs {
+      display: flex;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 10px;
+    }
+    .plan-tab {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .plan-tab.active {
+      background: #18202c;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.14);
+    }
+    .back-link {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+    }
+    .back-link:hover { color: var(--text); border-color: #94a3b8; }
+
+    .main {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+    .sidebar {
+      width: 350px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #ffffff;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cam-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text);
+      padding: 7px 9px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:hover { background: #eef2f6; }
+    .btn-primary {
+      grid-column: span 2;
+      background: #7c3aed;
+      color: #ffffff;
+      border-color: #6d28d9;
+    }
+    .btn-primary:hover { background: #6d28d9; }
+
+    .plan-desc {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .budget-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: #f0fdfa;
+      border: 1px solid #ccfbf1;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .budget-bar strong { color: #0f766e; font-size: 14px; }
+
+    table.item-list {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+    }
+    table.item-list th, table.item-list td {
+      text-align: left;
+      padding: 5px 4px;
+      border-bottom: 1px solid #eef2f6;
+      vertical-align: top;
+    }
+    table.item-list th { color: var(--muted); font-weight: 600; }
+    .price { text-align: right !important; white-space: nowrap; font-weight: 600; color: #334155; }
+
+    .swatch-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      padding: 3px 7px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fafafa;
+    }
+    .swatch-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.18);
+    }
+
+    .viewport-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+    }
+    #pane3d {
+      flex: 1;
+      position: relative;
+      background: #f3f5f8;
+    }
+    #canvas3d {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .overlay-banner {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-size: 12px;
+      line-height: 1.5;
+      pointer-events: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      max-width: 580px;
+    }
+    .plan-2d-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 6px;
+    }
+    #canvas2d {
+      width: 100%;
+      height: 175px;
+      display: block;
+    }
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 0;
+    }
+    @media (max-width: 900px) {
+      .main { flex-direction: column; }
+      .sidebar { width: 100%; height: 44vh; border-right: none; border-top: 1px solid var(--border); order: 2; }
+      #pane3d { height: 56vh; order: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>Drum Studio 風格擺設預覽</span>
+      <span class="badge">莫蘭迪藍 × 百合白 × IKEA 矮桌休閒風</span>
+    </div>
+    <div class="plan-tabs">
+      <button type="button" class="plan-tab active" data-plan="planA">方向 A：都會露營 Glamping</button>
+      <button type="button" class="plan-tab" data-plan="planB">方向 B：南歐藤編度假</button>
+      <button type="button" class="plan-tab" data-plan="planC">方向 C：北歐復古唱片沙龍</button>
+    </div>
+    <a class="back-link" href="index.html">返回主空間模型</a>
+  </header>
+
+  <div class="main">
+    <aside class="sidebar">
+      <div class="card">
+        <div class="card-title">
+          <span>3D 檢視視角</span>
+          <span style="font-size:11px; color:#64748b;">左鍵旋轉 / 滾輪縮放</span>
+        </div>
+        <div class="cam-grid">
+          <button type="button" class="btn btn-primary" id="btn-cam-leftrear">鼓手左後側拍攝視角（預覽影片背景）</button>
+          <button type="button" class="btn" id="btn-cam-iso">全局等角透視</button>
+          <button type="button" class="btn" id="btn-cam-door">入口推門視角</button>
+          <button type="button" class="btn" id="btn-cam-top">正上方 3D 俯視</button>
+          <button type="button" class="btn" id="btn-cam-lounge">休閒區特寫</button>
+        </div>
+        <div style="margin-top:8px; border-top:1px solid #eef2f6; padding-top:6px;">
+          <label class="toggle-row">
+            <span>顯示 3D 空間尺寸標註</span>
+            <input type="checkbox" id="chk-labels" checked />
+          </label>
+          <label class="toggle-row">
+            <span>顯示左後側攝影機視錐</span>
+            <input type="checkbox" id="chk-cam-fov" checked />
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span id="plan-title">方向 A：都會露營 / Glamping 慵懶風</span>
+        </div>
+        <div class="plan-desc" id="plan-desc"></div>
+        <div class="budget-bar">
+          <span>IKEA 現役家具參考總預算</span>
+          <strong id="plan-budget">約 NT$21,700</strong>
+        </div>
+        <table class="item-list">
+          <thead>
+            <tr>
+              <th>IKEA 品項 / 官方尺寸</th>
+              <th>數量</th>
+              <th class="price">參考價</th>
+            </tr>
+          </thead>
+          <tbody id="plan-items-body"></tbody>
+        </table>
+        <div class="swatch-row" id="plan-swatches"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>2D 平面配置與走道檢核</span>
+          <span style="font-size:11px; color:#64748b;">5.90 × 3.60 m</span>
+        </div>
+        <div class="plan-2d-box">
+          <canvas id="canvas2d"></canvas>
+        </div>
+      </div>
+    </aside>
+
+    <div class="viewport-wrap">
+      <div id="pane3d">
+        <canvas id="canvas3d"></canvas>
+        <div class="overlay-banner" id="banner-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="materials/fabrics/fabric-textures.js"></script>
+  <script src="equipment/drumkit/drumkit-textures.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const ROOM = { L: 5.90, W: 3.60, H: 2.90, BEAM_X: 4.7475, BEAM_W: 0.265, BEAM_D: 0.345 };
+    const STATE = { plan: 'planA', showLabels: true, showCamFov: true };
+
+    const PLAN_DATA = {
+      planA: {
+        title: '方向 A：都會露營 / Glamping 慵懶風',
+        banner: '<strong>方向 A（都會露營 Glamping）</strong>：HAVSTEN 米白超深蓬鬆雙人沙發 ＋ HÅKANSKÄR 鐵木矮桌與黑藍子母桌 ＋ 對側 VIGGSÖ 露營躺椅與 SKOGSÖN 淺莫蘭迪綠休閒椅 ＋ BROR 移動膠囊咖啡推車。',
+        desc: '外露細鋼管框架搭配蓬鬆米白大軟墊，再以黑藍金屬矮桌、淺莫蘭迪綠單椅與深灰露營躺椅呼應莫蘭迪藍天花板與湖水藍綠鼓組，輕盈俐落又極致慵懶。',
+        budget: '約 NT$21,700',
+        items: [
+          ['HAVSTEN 戶外雙人沙發 (179×92×76cm 米色)', '1 座', '$8,499'],
+          ['HÅKANSKÄR 鐵木兩用矮桌 (80×64cm)', '1 張', '$2,499'],
+          ['GRYTSHOLM 黑藍金屬子母矮桌 (2件組)', '1 組', '$2,499'],
+          ['VIGGSÖ 折疊露營躺椅 (深灰)', '1 張', '$1,799'],
+          ['SKOGSÖN 穿孔金屬休閒椅 (淺莫蘭迪綠)', '1 張', '$2,499'],
+          ['BROR 黑松木推車 (85×55×88cm 咖啡吧)', '1 台', '$4,999']
+        ],
+        swatches: [
+          ['#EAE4D8', 'HAVSTEN 米白蓬鬆墊'],
+          ['#283848', 'GRYTSHOLM 黑藍框'],
+          ['#9BB5A2', 'SKOGSÖN 淺莫蘭迪綠'],
+          ['#4B5056', 'VIGGSÖ 深灰布面']
+        ]
+      },
+      planB: {
+        title: '方向 B：南歐／海島自然藤編度假風',
+        banner: '<strong>方向 B（南歐自然藤編 Coastal Boho）</strong>：BONDHOLMEN 灰白木格柵雙人沙發 ＋ LISTERBY 圓潤橡木橢圓矮桌 (140×60cm) ＋ 對側 2 張 BUSKBO/FRYKSÅS 天然手工藤編圓弧椅 ＋ KALLAX 橡木咖啡吧與雙綠植。',
+        desc: '莫蘭迪藍天花板＋百合白牆面＋手工天然藤編是最經典的南歐／加州海岸度假公式，圓潤木質矮桌與簍空藤編讓深胡桃木地板與亮片鼓組瞬間輕盈透氣。',
+        budget: '約 NT$23,500',
+        items: [
+          ['BONDHOLMEN 戶外雙人沙發 (139×81cm 灰白)', '1 座', '$5,999'],
+          ['LISTERBY 梣木/橡木橢圓矮桌 (140×60×45cm)', '1 張', '$5,490'],
+          ['FRYKSÅS / BUSKBO 天然手工藤編休閒椅', '2 張', '約 $8,400'],
+          ['KALLAX 4 格層架組＋高腳座 (77×39×88cm)', '1 座', '約 $2,000'],
+          ['RÅGKORN 編織花盆 ＋ 大型綠植', '2 組', '約 $2,200']
+        ],
+        swatches: [
+          ['#E5E2DC', 'BONDHOLMEN 灰白木'],
+          ['#CFA670', '天然手工藤編'],
+          ['#C4A47C', 'LISTERBY 淺橡木'],
+          ['#3F6A48', '自然綠植']
+        ]
+      },
+      planC: {
+        title: '方向 C：北歐 1960s 復古唱片沙龍風',
+        banner: '<strong>方向 C（北歐復古唱片沙龍 Mid-Century）</strong>：2 張 DYVLINGE 復古低矮旋轉休閒椅（森林綠＋復古橘）＋ STOCKHOLM 胡桃木長形矮桌 (180×59cm) ＋ 對側 2 張 POÄNG 樺木懸臂椅 ＋ BROR 黑色咖啡推車。',
+        desc: '專為音樂人打造的 1960s 爵士唱片沙龍：以爆紅「反焦慮」低矮旋轉椅撞色呼應莫蘭迪藍天花板、復古紅門簾與湖水藍綠鼓組，搭配溫潤胡桃木矮桌與久坐極舒適的 POÄNG。',
+        budget: '約 NT$30,900',
+        items: [
+          ['DYVLINGE 復古旋轉休閒椅 (復古綠＋復古橘)', '2 張', '$9,998'],
+          ['POÄNG 樺木懸臂休閒椅 (米色軟墊)', '2 張', '$5,998'],
+          ['STOCKHOLM 胡桃木長形矮桌 (180×59cm)', '1 張', '$9,990'],
+          ['BROR 黑松木推車 (85×55×88cm 咖啡吧)', '1 台', '$4,999']
+        ],
+        swatches: [
+          ['#2E6146', 'DYVLINGE 復古綠'],
+          ['#C86432', 'DYVLINGE 復古橘'],
+          ['#6B4423', 'STOCKHOLM 胡桃木'],
+          ['#E8E0D2', 'POÄNG 米色']
+        ]
+      }
+    };
+
+    function toWorld(rx, ry, rz) {
+      return new THREE.Vector3(rx - ROOM.L / 2, rz, ry - ROOM.W / 2);
+    }
+
+    const canvas3d = document.getElementById('canvas3d');
+    const pane3d = document.getElementById('pane3d');
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas3d, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#f1f4f8');
+
+    const camera = new THREE.PerspectiveCamera(44, 1, 0.05, 50);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+
+    scene.add(new THREE.HemisphereLight(0xfffaf0, 0x94a3b8, 0.94));
+    const dirLight = new THREE.DirectionalLight(0xfff5e4, 0.86);
+    dirLight.position.set(-2.5, 5.5, 3.2);
+    scene.add(dirLight);
+    const fillLight = new THREE.DirectionalLight(0xdbeafe, 0.40);
+    fillLight.position.set(3.5, 3.0, -3.0);
+    scene.add(fillLight);
+
+    const rootGroup = new THREE.Group();
+    scene.add(rootGroup);
+
+    const MATS = (() => {
+      let panelTex = null;
+      const fCat = window.REAL_FABRIC_CATALOG;
+      if (fCat && fCat.fb04 && fCat.fb04.dataUri) {
+        panelTex = new THREE.TextureLoader().load(fCat.fb04.dataUri);
+        panelTex.wrapS = panelTex.wrapT = THREE.RepeatWrapping;
+        panelTex.repeat.set(3, 3);
+        panelTex.colorSpace = THREE.SRGBColorSpace;
+      }
+      let sparkleTex = null;
+      const dAssets = window.REAL_DRUMKIT_ASSETS;
+      if (dAssets && dAssets.tealSparkle && dAssets.tealSparkle.dataUri) {
+        sparkleTex = new THREE.TextureLoader().load(dAssets.tealSparkle.dataUri);
+        sparkleTex.wrapS = sparkleTex.wrapT = THREE.RepeatWrapping;
+        sparkleTex.repeat.set(4, 2);
+        sparkleTex.colorSpace = THREE.SRGBColorSpace;
+      }
+      const kCvs = document.createElement('canvas');
+      kCvs.width = 256; kCvs.height = 256;
+      const kctx = kCvs.getContext('2d');
+      kctx.fillStyle = '#F1F0EA'; kctx.fillRect(0, 0, 256, 256);
+      kctx.strokeStyle = '#18181b'; kctx.lineWidth = 5;
+      kctx.beginPath(); kctx.moveTo(66, 10); kctx.lineTo(96, 246); kctx.stroke();
+      kctx.beginPath(); kctx.moveTo(78, 10); kctx.lineTo(108, 246); kctx.stroke();
+      kctx.fillStyle = '#F1F0EA'; kctx.strokeStyle = '#18181b'; kctx.lineWidth = 4;
+      kctx.fillRect(64, 118, 44, 34); kctx.strokeRect(64, 118, 44, 34);
+      kctx.fillStyle = '#18181b'; kctx.font = 'bold 20px sans-serif'; kctx.textAlign = 'center';
+      kctx.fillText('MB', 86, 142);
+      kctx.fillStyle = '#181614'; kctx.beginPath(); kctx.arc(174, 172, 28, 0, Math.PI * 2); kctx.fill();
+      const kickFrontTex = new THREE.CanvasTexture(kCvs);
+      kickFrontTex.colorSpace = THREE.SRGBColorSpace;
+
+      return {
+        floor: new THREE.MeshStandardMaterial({ color: '#5A412F', roughness: 0.72 }),
+        wall: new THREE.MeshStandardMaterial({ color: '#F3EEE1', roughness: 0.90 }),
+        ceiling: new THREE.MeshStandardMaterial({ color: '#6E859B', roughness: 0.88 }),
+        panel: new THREE.MeshStandardMaterial({ color: panelTex ? '#ffffff' : '#CECAC1', map: panelTex, roughness: 0.92 }),
+        curtain: new THREE.MeshStandardMaterial({ color: '#73383A', roughness: 0.92 }),
+        // Style A
+        beigePlush: new THREE.MeshStandardMaterial({ color: '#EAE4D8', roughness: 0.92 }),
+        beigeFrame: new THREE.MeshStandardMaterial({ color: '#D6CEC0', roughness: 0.50, metalness: 0.35 }),
+        blueBlackMetal: new THREE.MeshStandardMaterial({ color: '#263544', roughness: 0.42, metalness: 0.60 }),
+        sageMetal: new THREE.MeshStandardMaterial({ color: '#9BB5A2', roughness: 0.42, metalness: 0.45 }),
+        campGrey: new THREE.MeshStandardMaterial({ color: '#4B5056', roughness: 0.88 }),
+        acaciaLight: new THREE.MeshStandardMaterial({ color: '#C29563', roughness: 0.58 }),
+        // Style B
+        whiteWood: new THREE.MeshStandardMaterial({ color: '#E8E5DF', roughness: 0.68 }),
+        rattan: new THREE.MeshStandardMaterial({ color: '#CFA670', roughness: 0.76 }),
+        rattanDark: new THREE.MeshStandardMaterial({ color: '#AE834E', roughness: 0.80 }),
+        oakLight: new THREE.MeshStandardMaterial({ color: '#C8A882', roughness: 0.60 }),
+        morandiBluePillow: new THREE.MeshStandardMaterial({ color: '#6E859B', roughness: 0.92 }),
+        sagePillow: new THREE.MeshStandardMaterial({ color: '#8A9A84', roughness: 0.92 }),
+        // Style C
+        dyvGreen: new THREE.MeshStandardMaterial({ color: '#2E6146', roughness: 0.82 }),
+        dyvOrange: new THREE.MeshStandardMaterial({ color: '#C86432', roughness: 0.82 }),
+        birch: new THREE.MeshStandardMaterial({ color: '#DFC7A2', roughness: 0.60 }),
+        walnut: new THREE.MeshStandardMaterial({ color: '#6B4423', roughness: 0.50 }),
+        // Shared Lounge & Accessories
+        softRug: new THREE.MeshStandardMaterial({ color: '#E4DDD0', roughness: 0.95 }),
+        warmGreyRug: new THREE.MeshStandardMaterial({ color: '#D5D1C8', roughness: 0.95 }),
+        brorMetal: new THREE.MeshStandardMaterial({ color: '#22262B', roughness: 0.45, metalness: 0.55 }),
+        brorTop: new THREE.MeshStandardMaterial({ color: '#C8A77E', roughness: 0.65 }),
+        basket: new THREE.MeshStandardMaterial({ color: '#A68E72', roughness: 0.90 }),
+        basketDark: new THREE.MeshStandardMaterial({ color: '#4E5154', roughness: 0.90 }),
+        plant: new THREE.MeshStandardMaterial({ color: '#3F6A48', roughness: 0.75 }),
+        plantLight: new THREE.MeshStandardMaterial({ color: '#5A8B5E', roughness: 0.75 }),
+        coffeeMach: new THREE.MeshStandardMaterial({ color: '#202226', roughness: 0.30, metalness: 0.55 }),
+        brass: new THREE.MeshStandardMaterial({ color: '#C89B4F', roughness: 0.30, metalness: 0.75 }),
+        mug: new THREE.MeshStandardMaterial({ color: '#F8F5EE', roughness: 0.32 }),
+        lampGlow: new THREE.MeshStandardMaterial({ color: '#FEF3C7', emissive: '#F59E0B', emissiveIntensity: 0.85 }),
+        laptop: new THREE.MeshStandardMaterial({ color: '#94A3B8', roughness: 0.32, metalness: 0.70 }),
+        shelf: new THREE.MeshStandardMaterial({ color: '#784E2C', roughness: 0.68 }),
+        // Drum kit
+        drumRug: new THREE.MeshStandardMaterial({ color: '#2A2D32', roughness: 0.94 }),
+        drumShell: new THREE.MeshStandardMaterial({ color: sparkleTex ? '#ffffff' : '#359B94', map: sparkleTex, roughness: 0.22, metalness: 0.45 }),
+        drumInner: new THREE.MeshStandardMaterial({ color: '#C8A47B', roughness: 0.65, side: THREE.BackSide }),
+        snareShell: new THREE.MeshStandardMaterial({ color: '#14161A', roughness: 0.18, metalness: 0.28 }),
+        snareHead: new THREE.MeshStandardMaterial({ color: '#F4F3EE', roughness: 0.65 }),
+        kickFront: new THREE.MeshStandardMaterial({ map: kickFrontTex, roughness: 0.55 }),
+        clearHead: new THREE.MeshStandardMaterial({ color: '#f8fafc', transparent: true, opacity: 0.26, roughness: 0.14 }),
+        chrome: new THREE.MeshStandardMaterial({ color: '#E2E8F0', roughness: 0.18, metalness: 0.90 }),
+        cymbal: new THREE.MeshStandardMaterial({ color: '#DFC16E', metalness: 0.84, roughness: 0.22, side: THREE.DoubleSide }),
+        leather: new THREE.MeshStandardMaterial({ color: '#17191D', roughness: 0.50 })
+      };
+    })();
+
+    function addBox(sx, sy, sz, rx, ry, rz, mat, edgeHex = null, parent = rootGroup) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), mat);
+      m.position.copy(toWorld(rx, ry, rz));
+      parent.add(m);
+      if (edgeHex !== null) {
+        const e = new THREE.LineSegments(
+          new THREE.EdgesGeometry(m.geometry),
+          new THREE.LineBasicMaterial({ color: edgeHex, transparent: true, opacity: 0.40 })
+        );
+        e.position.copy(m.position);
+        parent.add(e);
+      }
+      return m;
+    }
+
+    function makeSprite(text, bg = 'rgba(24,32,44,0.9)', fg = '#ffffff', border = '#94a3b8') {
+      const cvs = document.createElement('canvas');
+      const ctx = cvs.getContext('2d');
+      ctx.font = 'bold 23px -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif';
+      const w = ctx.measureText(text).width + 28;
+      const h = 42;
+      cvs.width = w; cvs.height = h;
+      ctx.fillStyle = bg; ctx.strokeStyle = border; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.roundRect(2, 2, w - 4, h - 4, 10); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = fg; ctx.font = 'bold 23px -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(text, w / 2, h / 2 + 1);
+      const tex = new THREE.CanvasTexture(cvs);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false }));
+      sp.scale.set(w * 0.0040, h * 0.0040, 1);
+      sp.renderOrder = 20;
+      return sp;
+    }
+
+    let smartWalls = [];
+    function buildRoomShell() {
+      smartWalls = [];
+      addBox(ROOM.L, 0.04, ROOM.W, ROOM.L / 2, ROOM.W / 2, -0.02, MATS.floor, 0x3f2c1e);
+
+      const wallThick = 0.06;
+      const makeWall = (sx, sy, sz, rx, ry, rz, normalDir) => {
+        const mat = MATS.wall.clone();
+        mat.transparent = true;
+        const mesh = addBox(sx, sy, sz, rx, ry, rz, mat, 0xcbd5e1);
+        smartWalls.push({ mesh, normal: normalDir, center: toWorld(rx, ry, rz) });
+      };
+      makeWall(wallThick, ROOM.H, ROOM.W, ROOM.L + wallThick / 2, ROOM.W / 2, ROOM.H / 2, new THREE.Vector3(-1, 0, 0));
+      makeWall(wallThick, ROOM.H, ROOM.W, -wallThick / 2, ROOM.W / 2, ROOM.H / 2, new THREE.Vector3(1, 0, 0));
+      makeWall(ROOM.L, ROOM.H, wallThick, ROOM.L / 2, -wallThick / 2, ROOM.H / 2, new THREE.Vector3(0, 0, 1));
+      makeWall(ROOM.L, ROOM.H, wallThick, ROOM.L / 2, ROOM.W + wallThick / 2, ROOM.H / 2, new THREE.Vector3(0, 0, -1));
+
+      // 莫蘭迪藍天花板示意橫條＋雙橫梁
+      addBox(ROOM.BEAM_W, ROOM.BEAM_D, ROOM.W, ROOM.BEAM_X, ROOM.W / 2, ROOM.H - ROOM.BEAM_D / 2, MATS.ceiling, 0x475569);
+      addBox(0.15, ROOM.BEAM_D, ROOM.W, 0.075, ROOM.W / 2, ROOM.H - ROOM.BEAM_D / 2, MATS.ceiling, 0x475569);
+      // 莫蘭迪藍天花頂緣收邊，讓室內視角能感受到天花藍調
+      addBox(ROOM.L, 0.03, 0.14, ROOM.L / 2, 0.07, ROOM.H - 0.015, MATS.ceiling);
+      addBox(ROOM.L, 0.03, 0.14, ROOM.L / 2, ROOM.W - 0.07, ROOM.H - 0.015, MATS.ceiling);
+
+      // 入口門＋復古深紅厚窗簾
+      addBox(0.05, 2.065, 0.90, 0.02, 3.15, 1.0325, new THREE.MeshStandardMaterial({ color: '#4B3A2C', roughness: 0.55 }), 0x27272a);
+      addBox(0.08, 2.45, 0.48, 0.14, 2.94, 1.24, MATS.curtain, 0x4c1d24);
+
+      // 吸音板
+      [1.10, 2.25, 3.40, 4.55].forEach((px) => {
+        addBox(0.60, 1.20, 0.05, px, 0.10, 1.45, MATS.panel, 0xa8a29e);
+        addBox(0.60, 1.20, 0.05, px, ROOM.W - 0.10, 1.45, MATS.panel, 0xa8a29e);
+      });
+      addBox(0.05, 1.60, 1.50, 0.05, 1.95, 1.75, MATS.panel, 0xa8a29e);
+      addBox(0.05, 2.45, 2.90, ROOM.L - 0.05, 2.15, 1.25, MATS.panel, 0xa8a29e);
+
+      // A1 雜物櫃
+      addBox(0.45, 1.05, 2.40, ROOM.L - 0.26, ROOM.W / 2, 0.525, MATS.shelf, 0x5c371b);
+    }
+
+    function buildDrumKit() {
+      const kit = new THREE.Group();
+      kit.position.copy(toWorld(4.00, 1.80, 0));
+
+      const rug = new THREE.Mesh(new THREE.BoxGeometry(1.80, 0.012, 2.40), MATS.drumRug);
+      rug.position.set(0, 0.006, 0);
+      kit.add(rug);
+
+      const kickR = 0.279, kickD = 0.457;
+      const kG = new THREE.Group();
+      kG.position.set(-0.22, kickR + 0.022, 0);
+      const kShell = new THREE.Mesh(new THREE.CylinderGeometry(kickR, kickR, kickD, 28, 1, true), MATS.drumShell);
+      kShell.rotation.z = Math.PI / 2;
+      const kReso = new THREE.Mesh(new THREE.CircleGeometry(kickR, 28), MATS.kickFront);
+      kReso.rotation.y = -Math.PI / 2; kReso.position.x = -kickD / 2 - 0.002;
+      const kBat = new THREE.Mesh(new THREE.CircleGeometry(kickR, 24), MATS.clearHead);
+      kBat.rotation.y = Math.PI / 2; kBat.position.x = kickD / 2 + 0.002;
+      kG.add(kShell, kReso, kBat);
+      kit.add(kG);
+
+      const snare = new THREE.Mesh(new THREE.CylinderGeometry(0.178, 0.178, 0.14, 24), MATS.snareShell);
+      snare.position.set(0.14, 0.65, 0.27);
+      const sTop = new THREE.Mesh(new THREE.CircleGeometry(0.176, 24), MATS.snareHead);
+      sTop.rotation.x = -Math.PI / 2; sTop.position.set(0.14, 0.721, 0.27);
+      kit.add(snare, sTop);
+
+      const mkTom = (r, d, x, y, z, rx, rz) => {
+        const g = new THREE.Group();
+        g.position.set(x, y, z); g.rotation.set(rx, 0, rz);
+        g.add(new THREE.Mesh(new THREE.CylinderGeometry(r, r, d, 24, 1, true), MATS.drumShell));
+        g.add(new THREE.Mesh(new THREE.CylinderGeometry(r - 0.005, r - 0.005, d - 0.004, 20, 1, true), MATS.drumInner));
+        const head = new THREE.Mesh(new THREE.CircleGeometry(r - 0.003, 20), MATS.clearHead);
+        head.rotation.x = -Math.PI / 2; head.position.y = d / 2;
+        g.add(head);
+        kit.add(g);
+      };
+      mkTom(0.152, 0.229, -0.18, 0.80, 0.20, -0.10, -0.44);
+      mkTom(0.165, 0.254, -0.18, 0.80, -0.18, 0.10, -0.44);
+      mkTom(0.203, 0.406, 0.15, 0.49, -0.46, 0, 0);
+
+      const throne = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.09, 20), MATS.leather);
+      throne.position.set(0.46, 0.52, 0.04);
+      const tPost = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.48, 8), MATS.chrome);
+      tPost.position.set(0.46, 0.24, 0.04);
+      kit.add(throne, tPost);
+
+      [
+        [0.178, 0.10, 0.90, 0.58, 0, 0],
+        [0.229, -0.26, 1.18, 0.58, -0.10, -0.26],
+        [0.279, -0.18, 1.05, -0.56, 0.14, -0.24],
+        [0.203, 0.06, 1.18, -0.82, 0.20, -0.22]
+      ].forEach(([r, x, y, z, rx, rz]) => {
+        const c = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.22, r, 0.014, 24), MATS.cymbal);
+        c.position.set(x, y, z); c.rotation.set(rx, 0, rz);
+        const p = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, y, 8), MATS.chrome);
+        p.position.set(x, y / 2, z);
+        kit.add(c, p);
+      });
+      rootGroup.add(kit);
+    }
+
+    // ==========================================
+    // 共用生活道具 (筆電、馬克杯、咖啡機、BROR/KALLAX、綠植)
+    // ==========================================
+    function addTableProps(cx, cy, topZ) {
+      addBox(0.32, 0.012, 0.22, cx - 0.18, cy - 0.04, topZ + 0.006, MATS.laptop);
+      const scr = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.20, 0.01), MATS.laptop);
+      scr.position.copy(toWorld(cx - 0.18, cy - 0.14, topZ + 0.10));
+      scr.rotation.x = 0.22;
+      rootGroup.add(scr);
+      [[0.18, 0.08], [0.30, -0.06]].forEach(([ox, oy]) => {
+        const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.036, 0.09, 14), MATS.mug);
+        mug.position.copy(toWorld(cx + ox, cy + oy, topZ + 0.045));
+        rootGroup.add(mug);
+      });
+    }
+
+    function addCoffeeMachSet(cx, cy, topZ, alongY = true) {
+      const cm = new THREE.Group();
+      cm.position.copy(toWorld(cx, cy, topZ));
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.28, 0.30), MATS.coffeeMach);
+      body.position.set(0, 0.14, 0);
+      const brass = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.03, 0.12), MATS.brass);
+      brass.position.set(0, 0.23, 0.05);
+      cm.add(body, brass);
+      if (!alongY) cm.rotation.y = Math.PI / 2;
+      rootGroup.add(cm);
+
+      const d1 = alongY ? [0, -0.26] : [-0.28, 0];
+      const d2 = alongY ? [0, 0.28] : [0.34, 0];
+      const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.038, 0.095, 14), MATS.mug);
+      cup.position.copy(toWorld(cx + d1[0], cy + d1[1], topZ + 0.048));
+      const lBase = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.07, 0.20, 12), MATS.brass);
+      lBase.position.copy(toWorld(cx + d2[0], cy + d2[1], topZ + 0.10));
+      const lShade = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.11, 0.13, 14), MATS.lampGlow);
+      lShade.position.copy(toWorld(cx + d2[0], cy + d2[1], topZ + 0.24));
+      rootGroup.add(cup, lBase, lShade);
+    }
+
+    function addBrorCart(cx, cy) {
+      const sx = 0.55, sy = 0.85, h = 0.88;
+      [[-sx / 2 + 0.02, -sy / 2 + 0.02], [sx / 2 - 0.02, -sy / 2 + 0.02], [-sx / 2 + 0.02, sy / 2 - 0.02], [sx / 2 - 0.02, sy / 2 - 0.02]].forEach(([ox, oy]) => {
+        addBox(0.035, h - 0.06, 0.035, cx + ox, cy + oy, (h + 0.06) / 2, MATS.brorMetal);
+      });
+      addBox(sx, 0.035, sy, cx, cy, h - 0.018, MATS.brorTop, 0x8f6238);
+      addBox(sx - 0.02, 0.025, sy - 0.02, cx, cy, 0.48, MATS.brorMetal);
+      addBox(sx - 0.02, 0.025, sy - 0.02, cx, cy, 0.14, MATS.brorMetal);
+      addCoffeeMachSet(cx, cy, h, true);
+    }
+
+    function addKallaxBar(cx, cy, sizeX, sizeY, h = 0.88) {
+      addBox(sizeX, h - 0.10, sizeY, cx, cy, (h + 0.10) / 2, MATS.oakLight, 0x9c7c56);
+      addBox(sizeX - 0.04, 0.10, sizeY - 0.04, cx, cy, 0.05, MATS.brorMetal);
+      addCoffeeMachSet(cx, cy, h, sizeY > sizeX);
+    }
+
+    function addPlantPot(cx, cy, scale = 1.0) {
+      const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.15 * scale, 0.12 * scale, 0.28 * scale, 16), MATS.basket);
+      pot.position.copy(toWorld(cx, cy, 0.14 * scale));
+      const band = new THREE.Mesh(new THREE.CylinderGeometry(0.138 * scale, 0.124 * scale, 0.11 * scale, 16), MATS.basketDark);
+      band.position.copy(toWorld(cx, cy, 0.08 * scale));
+      rootGroup.add(pot, band);
+      [
+        [0, 0, 0.56, 0.22, MATS.plant],
+        [0.10, 0.08, 0.72, 0.17, MATS.plantLight],
+        [-0.09, -0.07, 0.68, 0.16, MATS.plant],
+        [0.02, -0.10, 0.84, 0.14, MATS.plantLight]
+      ].forEach(([ox, oy, oz, r, mat]) => {
+        const lf = new THREE.Mesh(new THREE.DodecahedronGeometry(r * scale, 1), mat);
+        lf.position.copy(toWorld(cx + ox * scale, cy + oy * scale, oz * scale));
+        rootGroup.add(lf);
+      });
+    }
+
+    // ==========================================
+    // 方向 A 專屬家具：HAVSTEN 沙發 / HÅKANSKÄR 矮桌 / GRYTSHOLM 子母桌 / VIGGSÖ 露營椅 / SKOGSÖN 淺綠椅
+    // ==========================================
+    function addHavstenSofa(cx, cy) {
+      // 官方尺寸：179 × 92 × 76 cm (外露細鋼管框架 + 超厚蓬鬆米白雙人軟墊)
+      const L = 1.79, D = 0.92;
+      // 外露細鋼管框架 (四角立柱 + 上下橫桿)
+      [[-L / 2 + 0.03, -D / 2 + 0.03], [L / 2 - 0.03, -D / 2 + 0.03], [-L / 2 + 0.03, D / 2 - 0.03], [L / 2 - 0.03, D / 2 - 0.03]].forEach(([ox, oy]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.62, 10), MATS.beigeFrame);
+        leg.position.copy(toWorld(cx + ox, cy + oy, 0.31));
+        rootGroup.add(leg);
+      });
+      // 左右鋼管扶手框
+      [-L / 2 + 0.03, L / 2 - 0.03].forEach((ox) => {
+        addBox(0.035, 0.035, D - 0.04, cx + ox, cy, 0.62, MATS.beigeFrame);
+      });
+      // 背後鋼管框架
+      addBox(L - 0.04, 0.035, 0.035, cx, cy - D / 2 + 0.03, 0.68, MATS.beigeFrame);
+      // 彈性網布底座
+      addBox(L - 0.08, 0.04, D - 0.10, cx, cy, 0.24, MATS.beigeFrame);
+      // 兩塊超厚蓬鬆米白坐墊 (各 84 × 78 × 18 cm)
+      [-0.43, 0.43].forEach((ox) => {
+        addBox(0.83, 0.18, 0.78, cx + ox, cy + 0.04, 0.34, MATS.beigePlush, 0xd4ccc0);
+        // 蓬鬆大靠枕
+        addBox(0.80, 0.42, 0.22, cx + ox, cy - 0.28, 0.58, MATS.beigePlush, 0xd4ccc0);
+      });
+      // 莫蘭迪藍＋淺綠點綴抱枕
+      const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.30, 0.11), MATS.morandiBluePillow);
+      p1.position.copy(toWorld(cx - 0.56, cy - 0.14, 0.56)); p1.rotation.y = 0.35;
+      const p2 = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.30, 0.11), MATS.sagePillow);
+      p2.position.copy(toWorld(cx + 0.56, cy - 0.14, 0.56)); p2.rotation.y = -0.35;
+      rootGroup.add(p1, p2);
+    }
+
+    function addHakanskarTable(cx, cy) {
+      // HÅKANSKÄR 80×64×38cm 鐵木兩用矮桌
+      addBox(0.80, 0.035, 0.64, cx, cy, 0.36, MATS.acaciaLight, 0x7c532d);
+      [[-0.38, -0.30], [0.38, -0.30], [-0.38, 0.30], [0.38, 0.30]].forEach(([ox, oy]) => {
+        addBox(0.025, 0.35, 0.025, cx + ox, cy + oy, 0.175, MATS.blueBlackMetal);
+      });
+      addTableProps(cx, cy, 0.38);
+    }
+
+    function addGrytsholmNesting(cx, cy) {
+      // GRYTSHOLM 黑藍金屬圓形子母矮桌 (直徑 50cm 高 42cm + 直徑 38cm 高 35cm)
+      const mkRound = (x, y, r, h) => {
+        const top = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 0.025, 24), MATS.blueBlackMetal);
+        top.position.copy(toWorld(x, y, h));
+        for (let i = 0; i < 3; i++) {
+          const a = (i * Math.PI * 2) / 3;
+          const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, h, 8), MATS.blueBlackMetal);
+          leg.position.copy(toWorld(x + Math.cos(a) * (r * 0.75), y + Math.sin(a) * (r * 0.75), h / 2));
+          rootGroup.add(leg);
+        }
+        rootGroup.add(top);
+      };
+      mkRound(cx, cy, 0.25, 0.42);
+      mkRound(cx + 0.28, cy + 0.18, 0.19, 0.34);
+    }
+
+    function addViggsoCampChair(cx, cy, yaw = Math.PI) {
+      // VIGGSÖ 深灰露營折疊躺椅 (細鋼管骨架 + 低斜布面)
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0)); g.rotation.y = yaw;
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.03, 0.56), MATS.campGrey);
+      seat.position.set(0, 0.34, 0.04); seat.rotation.x = -0.14;
+      const back = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.62, 0.03), MATS.campGrey);
+      back.position.set(0, 0.64, -0.32); back.rotation.x = -0.42;
+      [-0.28, 0.28].forEach((sx) => {
+        const f1 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.72, 8), MATS.brorMetal);
+        f1.position.set(sx, 0.30, 0); f1.rotation.x = 0.72;
+        const f2 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.72, 8), MATS.brorMetal);
+        f2.position.set(sx, 0.30, 0); f2.rotation.x = -0.58;
+        g.add(f1, f2);
+      });
+      g.add(seat, back);
+      rootGroup.add(g);
+    }
+
+    function addSkogsonChair(cx, cy, yaw = Math.PI) {
+      // SKOGSÖN 淺莫蘭迪綠圓弧金屬休閒椅
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0)); g.rotation.y = yaw;
+      const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.30, 0.28, 0.03, 20), MATS.sageMetal);
+      seat.position.set(0, 0.38, 0.04);
+      const back = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.30, 0.42, 20, 1, true, Math.PI * 0.65, Math.PI * 0.70), MATS.sageMetal);
+      back.position.set(0, 0.58, 0.02);
+      [[-0.22, -0.22], [0.22, -0.22], [-0.22, 0.22], [0.22, 0.22]].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.010, 0.38, 8), MATS.sageMetal);
+        leg.position.set(lx, 0.19, lz);
+        g.add(leg);
+      });
+      g.add(seat, back);
+      rootGroup.add(g);
+    }
+
+    // ==========================================
+    // 方向 B 專屬家具：BONDHOLMEN 灰白沙發 / LISTERBY 橢圓橡木矮桌 / BUSKBO 天然藤編圓弧椅
+    // ==========================================
+    function addBondholmenSofa(cx, cy) {
+      // 官方尺寸：139 × 81 × 73 cm (灰白色木格柵寬扶手＋米白軟墊)
+      const L = 1.39, D = 0.81;
+      addBox(L, 0.30, D, cx, cy, 0.17, MATS.whiteWood, 0xcbd5e1);
+      addBox(L, 0.44, 0.12, cx, cy - D / 2 + 0.06, 0.50, MATS.whiteWood, 0xcbd5e1);
+      [-L / 2 + 0.07, L / 2 - 0.07].forEach((ox) => {
+        addBox(0.14, 0.26, D, cx + ox, cy, 0.45, MATS.whiteWood, 0xcbd5e1);
+      });
+      // 米白軟墊與抱枕
+      addBox(L - 0.30, 0.11, D - 0.16, cx, cy + 0.04, 0.37, MATS.beigePlush, 0xd4ccc0);
+      addBox(L - 0.32, 0.36, 0.16, cx, cy - D / 2 + 0.20, 0.55, MATS.beigePlush, 0xd4ccc0);
+      const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.28, 0.10), MATS.morandiBluePillow);
+      p1.position.copy(toWorld(cx - 0.38, cy - 0.14, 0.54)); p1.rotation.y = 0.3;
+      rootGroup.add(p1);
+    }
+
+    function addListerbyOvalTable(cx, cy) {
+      // LISTERBY 橢圓橡木矮桌 (140 × 60 × 45 cm，圓潤橢圓桌板＋下層書報板)
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0));
+      const top = new THREE.Mesh(new THREE.CylinderGeometry(0.30, 0.30, 0.032, 32), MATS.oakLight);
+      top.scale.set(2.33, 1, 1); top.position.y = 0.44;
+      const shelf = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.022, 28), MATS.rattan);
+      shelf.scale.set(2.15, 1, 1); shelf.position.y = 0.16;
+      [[-0.48, -0.18], [0.48, -0.18], [-0.48, 0.18], [0.48, 0.18]].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.018, 0.43, 12), MATS.oakLight);
+        leg.position.set(lx, 0.215, lz);
+        g.add(leg);
+      });
+      g.add(top, shelf);
+      rootGroup.add(g);
+      addTableProps(cx, cy, 0.455);
+    }
+
+    function addRattanArmchair(cx, cy, yaw = Math.PI) {
+      // BUSKBO / FRYKSÅS 天然手工藤編圓弧扶手休閒椅 (寬 72 × 深 63 × 高 75 cm)
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0)); g.rotation.y = yaw;
+      // 圓弧包覆藤編殼 (半圓柱簍空環)
+      const shell = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.36, 0.32, 0.48, 24, 1, true, Math.PI * 0.55, Math.PI * 0.90),
+        MATS.rattan
+      );
+      shell.position.set(0, 0.52, 0);
+      // 頂部藤條收邊環
+      const rim = new THREE.Mesh(
+        new THREE.TorusGeometry(0.36, 0.022, 10, 24, Math.PI * 0.95),
+        MATS.rattanDark
+      );
+      rim.rotation.x = Math.PI / 2; rim.rotation.z = Math.PI * 0.52; rim.position.set(0, 0.76, 0);
+      // 圓形米白座墊
+      const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.30, 0.30, 0.09, 24), MATS.beigePlush);
+      seat.position.set(0, 0.37, 0.03);
+      // 4 支藤條腳
+      [[-0.24, -0.22], [0.24, -0.22], [-0.24, 0.22], [0.24, 0.22]].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.015, 0.34, 10), MATS.rattanDark);
+        leg.position.set(lx, 0.17, lz);
+        g.add(leg);
+      });
+      g.add(shell, rim, seat);
+      rootGroup.add(g);
+    }
+
+    // ==========================================
+    // 方向 C 專屬家具：DYVLINGE 復古低矮旋轉椅 / POÄNG 懸臂休閒椅 / STOCKHOLM 胡桃木矮桌
+    // ==========================================
+    function addDyvlingeChair(cx, cy, mat, yaw = 0) {
+      // DYVLINGE 復古低矮反焦慮旋轉椅 (寬 63 × 深 75 × 高 68 cm，蓬鬆條紋座背＋鍍鉻星形腳)
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0)); g.rotation.y = yaw;
+      // 鍍鉻十字/五星低矮旋轉底座
+      for (let i = 0; i < 5; i++) {
+        const a = (i * Math.PI * 2) / 5;
+        const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.34, 8), MATS.chrome);
+        arm.rotation.z = Math.PI / 2; arm.rotation.y = a;
+        arm.position.set(Math.cos(a) * 0.16, 0.06, Math.sin(a) * 0.16);
+        g.add(arm);
+      }
+      const post = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.22, 12), MATS.chrome);
+      post.position.set(0, 0.16, 0);
+      // 招牌低矮寬厚蓬鬆座墊＋後仰厚實靠背 (帶分段膨脹條紋感)
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(0.64, 0.16, 0.56), mat);
+      seat.position.set(0, 0.30, 0.06); seat.rotation.x = -0.18;
+      const back = new THREE.Mesh(new THREE.BoxGeometry(0.64, 0.48, 0.17), mat);
+      back.position.set(0, 0.54, -0.24); back.rotation.x = -0.34;
+      g.add(post, seat, back);
+      rootGroup.add(g);
+    }
+
+    function addPoangChair(cx, cy, yaw = Math.PI) {
+      // POÄNG 樺木懸臂低矮休閒椅 (寬 68 × 深 82 × 高 100 cm，優雅彎木扶手＋米白長座背墊)
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0)); g.rotation.y = yaw;
+      // 左右樺木懸臂框
+      [-0.31, 0.31].forEach((sx) => {
+        const base = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.04, 0.72), MATS.birch);
+        base.position.set(sx, 0.02, 0);
+        const frontPost = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.56, 0.045), MATS.birch);
+        frontPost.position.set(sx, 0.29, 0.30); frontPost.rotation.x = 0.12;
+        const arm = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.04, 0.66), MATS.birch);
+        arm.position.set(sx, 0.56, -0.02);
+        g.add(base, frontPost, arm);
+      });
+      // 米白高背舒適坐墊
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.09, 0.54), MATS.beigePlush);
+      seat.position.set(0, 0.36, 0.08); seat.rotation.x = -0.14;
+      const back = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.68, 0.09), MATS.beigePlush);
+      back.position.set(0, 0.68, -0.24); back.rotation.x = -0.26;
+      g.add(seat, back);
+      rootGroup.add(g);
+    }
+
+    function addStockholmWalnutTable(cx, cy) {
+      // STOCKHOLM 胡桃木長形矮桌 (180 × 59 × 40 cm，經典衝浪板流線胡桃木桌面＋下層板)
+      const g = new THREE.Group();
+      g.position.copy(toWorld(cx, cy, 0));
+      const top = new THREE.Mesh(new THREE.CylinderGeometry(0.295, 0.295, 0.032, 36), MATS.walnut);
+      top.scale.set(3.05, 1, 1); top.position.y = 0.39;
+      const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.02, 0.36), MATS.walnut);
+      shelf.position.y = 0.14;
+      [[-0.64, -0.18], [0.64, -0.18], [-0.64, 0.18], [0.64, 0.18]].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.015, 0.38, 12), MATS.walnut);
+        leg.position.set(lx, 0.19, lz);
+        g.add(leg);
+      });
+      g.add(top, shelf);
+      rootGroup.add(g);
+      addTableProps(cx, cy, 0.405);
+    }
+
+    function addLeftRearCameraMarker() {
+      if (!STATE.showCamFov) return;
+      const cPos = toWorld(4.75, 3.10, 1.46);
+      const camBody = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.14), new THREE.MeshStandardMaterial({ color: '#1e1b4b', emissive: '#a855f7', emissiveIntensity: 0.6 }));
+      camBody.position.copy(cPos);
+      camBody.lookAt(toWorld(3.00, 1.25, 0.85));
+      const tripod = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.18, 1.40, 6), MATS.brorMetal);
+      tripod.position.copy(toWorld(4.75, 3.10, 0.70));
+      rootGroup.add(camBody, tripod);
+
+      const fovMat = new THREE.LineDashedMaterial({ color: 0x9333ea, dashSize: 0.12, gapSize: 0.06 });
+      [toWorld(1.50, 0.30, 1.70), toWorld(3.70, 0.30, 1.70), toWorld(1.50, 0.30, 0.25), toWorld(3.70, 0.30, 0.25)].forEach((pt) => {
+        const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([cPos, pt]), fovMat);
+        line.computeLineDistances();
+        rootGroup.add(line);
+      });
+    }
+
+    function buildPlanScene(planKey) {
+      while (rootGroup.children.length > 0) rootGroup.remove(rootGroup.children[0]);
+      buildRoomShell();
+      buildDrumKit();
+      addLeftRearCameraMarker();
+
+      const labels = [
+        { t: '爵士鼓組 (地毯 240×180cm)', p: toWorld(4.00, 1.80, 1.65), bg: 'rgba(15,118,110,0.92)', bd: '#2dd4bf' },
+        { t: 'A1 雜物櫃 (240×45cm)', p: toWorld(5.60, 1.80, 1.35), bg: 'rgba(120,53,15,0.88)', bd: '#d97706' }
+      ];
+
+      if (planKey === 'planA') {
+        // 方向 A：都會露營 / Glamping
+        addBox(2.25, 0.010, 2.55, 1.88, 1.75, 0.005, MATS.warmGreyRug);
+        addHavstenSofa(1.92, 0.62); // B1 側 179×92cm
+        addHakanskarTable(1.65, 1.75); // 中央偏前 80×64cm
+        addGrytsholmNesting(2.38, 1.78); // 旁搭黑藍子母矮桌
+        addViggsoCampChair(1.48, 2.86, Math.PI - 0.14);
+        addSkogsonChair(2.34, 2.86, Math.PI + 0.16);
+        addBrorCart(0.38, 0.78);
+        addPlantPot(0.36, 1.56, 1.15);
+
+        labels.push(
+          { t: 'HAVSTEN 米白蓬鬆雙人沙發 (179×92cm)', p: toWorld(1.92, 0.62, 1.18), bg: 'rgba(51,65,85,0.92)', bd: '#cbd5e1' },
+          { t: 'HÅKANSKÄR 鐵木矮桌＋黑藍子母桌', p: toWorld(1.98, 1.75, 0.88), bg: 'rgba(38,53,68,0.92)', bd: '#93c5fd' },
+          { t: 'VIGGSÖ 露營躺椅 ＋ SKOGSÖN 淺綠椅', p: toWorld(1.90, 2.86, 1.15), bg: 'rgba(63,106,72,0.92)', bd: '#86efac' },
+          { t: 'BROR 黑松木咖啡推車 (85×55cm)', p: toWorld(0.42, 0.78, 1.42), bg: 'rgba(34,38,43,0.92)', bd: '#94a3b8' }
+        );
+      } else if (planKey === 'planB') {
+        // 方向 B：南歐自然藤編度假風
+        addBox(2.20, 0.010, 2.60, 1.85, 1.72, 0.005, MATS.softRug);
+        addBondholmenSofa(1.88, 0.56); // B1 側 139×81cm 灰白沙發
+        addListerbyOvalTable(1.88, 1.66); // 中央 140×60cm 圓潤橡木矮桌
+        addRattanArmchair(1.42, 2.78, Math.PI - 0.18);
+        addRattanArmchair(2.34, 2.78, Math.PI + 0.18);
+        addKallaxBar(0.36, 0.66, 0.39, 0.77, 0.88);
+        addPlantPot(0.36, 1.42, 1.18);
+        addPlantPot(2.74, 0.44, 1.05);
+
+        labels.push(
+          { t: 'BONDHOLMEN 灰白雙人沙發 (139×81cm)', p: toWorld(1.88, 0.56, 1.18), bg: 'rgba(71,85,105,0.92)', bd: '#e2e8f0' },
+          { t: 'LISTERBY 橡木橢圓矮桌 (140×60cm)', p: toWorld(1.88, 1.66, 0.90), bg: 'rgba(143,98,56,0.92)', bd: '#fde68a' },
+          { t: 'BUSKBO/FRYKSÅS 天然手工藤編椅 × 2', p: toWorld(1.88, 2.78, 1.18), bg: 'rgba(174,131,78,0.94)', bd: '#fef3c7' },
+          { t: 'KALLAX 橡木咖啡吧 (77×39cm)', p: toWorld(0.42, 0.66, 1.40), bg: 'rgba(120,78,44,0.92)', bd: '#fcd34d' }
+        );
+      } else {
+        // 方向 C：北歐 1960s 復古唱片沙龍風
+        addBox(2.35, 0.010, 2.60, 1.90, 1.75, 0.005, MATS.softRug);
+        addDyvlingeChair(1.48, 0.64, MATS.dyvGreen, 0.15);
+        addDyvlingeChair(2.34, 0.64, MATS.dyvOrange, -0.15);
+        addStockholmWalnutTable(1.90, 1.72); // 180×59cm 胡桃木長形矮桌
+        addPoangChair(1.46, 2.86, Math.PI - 0.14);
+        addPoangChair(2.34, 2.86, Math.PI + 0.14);
+        addBrorCart(0.38, 0.78);
+        addPlantPot(0.36, 1.56, 1.15);
+
+        labels.push(
+          { t: 'DYVLINGE 復古低矮旋轉椅 (綠＋橘)', p: toWorld(1.90, 0.64, 1.15), bg: 'rgba(46,97,70,0.92)', bd: '#86efac' },
+          { t: 'STOCKHOLM 胡桃木長矮桌 (180×59cm)', p: toWorld(1.90, 1.72, 0.88), bg: 'rgba(107,68,35,0.92)', bd: '#fbbf24' },
+          { t: 'POÄNG 樺木懸臂休閒椅 × 2', p: toWorld(1.90, 2.86, 1.25), bg: 'rgba(120,78,44,0.92)', bd: '#fde68a' },
+          { t: 'BROR 膠囊咖啡推車 (85×55cm)', p: toWorld(0.42, 0.78, 1.42), bg: 'rgba(34,38,43,0.92)', bd: '#94a3b8' }
+        );
+      }
+
+      if (STATE.showLabels) {
+        labels.forEach((lb) => {
+          const sp = makeSprite(lb.t, lb.bg, '#ffffff', lb.bd);
+          sp.position.copy(lb.p);
+          rootGroup.add(sp);
+        });
+      }
+
+      updateSidebarAnd2D(planKey);
+    }
+
+    function updateSidebarAnd2D(planKey) {
+      const info = PLAN_DATA[planKey];
+      document.getElementById('plan-title').textContent = info.title;
+      document.getElementById('plan-desc').textContent = info.desc;
+      document.getElementById('plan-budget').textContent = info.budget;
+      document.getElementById('banner-text').innerHTML = info.banner;
+      document.getElementById('plan-items-body').innerHTML = info.items
+        .map(([n, q, p]) => `<tr><td>${n}</td><td>${q}</td><td class="price">${p}</td></tr>`)
+        .join('');
+      document.getElementById('plan-swatches').innerHTML = info.swatches
+        .map(([hex, label]) => `<span class="swatch"><span class="swatch-dot" style="background:${hex};"></span>${label}</span>`)
+        .join('');
+
+      const c2 = document.getElementById('canvas2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cw = c2.clientWidth || 300, ch = c2.clientHeight || 175;
+      c2.width = cw * dpr; c2.height = ch * dpr;
+      const ctx = c2.getContext('2d');
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, cw, ch);
+
+      const pad = 16;
+      const scale = Math.min((cw - pad * 2) / ROOM.L, (ch - pad * 2) / ROOM.W);
+      const ox = (cw - ROOM.L * scale) / 2;
+      const oy = (ch - ROOM.W * scale) / 2;
+      const tx = (x) => ox + x * scale;
+      const ty = (y) => oy + y * scale;
+
+      ctx.fillStyle = '#faf8f4'; ctx.strokeStyle = '#334155'; ctx.lineWidth = 1.6;
+      ctx.fillRect(ox, oy, ROOM.L * scale, ROOM.W * scale);
+      ctx.strokeRect(ox, oy, ROOM.L * scale, ROOM.W * scale);
+
+      ctx.fillStyle = 'rgba(53,155,148,0.22)'; ctx.strokeStyle = '#0f766e';
+      ctx.fillRect(tx(3.10), ty(0.60), 1.80 * scale, 2.40 * scale);
+      ctx.strokeRect(tx(3.10), ty(0.60), 1.80 * scale, 2.40 * scale);
+      ctx.fillStyle = '#0f172a'; ctx.font = 'bold 9.5px sans-serif';
+      ctx.fillText('鼓組 240×180', tx(3.32), ty(1.85));
+
+      ctx.fillStyle = 'rgba(120,78,44,0.22)'; ctx.strokeStyle = '#784e2c';
+      ctx.fillRect(tx(5.40), ty(0.60), 0.45 * scale, 2.40 * scale);
+      ctx.strokeRect(tx(5.40), ty(0.60), 0.45 * scale, 2.40 * scale);
+
+      const drawRect = (x, y, w, h, fill, stroke, label) => {
+        ctx.fillStyle = fill; ctx.strokeStyle = stroke; ctx.lineWidth = 1.2;
+        ctx.fillRect(tx(x), ty(y), w * scale, h * scale);
+        ctx.strokeRect(tx(x), ty(y), w * scale, h * scale);
+        if (label) {
+          ctx.fillStyle = '#18202c'; ctx.font = '9px sans-serif';
+          ctx.fillText(label, tx(x) + 3, ty(y + h / 2) + 3);
+        }
+      };
+
+      if (planKey === 'planA') {
+        drawRect(1.02, 0.16, 1.79, 0.92, 'rgba(214,206,192,0.45)', '#64748b', 'HAVSTEN 沙發');
+        drawRect(1.25, 1.43, 0.80, 0.64, 'rgba(38,53,68,0.22)', '#263544', '矮桌');
+        drawRect(2.12, 1.52, 0.52, 0.52, 'rgba(38,53,68,0.18)', '#263544', '子母');
+        drawRect(1.18, 2.50, 0.60, 0.72, 'rgba(75,80,86,0.25)', '#4b5056', '露營椅');
+        drawRect(2.02, 2.54, 0.64, 0.64, 'rgba(155,181,162,0.35)', '#4d7c5c', '淺綠椅');
+        drawRect(0.10, 0.36, 0.55, 0.85, 'rgba(34,38,43,0.22)', '#22262b', 'BROR');
+      } else if (planKey === 'planB') {
+        drawRect(1.18, 0.16, 1.39, 0.81, 'rgba(226,232,240,0.55)', '#64748b', 'BONDHOLMEN');
+        drawRect(1.18, 1.36, 1.40, 0.60, 'rgba(200,168,130,0.35)', '#8f6238', 'LISTERBY 橢圓桌');
+        drawRect(1.06, 2.46, 0.72, 0.63, 'rgba(207,166,112,0.35)', '#a67b43', '藤編椅');
+        drawRect(1.98, 2.46, 0.72, 0.63, 'rgba(207,166,112,0.35)', '#a67b43', '藤編椅');
+        drawRect(0.16, 0.28, 0.39, 0.77, 'rgba(200,168,130,0.32)', '#8f6238', '吧台');
+      } else {
+        drawRect(1.16, 0.26, 0.63, 0.75, 'rgba(46,97,70,0.32)', '#2e6146', '復古綠');
+        drawRect(2.02, 0.26, 0.63, 0.75, 'rgba(200,100,50,0.32)', '#c86432', '復古橘');
+        drawRect(1.00, 1.42, 1.80, 0.59, 'rgba(107,68,35,0.28)', '#6b4423', 'STOCKHOLM 矮桌');
+        drawRect(1.12, 2.45, 0.68, 0.82, 'rgba(223,199,162,0.45)', '#9c7c56', 'POÄNG');
+        drawRect(2.00, 2.45, 0.68, 0.82, 'rgba(223,199,162,0.45)', '#9c7c56', 'POÄNG');
+        drawRect(0.10, 0.36, 0.55, 0.85, 'rgba(34,38,43,0.22)', '#22262b', 'BROR');
+      }
+
+      ctx.fillStyle = '#73383A';
+      ctx.fillRect(tx(0) - 2, ty(2.70), 4, 0.90 * scale);
+      ctx.fillStyle = '#7c3aed';
+      ctx.beginPath(); ctx.arc(tx(4.75), ty(3.10), 4, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function setCam(pos, target) {
+      camera.position.copy(pos);
+      controls.target.copy(target);
+      controls.update();
+    }
+    const CAMS = {
+      iso: () => setCam(new THREE.Vector3(-4.2, 4.1, 4.6), toWorld(2.80, 1.80, 0.70)),
+      leftrear: () => setCam(toWorld(4.78, 3.08, 1.46), toWorld(2.60, 1.15, 0.82)),
+      door: () => setCam(toWorld(0.45, 3.10, 1.52), toWorld(2.90, 1.40, 0.85)),
+      top: () => setCam(toWorld(2.95, 1.80, 6.80), toWorld(2.95, 1.80, 0.0)),
+      lounge: () => setCam(toWorld(3.15, 2.95, 1.65), toWorld(1.65, 1.25, 0.55))
+    };
+
+    document.getElementById('btn-cam-leftrear').onclick = CAMS.leftrear;
+    document.getElementById('btn-cam-iso').onclick = CAMS.iso;
+    document.getElementById('btn-cam-door').onclick = CAMS.door;
+    document.getElementById('btn-cam-top').onclick = CAMS.top;
+    document.getElementById('btn-cam-lounge').onclick = CAMS.lounge;
+
+    document.querySelectorAll('.plan-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        STATE.plan = btn.dataset.plan;
+        document.querySelectorAll('.plan-tab').forEach((b) => b.classList.toggle('active', b === btn));
+        buildPlanScene(STATE.plan);
+      });
+    });
+
+    document.getElementById('chk-labels').addEventListener('change', (e) => {
+      STATE.showLabels = e.target.checked;
+      buildPlanScene(STATE.plan);
+    });
+    document.getElementById('chk-cam-fov').addEventListener('change', (e) => {
+      STATE.showCamFov = e.target.checked;
+      buildPlanScene(STATE.plan);
+    });
+
+    function onResize() {
+      const w = pane3d.clientWidth, h = pane3d.clientHeight;
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+      updateSidebarAnd2D(STATE.plan);
+    }
+    window.addEventListener('resize', onResize);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      smartWalls.forEach((w) => {
+        const toCam = new THREE.Vector3().subVectors(camera.position, w.center);
+        const dot = toCam.dot(w.normal);
+        w.mesh.material.opacity = dot < -0.05 ? 0.14 : 1.0;
+        w.mesh.material.depthWrite = dot >= -0.05;
+      });
+      renderer.render(scene, camera);
+    }
+
+    buildPlanScene('planA');
+    onResize();
+    CAMS.iso();
+    animate();
+  </script>
+</body>
+</html>

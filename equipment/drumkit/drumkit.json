@@ -1,0 +1,192 @@
+{
+  "catalog_version": "1.0",
+  "updated_at": "2026-11-24",
+  "configuration": "5-piece right-handed acoustic drum kit + 4 cymbals + music stand & Yamaha EAD10",
+  "coordinate_convention": {
+    "description": "Local drum kit coordinates centered at the geometric center of the 240x180cm drum rug (Three.js right-handed Y-up).",
+    "front_axis": "-X (drummer facing A2 entrance wall)",
+    "back_axis": "+X (behind drummer toward A1 back wall)",
+    "left_axis": "+Z (drummer's left: Hi-Hat, Snare, Tom 1, Left Crash, Music Stand / EAD10 module)",
+    "right_axis": "-Z (drummer's right: Tom 2, Floor Tom, Ride, Right Crash)",
+    "up_axis": "+Y (height from floor)"
+  },
+  "rug": {
+    "width_cm": 240,
+    "depth_cm": 180,
+    "thickness_cm": 1.2,
+    "orientation_note": "240 cm along drummer left-right width (Y in room / Z in local Three.js); 180 cm along front-back depth (X).",
+    "kit_placement": "centered",
+    "surface_note": "Plain solid placeholder (rug will be newly purchased; no photo texture applied).",
+    "placeholder_color_hex": "#2A2D32"
+  },
+  "finishes": {
+    "shell_primary": {
+      "name_zh": "湖水藍綠亮片漆",
+      "name_en": "Teal Aqua Sparkle",
+      "base_hex": "#359B94",
+      "texture": "textures/teal-sparkle-tile.jpg",
+      "roughness": 0.22,
+      "metalness": 0.45,
+      "applies_to": ["kick", "tom1", "tom2", "floor_tom"]
+    },
+    "snare_shell": {
+      "name_zh": "亮面純黑",
+      "name_en": "Gloss Black",
+      "base_hex": "#121417",
+      "roughness": 0.16,
+      "metalness": 0.25
+    },
+    "hardware": {
+      "name_zh": "亮銀鍍鉻五金",
+      "name_en": "Polished Chrome",
+      "base_hex": "#E2E8F0",
+      "roughness": 0.18,
+      "metalness": 0.92
+    },
+    "cymbal": {
+      "name_zh": "亮面青銅鈸（細密車紋）",
+      "name_en": "Brilliant Bronze Cymbal",
+      "base_hex": "#D8B96A",
+      "roughness": 0.20,
+      "metalness": 0.88
+    },
+    "shell_interior": {
+      "name_zh": "自然淺原木內壁",
+      "name_en": "Natural Light Maple Wood Interior",
+      "base_hex": "#C8A47B"
+    }
+  },
+  "drums": [
+    {
+      "id": "kick",
+      "name_zh": "大鼓 (Kick Drum)",
+      "diameter_in": 22,
+      "depth_in": 18,
+      "diameter_cm": 55.9,
+      "depth_cm": 45.7,
+      "depth_status": "confirmed",
+      "finish": "shell_primary",
+      "hoop_finish": "shell_primary",
+      "reso_head": {
+        "color_hex": "#F1F0EA",
+        "graphic": "Left-offset dual black diagonal stripes with shield MB monogram + right-lower circular port hole"
+      },
+      "batter_head": "clear_with_internal_muffling_pillow",
+      "pedal": "single_pedal",
+      "top_mount_socket": "present_unused"
+    },
+    {
+      "id": "snare",
+      "name_zh": "小鼓 (Snare Drum)",
+      "diameter_in": 14,
+      "depth_in": 5.5,
+      "diameter_cm": 35.6,
+      "depth_cm": 14.0,
+      "depth_status": "estimated_standard",
+      "finish": "snare_shell",
+      "batter_head": "coated_white_with_dampening_gel",
+      "mount": "dedicated_snare_stand"
+    },
+    {
+      "id": "tom1",
+      "name_zh": "第一架鼓 (Rack Tom 1)",
+      "diameter_in": 12,
+      "depth_in": 9,
+      "diameter_cm": 30.5,
+      "depth_cm": 22.9,
+      "depth_status": "estimated_standard",
+      "finish": "shell_primary",
+      "batter_head": "clear",
+      "mount": "left_independent_tom_stand"
+    },
+    {
+      "id": "tom2",
+      "name_zh": "第二架鼓 (Rack Tom 2)",
+      "diameter_in": 13,
+      "depth_in": 10,
+      "diameter_cm": 33.0,
+      "depth_cm": 25.4,
+      "depth_status": "estimated_standard",
+      "finish": "shell_primary",
+      "batter_head": "clear",
+      "mount": "clamped_to_right_ride_stand"
+    },
+    {
+      "id": "floor_tom",
+      "name_zh": "落地鼓 (Floor Tom)",
+      "diameter_in": 16,
+      "depth_in": 16,
+      "diameter_cm": 40.6,
+      "depth_cm": 40.6,
+      "depth_status": "estimated_standard",
+      "finish": "shell_primary",
+      "batter_head": "clear",
+      "mount": "three_floor_legs"
+    }
+  ],
+  "cymbals": [
+    {
+      "id": "hihat",
+      "name_zh": "踩鈸 (Hi-Hat)",
+      "diameter_in": 14,
+      "diameter_cm": 35.6,
+      "position_side": "left",
+      "stand": "hihat_pedal_stand"
+    },
+    {
+      "id": "left_crash",
+      "name_zh": "左前碎音鈸 (Left Crash)",
+      "diameter_in": 18,
+      "diameter_cm": 45.7,
+      "position_side": "front_left",
+      "stand": "left_crash_stand"
+    },
+    {
+      "id": "ride",
+      "name_zh": "疊音鈸 (Ride)",
+      "diameter_in": 22,
+      "diameter_cm": 55.9,
+      "position_side": "front_right",
+      "stand": "right_ride_stand_shared_with_tom2"
+    },
+    {
+      "id": "right_crash",
+      "name_zh": "右側碎音鈸 (Right Crash)",
+      "diameter_in": 16,
+      "diameter_cm": 40.6,
+      "position_side": "right",
+      "stand": "right_crash_stand"
+    }
+  ],
+  "accessories": [
+    {
+      "id": "throne",
+      "name_zh": "圓面皮革鼓椅",
+      "seat_diameter_cm": 34,
+      "seat_height_cm": 52,
+      "finish": "matte_black_leather_with_chrome_tripod"
+    },
+    {
+      "id": "music_stand_tray",
+      "name_zh": "黑色譜架＋雙層托盤",
+      "position_note": "Drum rug left side, beside Hi-Hat, angled toward drummer",
+      "finish": "matte_black"
+    },
+    {
+      "id": "yamaha_ead10",
+      "name_zh": "Yamaha EAD10 電子鼓聲學模組與拾音器",
+      "components": [
+        {
+          "part": "sensor_unit",
+          "mount": "clamped_top_center_kick_batter_hoop",
+          "dimensions_cm": [7.6, 8.8, 7.8]
+        },
+        {
+          "part": "main_module",
+          "mount": "upper_tray_on_left_music_stand",
+          "dimensions_cm": [26.0, 13.8, 6.3]
+        }
+      ]
+    }
+  ]
+}

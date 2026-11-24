@@ -1,0 +1,126 @@
+{
+  "catalog_version": "1.1",
+  "updated_at": "2026-11-24",
+  "source": "實品吸音板實拍建檔（同批次灰磚地面基準白平衡校正）",
+  "pricing_note": "四款布料價格相同，無廠商官方色號，以 FB-01 ~ FB-04 作為本專案內部編號",
+  "same_price_tier": true,
+  "floor_reference_note": "All 4 photos share a consistent grey floor tile reference (~RGB 113,109,98 under dim warm studio light). Daylight-calibrated Hex values normalize the floor reference to neutral light grey (#B8B8B4) for accurate 3D/web color preview.",
+  "fabrics": [
+    {
+      "id": "fabric-01",
+      "code": "FB-01",
+      "name_zh": "暖卡其燕麥亞麻",
+      "name_en": "Warm Oatmeal Linen",
+      "image": "images/fabric-01-warm-oatmeal-linen.jpg",
+      "color": {
+        "raw_photo_hex": "#726857",
+        "raw_photo_rgb": [114, 105, 88],
+        "calibrated_hex": "#B9B1A5",
+        "calibrated_rgb": [185, 177, 165],
+        "tone": "暖中性大地色（燕麥／原色亞麻）",
+        "lightness": "中淺"
+      },
+      "texture": {
+        "weave_type": "中粗平織亞麻紋（Medium-coarse plain weave）",
+        "coarseness": "medium-coarse",
+        "heathered_variance": 5.6,
+        "surface_finish": "霧面自然纖維感",
+        "threejs_roughness": 0.92,
+        "threejs_bump_scale": 0.015
+      },
+      "characteristics": [
+        "經緯紗線略帶自然深淺雜色，具明顯亞麻顆粒與手織感",
+        "比 FB-04 更溫潤沉穩、耐髒度較高，不刺眼",
+        "倒角處織紋轉折清晰，視覺質感偏復古溫馨"
+      ],
+      "studio_pairing_note": "與莫蘭迪藍天花板 (#6E859B)、百合白牆面 (#F3EEE1) 及胡桃木地板搭配度極高，呈現溫暖復古錄音室調性。"
+    },
+    {
+      "id": "fabric-02",
+      "code": "FB-02",
+      "name_zh": "霧面純黑細織布",
+      "name_en": "Matte Jet Black Fine Weave",
+      "image": "images/fabric-02-matte-jet-black.jpg",
+      "color": {
+        "raw_photo_hex": "#161513",
+        "raw_photo_rgb": [22, 21, 19],
+        "calibrated_hex": "#242322",
+        "calibrated_rgb": [36, 35, 34],
+        "tone": "純黑／極深炭黑",
+        "lightness": "極深"
+      },
+      "texture": {
+        "weave_type": "細密緊緻斜紋／平織（Fine tight weave）",
+        "coarseness": "fine",
+        "heathered_variance": 3.7,
+        "surface_finish": "高度霧面吸光",
+        "threejs_roughness": 0.96,
+        "threejs_bump_scale": 0.006
+      },
+      "characteristics": [
+        "布面織紋細密均勻，僅在邊緣倒角受光處隱約可見細紋",
+        "極低反光特性，適合作為錄影背光吸收或深色收邊區塊",
+        "若全室大面積使用會明顯壓低空間亮度（需留意 EN 12464-1 照度損耗）"
+      ],
+      "studio_pairing_note": "適合局部使用（例如橫梁包覆、低頻陷阱或攝影暗部區塊），不建議全室大面積使用以免壓縮 6.4 坪空間視覺感。"
+    },
+    {
+      "id": "fabric-03",
+      "code": "FB-03",
+      "name_zh": "花紗暖炭灰亞麻",
+      "name_en": "Heathered Warm Charcoal Linen",
+      "image": "images/fabric-03-heathered-charcoal-grey.jpg",
+      "color": {
+        "raw_photo_hex": "#4E4A41",
+        "raw_photo_rgb": [79, 75, 66],
+        "calibrated_hex": "#83817C",
+        "calibrated_rgb": [131, 129, 124],
+        "tone": "暖調中深灰（花紗雜灰）",
+        "lightness": "中深"
+      },
+      "texture": {
+        "weave_type": "粗獷雙色花紗亞麻紋（Coarse heathered slub weave）",
+        "coarseness": "coarse",
+        "heathered_variance": 9.9,
+        "surface_finish": "霧面立體粗紡感",
+        "threejs_roughness": 0.94,
+        "threejs_bump_scale": 0.022
+      },
+      "characteristics": [
+        "四款中紋理對比最強烈，深淺灰紗線交織呈現豐富層次",
+        "耐髒度最高，灰塵或輕微磨擦痕跡最不易察覺",
+        "專業錄音室與現代簡約風格感強烈"
+      ],
+      "studio_pairing_note": "適合做跳色配置（例如牆面下半部封門板、角落低頻陷阱或橫梁三面包覆），與 FB-01 或 FB-04 雙色搭配層次感佳。"
+    },
+    {
+      "id": "fabric-04",
+      "code": "FB-04",
+      "name_zh": "淺米白細平織布",
+      "name_en": "Light Cream Beige Fine Plain Weave",
+      "image": "images/fabric-04-light-cream-beige.jpg",
+      "color": {
+        "raw_photo_hex": "#87806F",
+        "raw_photo_rgb": [136, 128, 111],
+        "calibrated_hex": "#CECAC1",
+        "calibrated_rgb": [206, 202, 193],
+        "tone": "淺奶油米白／原胚淺米",
+        "lightness": "高明度淺色"
+      },
+      "texture": {
+        "weave_type": "細緻均勻平織紋（Fine uniform plain weave）",
+        "coarseness": "fine",
+        "heathered_variance": 3.8,
+        "surface_finish": "細膩柔和霧面",
+        "threejs_roughness": 0.88,
+        "threejs_bump_scale": 0.008
+      },
+      "characteristics": [
+        "四款中明度最高、紗線最均勻細緻，幾乎無花紗雜色",
+        "視覺乾淨清爽、反光係數最高，最有利於放大空間感與維持室內照度",
+        "最接近目前 3D 配色設計頁籤預設的米色系 (#D8CCB8)，色調略更清透"
+      ],
+      "studio_pairing_note": "最適合大面積牆面（B1/B2 側牆、封窗板）與天花板吸音雲，可與虹牌 #4092 百合白牆面自然融合不突兀。"
+    }
+  ]
+}
