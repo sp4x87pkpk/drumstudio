@@ -1010,6 +1010,57 @@
           <span style="font-size:10.5px;">Color Palette</span>
         </div>
 
+        <div class="alt-switcher-wrap" style="margin-bottom:8px;">
+          <div class="alt-switcher-label">室內軟裝風格選項</div>
+          <div class="alt-switcher">
+            <button type="button" class="alt-btn active" data-palette-preset="empty">純硬裝配色</button>
+            <button type="button" class="alt-btn" data-palette-preset="emmets">Emmet's Place</button>
+          </div>
+        </div>
+
+        <div id="emmets-subpanel" style="display:none; margin-bottom:10px; padding:9px; border-radius:8px; background:#fffbeb; border:1px solid #fcd34d;">
+          <div style="font-size:11.5px; font-weight:700; color:#92400e; margin-bottom:6px;">Emmet's Place 燈光情境（EN 12464-1 三迴路軌道燈）</div>
+          <div class="alt-switcher" style="margin-bottom:6px;">
+            <button type="button" class="alt-btn active" data-emmets-mood="amber">暖琥珀</button>
+            <button type="button" class="alt-btn" data-emmets-mood="day">自然光</button>
+          </div>
+          <button type="button" id="btn-emmets-leftrear" class="btn" style="width:100%; margin-bottom:6px; background:#7c3aed; color:#fff; border-color:#6d28d9; font-weight:600;">切至左後側拍攝視角（Live Session）</button>
+          <div class="toggle-list" style="margin-top:4px;">
+            <label class="toggle-item" style="padding:3px 0;">
+              <span style="color:#0f766e; font-weight:600;">顯示 5 人樂團＋4 位觀眾 (1:1 比例)</span>
+              <input type="checkbox" id="chk-emmets-band" />
+            </label>
+            <label class="toggle-item" style="padding:3px 0;">
+              <span>顯示三迴路軌道燈與光束錐</span>
+              <input type="checkbox" id="chk-emmets-beams" checked />
+            </label>
+            <label class="toggle-item" style="padding:3px 0;">
+              <span style="color:#881337; font-weight:600;">B2 牆面酒紅吸音板跳色 (Emmet Vol.107)</span>
+              <input type="checkbox" id="chk-emmets-burgundy" />
+            </label>
+          </div>
+          <div style="font-size:11px; line-height:1.5; color:#78350f; margin-top:5px; padding-top:5px; border-top:1px solid #fde68a;">
+            • 軌道：主雙軌 y=0.85/2.75m (避雲 15cm, 止於橫梁前) ＋ 梁後短軌 x=5.20m (零遮光)<br />
+            • 規格：21,411 lm / 214.1W (LPD 10.08 W/m²), CRI Ra≥90, R9&gt;50, UGR≤19<br />
+            • <span id="emmets-mood-desc">暖琥珀：關閉迴路一 4000K 線條燈，保留迴路二 3000K-3500K COB ＋ 迴路三梁後背光 ＋ 2700K 立燈＆沙發暖洗牆</span>
+          </div>
+          <div style="margin-top:7px; padding-top:7px; border-top:1px solid #fde68a;">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:700; color:#92400e; margin-bottom:4px;">
+              <span>IKEA 推薦商品與參考預算</span>
+              <span>約 NT$24,000 ~ 28,000</span>
+            </div>
+            <table style="width:100%; border-collapse:collapse; font-size:10.5px; color:#451a03;">
+              <tr style="border-bottom:1px solid #fde68a;"><td style="padding:3px 2px;">KIVIK / SÖDERHAMN 深炭灰三人沙發 (200×85cm)</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$11,900</td></tr>
+              <tr style="border-bottom:1px solid #fde68a;"><td style="padding:3px 2px;">紅棕波斯幾何圖騰地毯 (210×165cm)</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$3,500</td></tr>
+              <tr style="border-bottom:1px solid #fde68a;"><td style="padding:3px 2px;">胡桃木低矮茶几 (115×60cm) ＋ 焦糖復古單椅</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$4,200</td></tr>
+              <tr style="border-bottom:1px solid #fde68a;"><td style="padding:3px 2px;">BILLY 深木開放高書櫃 (90×35×205cm)</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$2,490</td></tr>
+              <tr style="border-bottom:1px solid #fde68a;"><td style="padding:3px 2px;">深木膠囊咖啡邊櫃 (80×45×88cm)</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$2,490</td></tr>
+              <tr style="border-bottom:1px solid #fde68a;"><td style="padding:3px 2px;">SKAFTET 細銀桿＋米灰布罩暖光落地燈 (2700K)</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$1,500</td></tr>
+              <tr><td style="padding:3px 2px;">LINDBYN 細金框大立鏡 (65×170cm) ＋ 掛畫 ＋ 燈管</td><td style="text-align:right; white-space:nowrap; font-weight:600;">~$3,200</td></tr>
+            </table>
+          </div>
+        </div>
+
         <div class="spec-box">
           <strong>目前配色方案（虹牌 450 平光水泥漆）：</strong><br />
           • 天花板與兩根橫梁：虹牌 450 電腦調色莫蘭迪藍（2232 色卡 N188~N210，<code id="spec-ceil-hex">#6E859B</code>）<br />
@@ -1123,8 +1174,6 @@
         <div class="section-title"><span>3D 鏡頭與結構控制</span></div>
         <div class="cam-presets">
           <button class="cam-btn" id="cam-iso">全局等角透視</button>
-          <button class="cam-btn" id="cam-a2">A2 入口 / 攝影機視角</button>
-          <button class="cam-btn" id="cam-a1">鼓手第一人稱視角</button>
           <button class="cam-btn" id="cam-top">正上方 3D 俯視</button>
         </div>
 
@@ -1232,6 +1281,11 @@
       wallColor: '#f3eee1',    // 虹牌 450 #4092 百合白
       panelColor: '#cecac1',   // 預設對應 FB-04 淺米白細平織布 (配色設計頁籤專用)
       panelFabric: 'fb04',     // 'fb01' | 'fb02' | 'fb03' | 'fb04' | 'custom'
+      palettePreset: 'empty',  // 'empty' | 'emmets'
+      emmetsMood: 'amber',     // 'amber' | 'day'
+      emmetsShowBand: false,
+      emmetsShowBeams: true,
+      emmetsBurgundy: false,
       fabricCloud: 'same',     // 'same' | 'fb01' | 'fb02' | 'fb03' | 'fb04'
       fabricCustom: 'same',    // 'same' | 'fb01' | 'fb02' | 'fb03' | 'fb04'
       fabricTrap: 'same',      // 'same' | 'fb01' | 'fb02' | 'fb03' | 'fb04'
@@ -2713,10 +2767,13 @@
         }));
       }
 
-      // 4. 左右長牆 B1 / B2 各 4 片常規吸音板 (60×120×5cm，離牆 7.5cm)
+      // 4. 左右長牆 B1 / B2 各 4 片常規吸音板 (60×120×5cm，離牆 7.5cm；Emmet's Place 可開啟 B2 酒紅跳色)
+      const b2WallPanelMat = (STATE.model === 'palette' && STATE.palettePreset === 'emmets' && STATE.emmetsBurgundy)
+        ? new THREE.MeshStandardMaterial({ color: '#68262D', roughness: 0.94, transparent: true, opacity: effOp, depthWrite: effOp > 0.8 })
+        : panelMat;
       [1.40, 2.45, 3.55, 4.35].forEach((px) => {
         addBoxWithEdge(pW, pH, pT, px, gap + pT / 2, 1.45, panelMat, 0x94a3b8, 'B1');
-        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, panelMat, 0x94a3b8, 'B2');
+        addBoxWithEdge(pW, pH, pT, px, ROOM.W - gap - pT / 2, 1.45, b2WallPanelMat, 0x94a3b8, 'B2');
       });
 
       // 5. A1 / A2 客製化封門窗吸音板 (配色頁籤套用實拍布料或統一色，吸音配置頁籤分色標示)
@@ -2769,6 +2826,368 @@
     // ==========================================
     // 空間配色設計專屬 3D 模型 (繼承：原始空間 → 吸音配置 → 套用油漆、深色地板、實拍布料與厚窗簾)
     // ==========================================
+    // ==========================================
+    // Emmet's Place 紐約老宅公寓客廳軟裝＋EN 12464-1 三迴路軌道燈建構器
+    // 只保留「暖琥珀」與「自然光」兩種模式
+    // ==========================================
+    let _emmetsTexCache = null;
+    function getEmmetsMaterials() {
+      if (_emmetsTexCache) return _emmetsTexCache;
+      // 1. 紅棕波斯圖騰地毯
+      const pCvs = document.createElement('canvas'); pCvs.width = 512; pCvs.height = 384;
+      const pctx = pCvs.getContext('2d');
+      pctx.fillStyle = '#8C3B2B'; pctx.fillRect(0, 0, 512, 384);
+      pctx.strokeStyle = '#1E2A3A'; pctx.lineWidth = 28; pctx.strokeRect(18, 18, 476, 348);
+      pctx.strokeStyle = '#E8DFCF'; pctx.lineWidth = 5; pctx.strokeRect(36, 36, 440, 312);
+      pctx.strokeStyle = '#D49A4A'; pctx.lineWidth = 3; pctx.strokeRect(48, 48, 416, 288);
+      const dm = (cx, cy, rx, ry, col) => {
+        pctx.fillStyle = col; pctx.beginPath();
+        pctx.moveTo(cx, cy - ry); pctx.lineTo(cx + rx, cy); pctx.lineTo(cx, cy + ry); pctx.lineTo(cx - rx, cy);
+        pctx.closePath(); pctx.fill();
+      };
+      dm(256, 192, 130, 88, '#1E2A3A'); dm(256, 192, 102, 68, '#B8523A');
+      dm(256, 192, 64, 42, '#E8DFCF'); dm(256, 192, 30, 20, '#2B5B5E');
+      [[115, 110], [397, 110], [115, 274], [397, 274]].forEach(([x, y]) => { dm(x, y, 28, 22, '#D49A4A'); dm(x, y, 14, 11, '#1E2A3A'); });
+      const persianTex = new THREE.CanvasTexture(pCvs); persianTex.colorSpace = THREE.SRGBColorSpace;
+
+      // 2. 黑白民族幾何抱枕
+      const ikCvs = document.createElement('canvas'); ikCvs.width = 128; ikCvs.height = 128;
+      const ictx = ikCvs.getContext('2d');
+      ictx.fillStyle = '#EAE4D8'; ictx.fillRect(0, 0, 128, 128);
+      ictx.strokeStyle = '#27272A'; ictx.lineWidth = 6;
+      for (let y = 16; y < 128; y += 26) {
+        ictx.beginPath();
+        for (let x = 0; x <= 128; x += 16) ictx.lineTo(x, y + ((x / 16) % 2 === 0 ? -7 : 7));
+        ictx.stroke();
+      }
+      const ikatTex = new THREE.CanvasTexture(ikCvs); ikatTex.colorSpace = THREE.SRGBColorSpace;
+
+      // 3. 彩色立體派爵士油畫
+      const aCvs = document.createElement('canvas'); aCvs.width = 320; aCvs.height = 240;
+      const actx = aCvs.getContext('2d');
+      actx.fillStyle = '#1E3A5F'; actx.fillRect(0, 0, 320, 240);
+      [[10, 12, 95, 110, '#D95D39'], [95, 25, 110, 95, '#E9B44C'], [195, 15, 115, 130, '#2B6E63'],
+       [25, 120, 125, 108, '#9B2915'], [140, 110, 95, 118, '#3D5A80'], [225, 135, 85, 92, '#EE964B']]
+        .forEach(([x, y, w, h, c]) => { actx.fillStyle = c; actx.fillRect(x, y, w, h); });
+      actx.strokeStyle = '#111827'; actx.lineWidth = 5;
+      actx.beginPath(); actx.arc(110, 88, 34, 0, Math.PI * 2); actx.stroke();
+      actx.beginPath(); actx.moveTo(155, 40); actx.lineTo(220, 200); actx.stroke();
+      actx.fillStyle = '#FDE68A'; actx.beginPath(); actx.arc(215, 82, 24, 0, Math.PI * 2); actx.fill();
+      const artTex = new THREE.CanvasTexture(aCvs); artTex.colorSpace = THREE.SRGBColorSpace;
+
+      // 4. COEX 復古咖啡麻袋框畫
+      const cfCvs = document.createElement('canvas'); cfCvs.width = 256; cfCvs.height = 320;
+      const cfctx = cfCvs.getContext('2d');
+      cfctx.fillStyle = '#C8B08E'; cfctx.fillRect(0, 0, 256, 320);
+      cfctx.strokeStyle = '#3B2818'; cfctx.lineWidth = 6; cfctx.strokeRect(18, 18, 220, 284);
+      cfctx.fillStyle = '#2E1F14'; cfctx.font = 'bold 34px serif'; cfctx.textAlign = 'center';
+      cfctx.fillText('COEX', 128, 92);
+      cfctx.fillStyle = '#7C2D12'; cfctx.font = 'bold 18px sans-serif';
+      cfctx.fillText('PRODUCT OF', 128, 148); cfctx.fillText('EL SALVADOR', 128, 178);
+      cfctx.fillStyle = '#2E1F14'; cfctx.font = '15px monospace'; cfctx.fillText('SHG EP COFFEE', 128, 242);
+      const coffeeArtTex = new THREE.CanvasTexture(cfCvs); coffeeArtTex.colorSpace = THREE.SRGBColorSpace;
+
+      _emmetsTexCache = {
+        charcoalSofa: new THREE.MeshStandardMaterial({ color: '#3B3F46', roughness: 0.92 }),
+        ikatPillow: new THREE.MeshStandardMaterial({ map: ikatTex, roughness: 0.90 }),
+        creamThrow: new THREE.MeshStandardMaterial({ color: '#E8DFCF', roughness: 0.94 }),
+        persianRug: new THREE.MeshStandardMaterial({ map: persianTex, roughness: 0.95 }),
+        walnut: new THREE.MeshStandardMaterial({ color: '#5E3A1F', roughness: 0.56 }),
+        darkWood: new THREE.MeshStandardMaterial({ color: '#452A17', roughness: 0.62 }),
+        caramelChair: new THREE.MeshStandardMaterial({ color: '#8C4E2B', roughness: 0.68 }),
+        goldFrame: new THREE.MeshStandardMaterial({ color: '#C8A24A', roughness: 0.28, metalness: 0.82 }),
+        mirrorGlass: new THREE.MeshStandardMaterial({ color: '#DCE6EE', roughness: 0.08, metalness: 0.85 }),
+        artMat: new THREE.MeshStandardMaterial({ map: artTex, roughness: 0.65 }),
+        coffeeArtMat: new THREE.MeshStandardMaterial({ map: coffeeArtTex, roughness: 0.82 }),
+        brushedSilver: new THREE.MeshStandardMaterial({ color: '#CBD5E1', roughness: 0.28, metalness: 0.88 }),
+        coffeeMach: new THREE.MeshStandardMaterial({ color: '#202226', roughness: 0.30, metalness: 0.55 }),
+        mug: new THREE.MeshStandardMaterial({ color: '#F8F5EE', roughness: 0.32 }),
+        laptop: new THREE.MeshStandardMaterial({ color: '#94A3B8', roughness: 0.32, metalness: 0.70 }),
+        whitePot: new THREE.MeshStandardMaterial({ color: '#F1EFEA', roughness: 0.45 }),
+        plantLight: new THREE.MeshStandardMaterial({ color: '#548558', roughness: 0.76 }),
+        cactus: new THREE.MeshStandardMaterial({ color: '#3D6B4A', roughness: 0.80 }),
+        ampMat: new THREE.MeshStandardMaterial({ color: '#1E2228', roughness: 0.65 }),
+        keysMat: new THREE.MeshStandardMaterial({ color: '#F8FAFC', roughness: 0.35 })
+      };
+      return _emmetsTexCache;
+    }
+
+    function buildEmmetsPlaceInterior() {
+      const em = getEmmetsMaterials();
+      const isAmber = STATE.emmetsMood === 'amber';
+      const showBand = STATE.emmetsShowBand;
+      const beamBottomZ = ROOM.H - STATE.beamDepth;
+      const useSlant45 = STATE.acSuperchunk && STATE.beamTrapMode === 'slant45';
+
+      // 依模式設定環境亮度與暖琥珀／自然光點光源 (均掛載於 rootGroup，切換分頁自動釋放)
+      ambientLight.intensity = isAmber ? 0.38 : 0.74;
+      const lampShadeMat = new THREE.MeshStandardMaterial({
+        color: '#EFE5D2', emissive: '#FFB347', emissiveIntensity: isAmber ? 0.78 : 0.18, roughness: 0.85
+      });
+      const tubeMat = new THREE.MeshStandardMaterial({
+        color: '#ffffff', emissive: '#ff8c24', emissiveIntensity: isAmber ? 2.4 : 0.05
+      });
+
+      if (isAmber) {
+        const fl = new THREE.PointLight(0xffb85c, 2.4, 4.8, 1.6);
+        fl.position.copy(toWorld(0.92, 0.56, 1.52));
+        const cl = new THREE.PointLight(0xffc26e, 1.3, 3.0, 1.8);
+        cl.position.copy(toWorld(0.45, 1.72, 1.18));
+        const t1 = new THREE.PointLight(0xff8c24, 2.6, 3.6, 1.5);
+        t1.position.copy(toWorld(1.55, 0.24, 0.86));
+        const t2 = new THREE.PointLight(0xff8c24, 2.6, 3.6, 1.5);
+        t2.position.copy(toWorld(2.35, 0.24, 0.86));
+        rootGroup.add(fl, cl, t1, t2);
+      }
+
+      // 1. A1 教材雜物櫃 + 240×180cm 實拍湖水藍綠亮片鼓組 (無遮擋譜架)
+      addBoxWithEdge(0.45, 1.05, 2.40, ROOM.L - 0.26, ROOM.W / 2, 0.525, em.darkWood, 0x3b2212);
+      const kit = buildRealDrumKitGroup(false);
+      kit.position.copy(toWorld(4.00, 1.80, 0));
+      rootGroup.add(kit);
+
+      // 2. 紅棕波斯風復古圖騰地毯 (210×165cm)
+      addBoxWithEdge(2.10, 0.010, 1.65, 1.95, 1.65, 0.005, em.persianRug);
+
+      // 3. B1 深炭灰低背三人布藝沙發 (200×85cm) ＋ 黑白民族抱枕 ＋ 米色披毯 ＋ 沙發背暖琥珀 LED 燈管
+      const sx = 1.95, sy = 0.58;
+      addBoxWithEdge(2.00, 0.36, 0.85, sx, sy, 0.20, em.charcoalSofa, 0x1e2228);
+      addBoxWithEdge(2.00, 0.72, 0.18, sx, sy - 0.335, 0.38, em.charcoalSofa, 0x1e2228);
+      [-0.91, 0.91].forEach((ox) => addBoxWithEdge(0.18, 0.54, 0.85, sx + ox, sy, 0.29, em.charcoalSofa, 0x1e2228));
+      [-0.55, 0, 0.55].forEach((ox) => {
+        addBoxWithEdge(0.53, 0.13, 0.66, sx + ox, sy + 0.06, 0.42, em.charcoalSofa, 0x2a2e35);
+        addBoxWithEdge(0.52, 0.36, 0.15, sx + ox, sy - 0.20, 0.58, em.charcoalSofa, 0x2a2e35);
+      });
+      [[-0.64, 0.28], [0.02, -0.15], [0.66, -0.32]].forEach(([ox, rot]) => {
+        const pil = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.34, 0.11), em.ikatPillow);
+        pil.position.copy(toWorld(sx + ox, sy - 0.06, 0.58)); pil.rotation.y = rot; rootGroup.add(pil);
+      });
+      addBoxWithEdge(0.42, 0.04, 0.62, sx + 0.72, sy + 0.16, 0.50, em.creamThrow);
+      const tube = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.45, 12), tubeMat);
+      tube.rotation.z = Math.PI / 2; tube.position.copy(toWorld(1.95, 0.16, 0.78)); rootGroup.add(tube);
+
+      // 4. 沙發左側角落：銀色彎桿＋米灰布罩暖光落地燈 (2700K)
+      const lx = 0.78, ly = 0.48;
+      const lBase = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.15, 0.03, 20), em.brushedSilver);
+      lBase.position.copy(toWorld(lx, ly, 0.015));
+      const lPole = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.013, 1.56, 12), em.brushedSilver);
+      lPole.position.copy(toWorld(lx, ly, 0.79));
+      const lArm = new THREE.Mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.32, 10), em.brushedSilver);
+      lArm.position.copy(toWorld(lx + 0.11, ly + 0.06, 1.62)); lArm.rotation.z = -1.05;
+      const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.19, 0.25, 24, 1, true), lampShadeMat);
+      shade.position.copy(toWorld(lx + 0.22, ly + 0.10, 1.54));
+      rootGroup.add(lBase, lPole, lArm, shade);
+
+      // 5. 胡桃木低矮茶几 (115×60×42cm)＋筆電＋馬克杯
+      const tx = showBand ? 1.76 : 1.95, ty = showBand ? 1.52 : 1.74;
+      addBoxWithEdge(1.15, 0.035, 0.60, tx, ty, 0.40, em.walnut, 0x3b2212);
+      addBoxWithEdge(0.95, 0.022, 0.42, tx, ty, 0.15, em.darkWood);
+      [[-0.50, -0.24], [0.50, -0.24], [-0.50, 0.24], [0.50, 0.24]].forEach(([ox, oy]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.014, 0.39, 10), em.walnut);
+        leg.position.copy(toWorld(tx + ox, ty + oy, 0.195)); rootGroup.add(leg);
+      });
+      addBoxWithEdge(0.32, 0.012, 0.22, tx - 0.22, ty - 0.04, 0.425, em.laptop);
+      const scr = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.20, 0.01), em.laptop);
+      scr.position.copy(toWorld(tx - 0.22, ty - 0.14, 0.52)); scr.rotation.x = 0.22; rootGroup.add(scr);
+      [[0.22, 0.08], [0.36, -0.06]].forEach(([ox, oy]) => {
+        const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.036, 0.09, 14), em.mug);
+        mug.position.copy(toWorld(tx + ox, ty + oy, 0.465)); rootGroup.add(mug);
+      });
+
+      // 6. 輕巧焦糖棕復古單椅
+      const acX = showBand ? 0.92 : 1.95, acY = showBand ? 2.28 : 2.74;
+      const ac = new THREE.Group();
+      ac.position.copy(toWorld(acX, acY, 0)); ac.rotation.y = showBand ? Math.PI * 0.58 : (Math.PI + 0.18);
+      const acSeat = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.12, 0.58), em.caramelChair); acSeat.position.set(0, 0.38, 0.02);
+      const acBack = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.48, 0.12), em.caramelChair); acBack.position.set(0, 0.64, -0.24); acBack.rotation.x = -0.22;
+      [[-0.27, -0.24], [0.27, -0.24], [-0.27, 0.24], [0.27, 0.24]].forEach(([lx2, lz2]) => {
+        const l = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.34, 10), em.darkWood);
+        l.position.set(lx2, 0.17, lz2); ac.add(l);
+      });
+      ac.add(acSeat, acBack); rootGroup.add(ac);
+
+      // 7. 爵士油畫、細金框大立鏡、柱狀仙人掌、A2 深木高書櫃 (黑膠＋垂墜黃金葛) ＋ 膠囊咖啡邊櫃 (COEX 掛畫)
+      addBoxWithEdge(1.04, 0.79, 0.04, 2.00, 0.14, 1.62, em.goldFrame);
+      addBoxWithEdge(0.96, 0.71, 0.045, 2.00, 0.155, 1.62, em.artMat);
+      const mirG = new THREE.Group(); mirG.position.copy(toWorld(3.04, 0.16, 0.88)); mirG.rotation.set(-0.07, -0.18, 0);
+      mirG.add(new THREE.Mesh(new THREE.BoxGeometry(0.66, 1.72, 0.035), em.goldFrame));
+      mirG.add(new THREE.Mesh(new THREE.BoxGeometry(0.61, 1.67, 0.04), em.mirrorGlass));
+      rootGroup.add(mirG);
+      const cPot = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.11, 0.28, 16), em.whitePot); cPot.position.copy(toWorld(2.74, 0.34, 0.14));
+      const cMain = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.072, 0.96, 12), em.cactus); cMain.position.copy(toWorld(2.74, 0.34, 0.72));
+      const cArm = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.048, 0.36, 10), em.cactus); cArm.position.copy(toWorld(2.83, 0.34, 0.82)); cArm.rotation.z = -0.25;
+      rootGroup.add(cPot, cMain, cArm);
+
+      addBoxWithEdge(0.35, 2.05, 0.90, 0.22, 0.62, 1.025, em.darkWood, 0x2e1a0d);
+      const bookCols = ['#8C3B2B', '#2B5B5E', '#D49A4A', '#3B4D6B', '#E5DCCB'];
+      for (let lv = 0; lv < 5; lv++) {
+        for (let b = 0; b < 5; b++) {
+          const bMat = new THREE.MeshStandardMaterial({ color: bookCols[(lv + b) % bookCols.length], roughness: 0.8 });
+          addBoxWithEdge(0.24, 0.24 + ((b * 7) % 5) * 0.015, 0.13, 0.28, 0.28 + b * 0.16, 0.24 + lv * 0.36, bMat);
+        }
+      }
+      const pPot = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.09, 0.18, 14), em.whitePot); pPot.position.copy(toWorld(0.26, 0.78, 2.14)); rootGroup.add(pPot);
+      [[0.26, 0.78, 2.28, 0.14], [0.36, 0.86, 2.12, 0.10], [0.40, 0.92, 1.92, 0.09]].forEach(([x, y, z, r]) => {
+        const lf = new THREE.Mesh(new THREE.DodecahedronGeometry(r, 1), em.plantLight); lf.position.copy(toWorld(x, y, z)); rootGroup.add(lf);
+      });
+
+      addBoxWithEdge(0.45, 0.88, 0.80, 0.26, 1.54, 0.44, em.walnut, 0x3b2212);
+      const cm = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.28, 0.28), em.coffeeMach); cm.position.copy(toWorld(0.28, 1.40, 1.02));
+      const cMug = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.036, 0.09, 14), em.mug); cMug.position.copy(toWorld(0.32, 1.62, 0.925));
+      const tLampBase = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.068, 0.20, 12), em.goldFrame); tLampBase.position.copy(toWorld(0.28, 1.78, 0.98));
+      const tLampShade = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.11, 0.14, 16), lampShadeMat); tLampShade.position.copy(toWorld(0.28, 1.78, 1.12));
+      rootGroup.add(cm, cMug, tLampBase, tLampShade);
+      addBoxWithEdge(0.03, 0.62, 0.48, 0.08, 1.54, 1.62, em.darkWood);
+      addBoxWithEdge(0.035, 0.56, 0.42, 0.09, 1.54, 1.62, em.coffeeArtMat);
+
+      // 8. ★ EN 12464-1 三迴路消光黑軌道燈系統 (21,411 lm / 214.1W / 60%-25%-15%) ★
+      // 主雙軌 y=0.85/2.75m (x=0.50~4.55m，避雲 15cm、橫梁前止步) ＋ 梁後短軌 x=5.20m (零遮光)
+      const trkMat = new THREE.MeshStandardMaterial({ color: '#14171c', metalness: 0.55, roughness: 0.40 });
+      const trkZ = ROOM.H - 0.04;
+      [0.85, 2.75].forEach((ty) => {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.035, 0.045), trkMat);
+        t.position.copy(toWorld(2.525, ty, trkZ)); rootGroup.add(t);
+      });
+      const backTrkX = useSlant45 ? 5.20 : 5.45;
+      const backTrkZ = (STATE.acSuperchunk && !useSlant45) ? (beamBottomZ - 0.03) : trkZ;
+      const backTrk = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 2.40), trkMat);
+      backTrk.position.copy(toWorld(backTrkX, ROOM.W / 2, backTrkZ)); rootGroup.add(backTrk);
+
+      // 迴路一 (60% / 128.5W)：1.0m 微晶防眩線條燈 × 4 (4000K) — 「自然光」模式全開、「暖琥珀」模式關閉
+      const linMat = new THREE.MeshStandardMaterial({
+        color: isAmber ? '#334155' : '#f8fafc',
+        emissive: isAmber ? '#000000' : '#e2e8f0',
+        emissiveIntensity: isAmber ? 0 : 0.45
+      });
+      [1.30, 3.20].forEach((lx2) => [0.85, 2.75].forEach((ly2) => {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.04, 0.055), linMat);
+        b.position.copy(toWorld(lx2, ly2, trkZ - 0.035)); rootGroup.add(b);
+        if (!isAmber && STATE.emmetsShowBeams) {
+          rootGroup.add(createAimedLightCone(toWorld(lx2, ly2, trkZ - 0.05), toWorld(lx2, ROOM.W / 2, 0.75), 2.25, 0.90, 0x38bdf8, 0.05));
+        }
+      }));
+
+      // 迴路二 (25% / 53.5W)：深杯防眩 36° COB 射燈 × 4 (3000K-3500K，含蜂巢網防左後側眩光)
+      // x=4.25 雙盞斜下 45° 打鼓組與鼓手；x=2.25 一盞打 B1 爵士油畫/波斯地毯，一盞打客廳/主唱區
+      const cobMat = new THREE.MeshStandardMaterial({ color: '#181c22', roughness: 0.4 });
+      [
+        { x: 2.25, y: 0.85, tx: 2.00, ty: 0.25, tz: 1.55 }, // 打亮 B1 爵士油畫與沙發
+        { x: 2.25, y: 2.75, tx: 2.40, ty: 1.80, tz: 1.05 }, // 打亮客廳中央／主唱區
+        { x: 4.25, y: 0.85, tx: 4.05, ty: 1.80, tz: 0.95 }, // 鼓組斜前主光 (防左後鏡頭眩光)
+        { x: 4.25, y: 2.75, tx: 3.95, ty: 1.80, tz: 0.75 }  // 鼓組順光補光
+      ].forEach((sp) => {
+        const sV = toWorld(sp.x, sp.y, trkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+        const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cobMat);
+        c.position.copy(sV); rootGroup.add(c);
+        if (STATE.emmetsShowBeams) {
+          rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.26, isAmber ? 0xf59e0b : 0xfde047, isAmber ? 0.08 : 0.05));
+        }
+      });
+
+      // 迴路三 (15% / 32.1W)：梁後橫軌 x=5.20m 深杯偏光射燈 × 2 (2700K-3000K 零遮光輪廓光)
+      [
+        { x: backTrkX, y: 1.10, tx: 4.25, ty: 1.80, tz: 1.25 },
+        { x: backTrkX, y: 2.50, tx: 4.25, ty: 1.80, tz: 1.25 }
+      ].forEach((sp) => {
+        const sV = toWorld(sp.x, sp.y, backTrkZ - 0.08), tV = toWorld(sp.tx, sp.ty, sp.tz);
+        const c = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.12, 16), cobMat);
+        c.position.copy(sV); rootGroup.add(c);
+        if (STATE.emmetsShowBeams) {
+          rootGroup.add(createAimedLightCone(sV, tV, sV.distanceTo(tV), sV.distanceTo(tV) * 0.28, 0xfb923c, isAmber ? 0.09 : 0.05));
+        }
+      });
+
+      // 9. 可選：1:1 人體工學 5 人樂團 (鼓/琴/貝/吉/唱) ＋ 4 位觀眾 (零穿模校準座標)
+      if (showBand) {
+        const skinMat = new THREE.MeshStandardMaterial({ color: '#D9B391', roughness: 0.72 });
+        const hairMat = new THREE.MeshStandardMaterial({ color: '#1F1B18', roughness: 0.85 });
+        const pantsMat = new THREE.MeshStandardMaterial({ color: '#272B33', roughness: 0.85 });
+        const shoeMat = new THREE.MeshStandardMaterial({ color: '#18181B', roughness: 0.70 });
+
+        const addHuman = ({ rx, ry, yaw = 0, pose = 'stand', seatH = 0.42, height = 1.72, shirtHex = '#334155', armPose = 'relax' }) => {
+          const g = new THREE.Group(); g.position.copy(toWorld(rx, ry, 0)); g.rotation.y = yaw;
+          const shirtMat = new THREE.MeshStandardMaterial({ color: shirtHex, roughness: 0.82 });
+          const sc = height / 1.72;
+          let hipY = 0.90 * sc;
+          if (pose === 'sit') {
+            hipY = seatH + 0.08;
+            [-0.11, 0.11].forEach((ox) => {
+              const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.068, 0.058, 0.44, 10), pantsMat);
+              thigh.rotation.x = Math.PI / 2; thigh.position.set(ox, seatH + 0.05, 0.20);
+              const calf = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.042, seatH + 0.02, 10), pantsMat);
+              calf.position.set(ox, (seatH + 0.02) / 2, 0.40);
+              const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.07, 0.24), shoeMat);
+              shoe.position.set(ox, 0.035, 0.45);
+              g.add(thigh, calf, shoe);
+            });
+          } else {
+            [-0.11, 0.11].forEach((ox) => {
+              const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.068, 0.048, 0.88 * sc, 10), pantsMat);
+              leg.position.set(ox, 0.44 * sc, 0);
+              const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.07, 0.25), shoeMat);
+              shoe.position.set(ox, 0.035, 0.05);
+              g.add(leg, shoe);
+            });
+          }
+          const torsoH = 0.52 * sc;
+          const torso = new THREE.Mesh(new THREE.BoxGeometry(0.40 * sc, torsoH, 0.21 * sc), shirtMat);
+          torso.position.set(0, hipY + torsoH / 2, 0);
+          const head = new THREE.Mesh(new THREE.SphereGeometry(0.102 * sc, 14, 12), skinMat);
+          head.scale.set(0.92, 1.06, 0.96); head.position.set(0, hipY + torsoH + 0.155 * sc, 0.01);
+          const hair = new THREE.Mesh(new THREE.SphereGeometry(0.106 * sc, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.58), hairMat);
+          hair.position.set(0, hipY + torsoH + 0.165 * sc, 0);
+          g.add(torso, head, hair);
+          const shY = hipY + torsoH - 0.07 * sc;
+          [-0.24 * sc, 0.24 * sc].forEach((sx2, idx) => {
+            const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.044, 0.038, 0.52 * sc, 8), shirtMat);
+            if (armPose === 'drums' || armPose === 'piano') { arm.rotation.x = -Math.PI * 0.34; arm.position.set(sx2, shY - 0.12, 0.18); }
+            else if (armPose === 'guitar') { arm.rotation.x = -Math.PI * 0.32; arm.rotation.z = idx === 0 ? -0.35 : 0.25; arm.position.set(sx2 * 0.85, shY - 0.16, 0.16); }
+            else if (armPose === 'sing') { arm.rotation.x = idx === 0 ? -Math.PI * 0.42 : -0.15; arm.position.set(sx2, shY - (idx === 0 ? 0.08 : 0.22), idx === 0 ? 0.18 : 0.04); }
+            else { arm.rotation.x = pose === 'sit' ? -0.35 : -0.06; arm.position.set(sx2, shY - 0.22, pose === 'sit' ? 0.10 : 0.02); }
+            g.add(arm);
+          });
+          rootGroup.add(g); return g;
+        };
+
+        const drummer = addHuman({ rx: 4.46, ry: 1.84, yaw: -Math.PI / 2, pose: 'sit', seatH: 0.52, height: 1.74, shirtHex: '#1E293B', armPose: 'drums' });
+        [-0.16, 0.16].forEach((ox) => {
+          const stk = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.38, 6), em.creamThrow);
+          stk.rotation.x = Math.PI * 0.45; stk.position.set(ox, 0.90, 0.42); drummer.add(stk);
+        });
+        addBoxWithEdge(1.32, 0.11, 0.36, 2.62, 3.16, 0.74, em.ampMat, 0x475569);
+        addBoxWithEdge(1.20, 0.025, 0.14, 2.62, 3.04, 0.80, em.keysMat);
+        [-0.48, 0.48].forEach((ox) => addBoxWithEdge(0.05, 0.68, 0.34, 2.62 + ox, 3.16, 0.34, em.ampMat));
+        addBoxWithEdge(0.56, 0.06, 0.32, 2.62, 2.66, 0.46, em.ampMat);
+        addHuman({ rx: 2.62, ry: 2.66, yaw: 0, pose: 'sit', seatH: 0.48, height: 1.72, shirtHex: '#7C2D12', armPose: 'piano' });
+
+        const bassist = addHuman({ rx: 3.02, ry: 1.18, yaw: Math.PI * 0.36, pose: 'stand', height: 1.75, shirtHex: '#1E3A5F', armPose: 'guitar' });
+        const bBody = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.42, 0.045), new THREE.MeshStandardMaterial({ color: '#78350F', roughness: 0.35 }));
+        bBody.position.set(-0.08, 0.98, 0.18); bBody.rotation.z = -0.35;
+        const bNeck = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.72, 0.03), em.creamThrow);
+        bNeck.position.set(0.14, 1.32, 0.18); bNeck.rotation.z = -0.35; bassist.add(bBody, bNeck);
+        addBoxWithEdge(0.46, 0.56, 0.38, 3.35, 0.38, 0.28, em.ampMat, 0x3b82f6);
+
+        const guitarist = addHuman({ rx: 1.82, ry: 2.66, yaw: Math.PI * 0.72, pose: 'stand', height: 1.70, shirtHex: '#3F6212', armPose: 'guitar' });
+        const gBody = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.38, 0.042), new THREE.MeshStandardMaterial({ color: '#991B1B', roughness: 0.30 }));
+        gBody.position.set(-0.06, 0.98, 0.18); gBody.rotation.z = -0.32;
+        const gNeck = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.60, 0.025), em.creamThrow);
+        gNeck.position.set(0.12, 1.28, 0.18); gNeck.rotation.z = -0.32; guitarist.add(gBody, gNeck);
+        addBoxWithEdge(0.50, 0.44, 0.26, 1.62, 3.28, 0.22, em.ampMat, 0xef4444);
+
+        addHuman({ rx: 2.84, ry: 1.92, yaw: -Math.PI * 0.72, pose: 'stand', height: 1.66, shirtHex: '#9A3412', armPose: 'sing' });
+        const micStand = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 1.42, 8), em.brushedSilver);
+        micStand.position.copy(toWorld(2.60, 1.78, 0.71));
+        const micBase = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.02, 14), em.ampMat);
+        micBase.position.copy(toWorld(2.60, 1.78, 0.01));
+        rootGroup.add(micStand, micBase);
+
+        addHuman({ rx: 1.40, ry: 0.62, yaw: 0.15, pose: 'sit', seatH: 0.42, height: 1.70, shirtHex: '#475569' });
+        addHuman({ rx: 1.95, ry: 0.62, yaw: 0.05, pose: 'sit', seatH: 0.42, height: 1.64, shirtHex: '#B45309' });
+        addHuman({ rx: 2.50, ry: 0.62, yaw: -0.18, pose: 'sit', seatH: 0.42, height: 1.73, shirtHex: '#334155' });
+        addHuman({ rx: 0.92, ry: 2.28, yaw: Math.PI * 0.58, pose: 'sit', seatH: 0.42, height: 1.68, shirtHex: '#4B5563' });
+      }
+    }
+
     function buildColorPaletteModel() {
       ambientLight.intensity = 0.72;
       if (STATE.paletteShowAcoustic) {
@@ -2780,6 +3199,11 @@
 
       // 入口古銅鋁門內側重磅厚窗簾 (共用模組，拉開一半)
       buildEntryCurtain();
+
+      if (STATE.palettePreset === 'emmets') {
+        buildEmmetsPlaceInterior();
+        return;
+      }
 
       if (!STATE.paletteShowAcoustic && STATE.showGrid) {
         const lA2 = makeTextSprite(`A2 前短牆 (象牙白 ${STATE.wallColor.toUpperCase()})`);
@@ -2989,6 +3413,37 @@
         });
         const bx2d = (STATE.beamTrapMode === 'slant45') ? 5.20 : 5.45;
         ctx2d.beginPath(); ctx2d.moveTo(toX(bx2d), toY(0.60)); ctx2d.lineTo(toX(bx2d), toY(3.00)); ctx2d.stroke();
+      } else if (STATE.model === 'palette' && STATE.palettePreset === 'emmets') {
+        const box2 = (x, y, w, h, f, s, lbl) => {
+          ctx2d.fillStyle = f; ctx2d.strokeStyle = s; ctx2d.lineWidth = 1.4;
+          ctx2d.fillRect(toX(x), toY(y), w * scale, h * scale);
+          ctx2d.strokeRect(toX(x), toY(y), w * scale, h * scale);
+          if (lbl) { ctx2d.fillStyle = '#18202c'; ctx2d.font = 'bold 10px sans-serif'; ctx2d.fillText(lbl, toX(x) + 4, toY(y + h / 2) + 3); }
+        };
+        box2(3.10, 0.60, 1.80, 2.40, 'rgba(53,155,148,0.18)', '#0f766e', '爵士鼓組 (2.40×1.80m)');
+        box2(5.40, 0.60, 0.45, 2.40, 'rgba(120,78,44,0.16)', '#784e2c', '雜物櫃');
+        box2(0.95, 0.16, 2.00, 0.85, 'rgba(59,63,70,0.22)', '#3b3f46', '深炭灰三人沙發 (2.0×0.85m)');
+        box2(STATE.emmetsShowBand ? 1.18 : 1.38, STATE.emmetsShowBand ? 1.22 : 1.44, 1.15, 0.60, 'rgba(140,59,43,0.18)', '#8c3b2b', '胡桃木矮茶几');
+        box2(STATE.emmetsShowBand ? 0.59 : 1.62, STATE.emmetsShowBand ? 1.95 : 2.42, 0.66, 0.66, 'rgba(140,78,43,0.20)', '#8c4e2b', '單椅');
+        box2(0.05, 0.17, 0.35, 0.90, 'rgba(69,42,23,0.24)', '#452a17', '書櫃');
+        box2(0.04, 1.14, 0.45, 0.80, 'rgba(94,58,31,0.20)', '#5e3a1f', '咖啡');
+        if (STATE.emmetsShowBand) {
+          box2(1.96, 2.98, 1.32, 0.36, 'rgba(30,34,40,0.22)', '#1e2228', '88鍵電鋼琴');
+          const dot2 = (x, y, col, lbl) => {
+            ctx2d.fillStyle = col; ctx2d.beginPath(); ctx2d.arc(toX(x), toY(y), 7, 0, Math.PI * 2); ctx2d.fill();
+            ctx2d.fillStyle = '#fff'; ctx2d.font = 'bold 9px sans-serif'; ctx2d.textAlign = 'center';
+            ctx2d.fillText(lbl, toX(x), toY(y) + 3); ctx2d.textAlign = 'left';
+          };
+          dot2(4.46, 1.84, '#0f766e', '鼓'); dot2(2.62, 2.66, '#7c2d12', '琴');
+          dot2(3.02, 1.18, '#1e3a5f', '貝'); dot2(1.82, 2.66, '#3f6212', '吉'); dot2(2.84, 1.92, '#b91c1c', '唱');
+          [1.40, 1.95, 2.50].forEach((ax) => dot2(ax, 0.62, '#475569', '客'));
+          dot2(0.92, 2.28, '#475569', '客');
+        }
+        // 三迴路軌道線
+        ctx2d.strokeStyle = '#64748b'; ctx2d.lineWidth = 1.8;
+        [0.85, 2.75].forEach((ty) => { ctx2d.beginPath(); ctx2d.moveTo(toX(0.50), toY(ty)); ctx2d.lineTo(toX(4.55), toY(ty)); ctx2d.stroke(); });
+        const bx2d = (STATE.beamTrapMode === 'slant45') ? 5.20 : 5.45;
+        ctx2d.beginPath(); ctx2d.moveTo(toX(bx2d), toY(0.60)); ctx2d.lineTo(toX(bx2d), toY(3.00)); ctx2d.stroke();
       } else if (STATE.model === 'v0') {
         ctx2d.strokeStyle = '#64748b'; ctx2d.lineWidth = 1.8;
         [0.90, 2.70].forEach((ty) => {
@@ -3057,21 +3512,62 @@
     }
 
     function updateAutoWallOpacity() {
-      if (!wallMeshes.A2) return;
-      const setOp = (k, isHidden) => (wallMeshes[k] || []).forEach((m) => {
-        const base = m.userData.baseOpacity !== undefined ? m.userData.baseOpacity : 1.0;
-        m.material.opacity = isHidden ? Math.min(base, 0.12) : base;
-      });
-      if (!STATE.autoHideWall) {
-        ['A2', 'A1', 'B1', 'B2', 'CEIL'].forEach((k) => setOp(k, false));
-        return;
-      }
       const p = camera.position;
-      setOp('A2', p.x < -1.2);
-      setOp('A1', p.x > 1.2);
-      setOp('B1', p.z < -0.9);
-      setOp('B2', p.z > 0.9);
-      setOp('CEIL', p.y > ROOM.H + 0.15);
+      const horizDist = Math.hypot(p.x - controls.target.x, p.z - controls.target.z);
+      const isTopDown = (p.y > 4.6 && horizDist < 2.4);
+
+      if (wallMeshes.A2) {
+        const setOp = (k, isHidden, targetOp = 0.12) => (wallMeshes[k] || []).forEach((m) => {
+          const base = m.userData.baseOpacity !== undefined ? m.userData.baseOpacity : 1.0;
+          m.material.opacity = isHidden ? Math.min(base, targetOp) : base;
+        });
+        if (!STATE.autoHideWall && !isTopDown) {
+          ['A2', 'A1', 'B1', 'B2', 'CEIL'].forEach((k) => setOp(k, false));
+        } else {
+          setOp('A2', STATE.autoHideWall && p.x < -1.2);
+          setOp('A1', STATE.autoHideWall && p.x > 1.2);
+          setOp('B1', STATE.autoHideWall && p.z < -0.9);
+          setOp('B2', STATE.autoHideWall && p.z > 0.9);
+          setOp('CEIL', isTopDown || (STATE.autoHideWall && p.y > ROOM.H + 0.15), isTopDown ? 0.04 : 0.12);
+        }
+      }
+
+      // 正上方俯視時：自動將天花板高度物件 (吸音雲、橫梁、梁後斜掛/包覆、軌道燈與高空邊線) 透明化，避免遮擋平面視線
+      const tmpBox = new THREE.Box3();
+      rootGroup.children.forEach((obj) => {
+        if (!obj || obj.isLight || obj.isSprite) return;
+        if (obj.userData._topFade === undefined) {
+          tmpBox.setFromObject(obj);
+          // 僅針對完全位於天花板上方區 (底部高於 2.15m) 的高空物件做俯視透明處理
+          obj.userData._topFade = (tmpBox.min.y > 2.15);
+        }
+        if (!obj.userData._topFade) return;
+
+        obj.traverse((child) => {
+          if (child.isLineSegments || child.isLine) {
+            child.visible = !isTopDown;
+          } else if (child.isMesh && child.material) {
+            if (child.userData._origMatState === undefined) {
+              child.material = child.material.clone();
+              child.userData._origMatState = {
+                opacity: child.material.opacity,
+                transparent: child.material.transparent,
+                depthWrite: child.material.depthWrite
+              };
+            }
+            const orig = child.userData._origMatState;
+            if (isTopDown) {
+              child.material.transparent = true;
+              child.material.opacity = Math.min(orig.opacity, 0.06);
+              child.material.depthWrite = false;
+            } else {
+              child.material.opacity = orig.opacity;
+              child.material.transparent = orig.transparent;
+              child.material.depthWrite = orig.depthWrite;
+            }
+          }
+        });
+      });
     }
 
     function resizeViewports() {
@@ -3225,8 +3721,6 @@
     });
 
     document.getElementById('cam-iso').addEventListener('click', () => { camera.position.set(-5.0, 4.5, 4.9); controls.target.set(0.15, 1.15, 0); });
-    document.getElementById('cam-a2').addEventListener('click', () => { camera.position.copy(toWorld(1.55, 1.80, 1.40)); controls.target.copy(toWorld(4.25, 1.80, 1.15)); });
-    document.getElementById('cam-a1').addEventListener('click', () => { camera.position.copy(toWorld(4.30, 1.80, 1.32)); controls.target.copy(toWorld(1.50, 1.80, 1.10)); });
     document.getElementById('cam-top').addEventListener('click', () => { camera.position.set(0, 8.2, 0.01); controls.target.set(0, 0, 0); });
 
     const bindChk = (id, key) => document.getElementById(id).addEventListener('change', (e) => { STATE[key] = e.target.checked; rebuildScene(); });
@@ -3386,6 +3880,51 @@
     document.getElementById('chk-palette-acoustic').addEventListener('change', (e) => {
       STATE.paletteShowAcoustic = e.target.checked;
       setModel(STATE.model);
+    });
+
+    // 配色設計 → Emmet's Place 軟裝與雙燈光模式 (只保留暖琥珀與自然光)
+    document.querySelectorAll('[data-palette-preset]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        STATE.palettePreset = btn.dataset.palettePreset;
+        document.querySelectorAll('[data-palette-preset]').forEach((b) => b.classList.toggle('active', b === btn));
+        const sub = document.getElementById('emmets-subpanel');
+        if (sub) sub.style.display = (STATE.palettePreset === 'emmets') ? 'block' : 'none';
+        setModel('palette');
+      });
+    });
+
+    document.querySelectorAll('[data-emmets-mood]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        STATE.emmetsMood = btn.dataset.emmetsMood;
+        document.querySelectorAll('[data-emmets-mood]').forEach((b) => b.classList.toggle('active', b === btn));
+        const descEl = document.getElementById('emmets-mood-desc');
+        if (descEl) {
+          descEl.textContent = (STATE.emmetsMood === 'amber')
+            ? '暖琥珀：關閉迴路一 4000K 線條燈，保留迴路二 3000K-3500K COB ＋ 迴路三梁後背光 ＋ 2700K 立燈＆沙發暖洗牆'
+            : '自然光：三迴路全開 (4000K 線條燈＋COB＋梁後補光)，達 EN 12464-1 500 lx 教學／練團清晰照度';
+        }
+        setModel('palette');
+      });
+    });
+
+    document.getElementById('chk-emmets-band').addEventListener('change', (e) => {
+      STATE.emmetsShowBand = e.target.checked;
+      setModel('palette');
+    });
+    document.getElementById('chk-emmets-beams').addEventListener('change', (e) => {
+      STATE.emmetsShowBeams = e.target.checked;
+      setModel('palette');
+    });
+    document.getElementById('chk-emmets-burgundy').addEventListener('change', (e) => {
+      STATE.emmetsBurgundy = e.target.checked;
+      setModel('palette');
+    });
+    document.getElementById('btn-emmets-leftrear').addEventListener('click', () => {
+      STATE.palettePreset = 'emmets';
+      setModel('palette');
+      camera.position.copy(toWorld(4.78, 3.08, 1.44));
+      controls.target.copy(toWorld(2.35, 1.05, 0.92));
+      controls.update();
     });
 
     document.getElementById('chk-v02-stand').addEventListener('change', (e) => {
