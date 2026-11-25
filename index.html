@@ -831,7 +831,7 @@
         <div class="spec-box">
           <strong style="color:#fbbf24;">空間物件與吸音板尺寸 (RT60 ≈ 0.33s)：</strong><br />
           • 爵士鼓組：地毯 2.40m(寬) × 1.80m(深) 居中擺放 (中心 x=4.00m, y=1.80m)<br />
-          • 鼓組規格：22×18" 大鼓 / 14" 小鼓 / 12"・13"・16" 鼓組 / 14・18・22・16" 鈸 / EAD10＋譜架<br />
+          • 鼓組規格：22×16" 大鼓 / 14×5" 小鼓 / 12×9"・13×10"・16×14" 鼓組 / 14・18・20・16" 鈸 / EAD10＋譜架<br />
           • A1 教材雜物櫃：2.40×0.45×1.05m（前半段擺設待 IKEA 戶外方案定案後合併）<br />
           • A1 客製吸音板：封門滿蓋至地 (88.5×145cm × 2塊) + 封窗 (91.5+110.5 × 186.5cm)<br />
           • A2 客製吸音板：封窗 (75×160cm × 2塊) + 氣窗 (80.6×49.5cm × 1塊)<br />
@@ -2064,10 +2064,10 @@
     }
 
     // ==========================================
-    // 實拍還原爵士鼓組建構器 (equipment/drumkit/drumkit.json)
+    // 實拍還原爵士鼓組建構器 (equipment/drumkit/drumkit.json + drum_kit_sizes_conversion.md)
     // 地毯 2.40m(左右寬 Z) × 1.80m(前後深 X)，鼓組居中，面向 -X (A2)
-    // 左側 (+Z)：Hi-Hat 14" / Snare 14" / Tom1 12" / Left Crash 18" / 譜架＋雙托盤＋Yamaha EAD10 主機
-    // 右側 (-Z)：Tom2 13" / Floor Tom 16" / Ride 22" / Right Crash 16"
+    // 左側 (+Z)：Hi-Hat 14" / Snare 14×5" / Tom1 12×9" / Left Crash 18" / 譜架＋雙托盤＋Yamaha EAD10 主機
+    // 右側 (-Z)：Tom2 13×10" / Floor Tom 16×14" / Ride 20" / Right Crash 16"
     // ==========================================
     let _drumKitAssetCache = null;
     function getDrumKitMaterials() {
@@ -2284,10 +2284,10 @@
       rugEdge.position.set(0, 0.007, 0);
       kit.add(rug, rugEdge);
 
-      // 2. 大鼓 Kick (22" × 18" -> 半徑 0.279m, 深 0.457m)，居中偏前 (-X)
-      const kickR = 0.279, kickD = 0.457;
+      // 2. 大鼓 Kick (實測 56×39cm -> 標準 22" × 16" -> 半徑 0.279m, 深 0.406m)，居中偏前 (-X)
+      const kickR = 0.279, kickD = 0.406;
       const kickG = new THREE.Group();
-      kickG.position.set(-0.22, kickR + 0.022, 0);
+      kickG.position.set(-0.195, kickR + 0.022, 0);
       // 鼓肚 (軸向沿 X)
       const kickShell = new THREE.Mesh(new THREE.CylinderGeometry(kickR, kickR, kickD, 32, 1, true), m.shellMat);
       kickShell.rotation.z = Math.PI / 2;
@@ -2347,14 +2347,14 @@
       kit.add(throneSeat);
       addTripod(0.46, 0.04, 0.26, 0.48, m.chromeMat, 0.22);
 
-      // 4. 小鼓 Snare (14" × 5.5" -> 半徑 0.178m, 深 0.140m)，純黑亮面＋白色噴砂打擊面
-      const snare = createShellDrum(0.178, 0.140, m.snareShellMat, true);
+      // 4. 小鼓 Snare (實測 36×13cm -> 標準 14" × 5" -> 半徑 0.178m, 深 0.127m)，純黑亮面＋白色噴砂打擊面
+      const snare = createShellDrum(0.178, 0.127, m.snareShellMat, true);
       snare.position.set(0.14, 0.65, 0.27);
       snare.rotation.set(0.04, 0, -0.06);
       kit.add(snare);
-      addTripod(0.14, 0.27, 0.23, 0.57, m.chromeMat, 0.20);
+      addTripod(0.14, 0.27, 0.23, 0.58, m.chromeMat, 0.20);
 
-      // 5. 架鼓 1 Tom 1 (12" × 9" -> 半徑 0.152m, 深 0.229m)，掛於左側獨立架
+      // 5. 架鼓 1 Tom 1 (實測 30×23cm -> 標準 12" × 9" -> 半徑 0.152m, 深 0.229m)，掛於左側獨立架
       const tom1 = createShellDrum(0.152, 0.229, m.shellMat, false);
       tom1.position.set(-0.18, 0.80, 0.20);
       tom1.rotation.set(-0.10, 0, -0.44);
@@ -2362,24 +2362,24 @@
       addTripod(-0.16, 0.46, 0.26, 0.84, m.chromeMat, 0.25);
       addRod([-0.16, 0.82, 0.46], [-0.18, 0.80, 0.34], 0.009, m.chromeMat);
 
-      // 6. 架鼓 2 Tom 2 (13" × 10" -> 半徑 0.165m, 深 0.254m)，夾於右側 Ride 支架延伸臂
+      // 6. 架鼓 2 Tom 2 (實測 32×25cm -> 標準 13" × 10" -> 半徑 0.165m, 深 0.254m)，夾於右側 Ride 支架延伸臂
       const tom2 = createShellDrum(0.165, 0.254, m.shellMat, false);
       tom2.position.set(-0.18, 0.80, -0.18);
       tom2.rotation.set(0.10, 0, -0.44);
       kit.add(tom2);
 
-      // 7. 落地鼓 Floor Tom (16" × 16" -> 半徑 0.203m, 深 0.406m)，右側 3 支落地腳
-      const fTom = createShellDrum(0.203, 0.406, m.shellMat, false);
-      fTom.position.set(0.15, 0.49, -0.46);
+      // 7. 落地鼓 Floor Tom (實測 40×32cm -> 標準 16" × 14" -> 半徑 0.203m, 深 0.356m)，右側 3 支落地腳
+      const fTom = createShellDrum(0.203, 0.356, m.shellMat, false);
+      fTom.position.set(0.15, 0.52, -0.46);
       kit.add(fTom);
       for (let i = 0; i < 3; i++) {
         const a = (i * Math.PI * 2) / 3 + 0.5;
         const lx = 0.15 + Math.cos(a) * 0.225;
         const lz = -0.46 + Math.sin(a) * 0.225;
-        addRod([lx, 0.54, lz], [lx + Math.cos(a) * 0.04, 0.015, lz + Math.sin(a) * 0.04], 0.006, m.chromeMat);
+        addRod([lx, 0.56, lz], [lx + Math.cos(a) * 0.04, 0.015, lz + Math.sin(a) * 0.04], 0.006, m.chromeMat);
       }
 
-      // 8. 銅鈸 4 組 (Hi-Hat 14", Left Crash 18", Ride 22", Right Crash 16")
+      // 8. 銅鈸 4 組 (Hi-Hat 14", Left Crash 18", Ride 20", Right Crash 16")
       // (a) Hi-Hat 14" (半徑 0.178m，左側踏板架)
       const hhTop = createCymbal(0.178, 0, 0);
       hhTop.position.set(0.10, 0.91, 0.58);
@@ -2399,8 +2399,8 @@
       kit.add(lCrash);
       addTripod(-0.30, 0.62, 0.28, 1.17, m.chromeMat, 0.25);
 
-      // (c) Ride 22" (半徑 0.279m，右前上方，支架共用夾住 Tom 2)
-      const ride = createCymbal(0.279, 0.14, -0.24);
+      // (c) Ride 20" (半徑 0.254m，右前上方，支架共用夾住 Tom 2)
+      const ride = createCymbal(0.254, 0.14, -0.24);
       ride.position.set(-0.18, 1.05, -0.56);
       kit.add(ride);
       addTripod(-0.26, -0.58, 0.30, 1.04, m.chromeMat, 0.25);
